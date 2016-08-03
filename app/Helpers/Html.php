@@ -39,23 +39,33 @@ class Html{
 	public function getStyles(){
 		return $this->styles;
 	}
-	
+
+	public function renderScript( $path ){
+		$subdir = env('SUBDIR') ? '/'.env('SUBDIR'): '';
+		$path = substr( $path , 0 , 1 ) == '/' ? $path : '/'.$path;
+		return '<script src="'.$subdir.$path.'"></script>'."\r";
+	}
+
+	public function renderStyle( $path ){
+		$subdir = env('SUBDIR') ? '/'.env('SUBDIR'): '';
+		$path = substr( $path , 0 , 1 ) == '/' ? $path : '/'.$path;
+		return '<link rel="stylesheet" href="'.$subdir.$path.'">'."\r";
+	}
+
 	public function renderPageScripts(){
 		$html = array();		
 		foreach( $this->getScripts() as $script ){
-			$script = substr( $script , 0 , 1 ) == '/' ? $script : '/'.$script;
-			$html[] = '<script src="/'.env('SUBDIR').$script.'"></script>';
+			$html[] = $this->renderScript( $script );
 		}
-		return implode( "\r" , $html );
+		return implode( "" , $html );
 	}
 	
 	public function renderPageStyles(){
 		$html = array();		
 		foreach( $this->getStyles() as $style ){
-			$style = substr( $style , 0 , 1 ) == '/' ? $style : '/'.$style;
-			$html[] = '<link rel="stylesheet" href="'.env('SUBDIR').$style.'">';
+			$html[] = $this->renderStyle( $style );
 		}
-		return implode( "\r" , $html );
+		return implode( '' , $html );
 	}
 
 	public static function loadFlexslider()
@@ -80,8 +90,8 @@ class Html{
 
 	public static function loadToastr()
 	{
-		static::instance()->addStyle( '/plugins/toastr/toastr.min.css' );
-		static::instance()->addScript( '/plugins/toastr/toastr.min.js' );
+		static::instance()->addStyle( '/public/plugins/toastr/toastr.min.css' );
+		static::instance()->addScript( '/public/plugins/toastr/toastr.min.js' );
 	}
 
 	public static function loadBlockUI()

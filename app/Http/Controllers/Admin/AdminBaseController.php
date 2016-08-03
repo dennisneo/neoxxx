@@ -13,11 +13,6 @@ use App\Models\Users\UserEntity;
 
 class AdminBaseController extends Controller{
 
-    private $theme;
-    private $theme_path;
-    private $layout_path;
-    public $layout;
-
     public function __construct()
     {
         // check user
@@ -31,15 +26,13 @@ class AdminBaseController extends Controller{
     {
         $this->theme = $theme ? $theme : env( 'APP_THEME' );
         $this->theme_path = __DIR__.'/../../Views/themes/'.$this->theme.'/';
-        $this->layout_path = __DIR__.'/../../Views/layouts/'.$this->theme.'/';
 
         /***
          * setup the view files
          */
-        view()->addLocation( $this->layout_path );
         view()->addLocation( $this->theme_path );
 
-        $this->layout = view( $this->theme.'_default' );
+        $this->layout = view( 'layouts.'.$this->theme.'_default' );
     }
 
     private function checkUser()
@@ -58,7 +51,6 @@ class AdminBaseController extends Controller{
         }
 
         redirect('login')
-            ->withInput( 'error' , 'User is not logged in')
             ->send();
     }
 

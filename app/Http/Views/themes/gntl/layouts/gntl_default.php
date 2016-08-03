@@ -8,12 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Native English Online </title>
 
-    <link href="/en/public/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <?php echo \Helpers\Html::instance()->renderStyle( '/public/plugins/bootstrap/bootstrap.min.css' ); ?>
     <!-- Font Awesome -->
-    <link href="/en/public/plugins/fa/font-awesome.min.css" rel="stylesheet">
+    <?php echo \Helpers\Html::instance()->renderStyle( '/public/plugins/fa/font-awesome.min.css' ); ?>
     <!-- Custom Theme Style -->
-    <link href="/en/public/themes/gntl/css/custom.min.css" rel="stylesheet">
-
+    <?php echo \Helpers\Html::instance()->renderStyle( '/public/themes/gntl/css/custom.min.css' ); ?>
+    <?php echo \Helpers\Html::instance()->renderPageStyles() ?>
+    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/vue/vue.1.0.26.min.js' ); ?>
+    <!-- jQuery -->
+    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
+    <!-- Bootstrap -->
+    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/bootstrap/bootstrap.min.js' ); ?>
+    <?php echo \Helpers\Html::instance()->renderScript( '/public/app/js/en.js' ); ?>
 </head>
 
 <body class="nav-md">
@@ -29,7 +35,7 @@
                 <!-- menu profile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
-                        <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                        <img src="" alt="..." class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
@@ -51,6 +57,7 @@
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
+                    <!--
                     <a data-toggle="tooltip" data-placement="top" title="Settings">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </a>
@@ -63,6 +70,7 @@
                     <a data-toggle="tooltip" data-placement="top" title="Logout">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     </a>
+                    -->
                 </div>
                 <!-- /menu footer buttons -->
             </div>
@@ -75,39 +83,13 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
             </div>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li class="">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <span class=" fa fa-angle-down"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="javascript:;"> Profile</a></li>
-                        <li>
-                            <a href="javascript:;">
-                                <span class="badge bg-red pull-right">50%</span>
-                                <span>Settings</span>
-                            </a>
-                        </li>
-                        <li><a href="javascript:;">Help</a></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                    </ul>
-                </li>
-
-                <li role="presentation" class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-green"> 0 </span>
-                    </a>
-                    <
-                </li>
-            </ul>
         </nav>
     </div>
     </div>
     <!-- /top navigation -->
 
     <!-- page content -->
-    <div class="right_col" role="main" style="min-height:500px">
+    <div class="right_col" role="main" style="min-height:92vh;">
         <?php echo $content ?>
     </div>
     <!-- /page content -->
@@ -123,14 +105,9 @@
 </div>
 </div>
 
-<!-- jQuery -->
-<script src="../vendors/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-
 <!-- Custom Theme Scripts -->
-<script src="../build/js/custom.min.js"></script>
-
+<!--<script src="../build/js/custom.min.js"></script>-->
+<?php echo \Helpers\Html::instance()->renderPageScripts(); ?>
 
 </body>
 </html>

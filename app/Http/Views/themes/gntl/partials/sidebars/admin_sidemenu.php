@@ -3,6 +3,6 @@
     <li><a><i class="fa fa-table"></i> Applicants <span class="fa fa-chevron-down"></span></a></li>
     <li><a><i class="fa fa-table"></i> Teachers <span class="fa fa-chevron-down"></span></a></li>
     <li><a><i class="fa fa-table"></i> Students <span class="fa fa-chevron-down"></span></a></li>
-    <li><a><i class="fa fa-table"></i> Learning Goals <span class="fa fa-chevron-down"></span></a></li>
-    <li><a><i class="fa fa-table"></i> Placement Exam <span class="fa fa-chevron-down"></span></a></li>
+    <li><a href="<?php echo Url('admin/learning-goals') ?>"><i class="fa fa-table"></i> Learning Goals <span class="fa fa-chevron-down"></span></a></li>
+    <li><a href="<?php echo Url('admin/pe') ?>"><i class="fa fa-table"></i> Placement Exam <span class="fa fa-chevron-down"></span></a></li>
 </ul>

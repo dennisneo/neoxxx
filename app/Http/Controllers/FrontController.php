@@ -16,22 +16,11 @@ use Illuminate\Http\Request;
 
 class FrontController extends Controller{
 
-    private $theme;
-    private $theme_path;
-    private $layout_path;
+
 
     public function __construct()
     {
-        $this->theme = env( 'APP_THEME');
-        $this->theme_path = __DIR__.'/../Views/themes/'.env( 'APP_THEME' ).'/';
-        $this->layout_path = __DIR__.'/../Views/layouts/'.env( 'APP_THEME' ).'/';
-        $this->front_layout_path = __DIR__.'/../Views/layouts/'.env( 'FRONT_THEME' ).'/';
-        $this->front_theme_path = __DIR__.'/../Views/themes/'.env( 'FRONT_THEME' ).'/';
-
-        view()->addLocation( $this->layout_path );
-        view()->addLocation( $this->theme_path );
-        view()->addLocation( $this->front_theme_path );
-        view()->addLocation( $this->front_layout_path );
+        parent::__construct();
     }
 
     public function login( Request $r )
@@ -67,7 +56,7 @@ class FrontController extends Controller{
 
         }
 
-        return view( $this->theme.'_login' )
+        return view( 'layouts.'.$this->theme.'_login' )
             ->with( 'errors' , $error )
             ->render();
     }
