@@ -2,7 +2,9 @@
 
 namespace Helpers;
 
-class Html{
+use Collective\Html\HtmlFacade;
+
+class Html extends HtmlFacade{
 	
 	protected $scripts  = array(); 
 	protected $styles   = array();
@@ -80,12 +82,10 @@ class Html{
 	}
 
 
-	public static function loadOwl()
+	public static function loadDateCombo()
 	{
-		static::instance()->addStyle( '/plugins/owl/css/owl.carousel.css' );
-		static::instance()->addStyle( '/plugins/owl/css/owl.theme.css' );
-		static::instance()->addStyle( '/plugins/owl/css/owl.transitions.css' );
-		static::instance()->addScript( '/plugins/owl/js/owl.carousel.min.js' );
+		static::instance()->addScript( '/public/plugins/datecombo/moment.js' );
+		static::instance()->addScript( '/public/plugins/datecombo/combodate.js' );
 	}
 
 	public static function loadToastr()
@@ -108,8 +108,8 @@ class Html{
 
 	public static function loadDatepicker()
 	{
-		static::instance()->addScript( '/plugins/datepicker/js/jquery-ui-datepicker.js' );
-		static::instance()->addStyle( '/plugins/datepicker/css/datepicker.css' );
+		static::instance()->addScript( '/public/plugins/datepicker/jquery-ui-datepicker.js' );
+		static::instance()->addStyle( '/public/plugins/datepicker/datepicker.css' );
 	}
 
 	public static function loadSummernote()

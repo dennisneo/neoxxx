@@ -47,8 +47,17 @@
         </div>
         <div class="col-lg-6">
             <div class="form-group">
-                <h5>Landline</h5>
-                <?php echo \Form::text( 'landline' , $r->landline , [ 'class' => 'form-control' , 'id'=>'landline' ] ) ?>
+                <h5>Birthday</h5>
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div id="div-date">
+                                <input type="text" class="form-control" id="date1" data-format="YYYY-MM-DD" data-template="MMM D YYYY" name="birthday" value="">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

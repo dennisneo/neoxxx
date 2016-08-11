@@ -21,6 +21,40 @@ class Questions extends Model
 
     public $fillable = ['q_id', 'question' , 'cat_id'];
     private $errors = [];
+    private $total = 0;
+
+    public function getQuestions( Request $r )
+    {
+        $limit = $r->limit ? $r->limit : 20;
+        $page = $r->page ? $r->page : 1;
+        $offset = ( $page - 1 ) * $limit;
+
+        $orderby = $r->orderby ?  $r->orderby : 'added_at';
+
+        $qs  = static::orderby( $orderby );
+        $this->total = $qs->count();
+
+        $qs->limit( $limit );
+        $qs->offset( $offset );
+
+        return $qs->get();
+    }
+
+    public function getChoices( array $question_ids )
+    {
+
+        $c_arr = [];
+
+        if( count( $question_ids )){
+            $choices  = QuestionChoices::whereIn( 'q_id' ,  $question_ids )
+                ->get();
+            foreach( $choices as $c ){
+                $c_arr[ $c->q_id ][] = $c;
+            }
+        }
+
+        return $c_arr;
+    }
 
     public function store( Request $r )
     {
@@ -46,6 +80,11 @@ class Questions extends Model
         $this->save();
 
         return $this;
+    }
+
+    public function getTotal()
+    {
+     return $this->total;
     }
 
     public function getErrors()

@@ -8,12 +8,10 @@
 
 namespace App\Http\Controllers\Ajax\Admin;
 
-
 use App\Http\Controllers\Ajax\AjaxBaseController;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Placement\QuestionChoices;
 use App\Models\Placement\Questions;
-use App\Models\Users\Applicant;
 use Illuminate\Http\Request;
 
 class AjaxPlacementExamController extends AjaxBaseController{
@@ -25,6 +23,8 @@ class AjaxPlacementExamController extends AjaxBaseController{
 
     public function saveQuestion( Request $r )
     {
+
+        \DB::beginTransaction();
         $question =  new Questions();
 
         if( ! $question->store( $r ) ){
@@ -35,26 +35,54 @@ class AjaxPlacementExamController extends AjaxBaseController{
         }
 
         if( isset( $r->c ) && is_array( $r->c )){
-            foreach( $r->c as $c ){
+            foreach( $r->c as $k=>$c ){
                 $choice = new QuestionChoices;
-                $choice->store( $r , $c );
+                $choice->choice = $c;
+                $choice->is_answer = 0;
+
+                if( $r->answer == $k ){
+                    $choice->is_answer = 1;
+                }
+
+                $choice->q_id = $question->q_id;
+                if( ! $choice->store( $r , $c  ) ){
+                    \DB::rollback();
+                }
+
             }
         }
 
+        \DB::commit( );
 
         return [
             'success'   => true,
             'question'  => $question
         ];
+
     }
 
-    public function getLearningGoals( Request $r )
+    public function getQuestions( Request $r )
     {
-        $goals = LearningGoals::all();
+        $qs = new Questions;
+        $questions = $qs->getQuestions( $r );
 
+        $qids_arr = [];
+        foreach( $questions as $q ){
+            $qids_arr[] = $q->q_id;
+        }
+
+        $choices = $qs->getChoices( $qids_arr);
+        /**
+        $questions_arr = [];
+        foreach( $questions as $q ){
+            if( isset( $choices[]))
+            $questions_arr[] = $q;
+        }
+        ***/
         return [
             'success' => true,
-            'goals' => $goals
+            'questions' => $questions,
+            'choices' => $choices
         ];
     }
 

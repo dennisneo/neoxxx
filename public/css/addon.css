@@ -1,0 +1,12 @@
+.date-control {
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: #55595c;
+    background-color: #fff;
+    background-image: none;
+    border: .0625rem solid #ccc;
+    border-radius: .25rem;
+}
+

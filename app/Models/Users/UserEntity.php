@@ -8,6 +8,7 @@
 
 namespace App\Models\Users;
 
+use Helpers\Text;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -18,9 +19,9 @@ class UserEntity extends Model{
     protected $primaryKey = 'id';
 
     public $fillable = [ 'id', 'email' , 'user_type' , 'first_name' , 'last_name',
-     'landline' , 'mobile' , 'country', 'city', 'gender' ];
+     'birthday', 'landline' , 'mobile' , 'country', 'city', 'gender' , 'skype' , 'qq' ];
 
-    private  $errors = [];
+    protected  $errors = [];
 
     private static $instances = [];
 
@@ -37,7 +38,7 @@ class UserEntity extends Model{
     {
         // save a new applicant
         // check if email is already found
-        $validator = Validator::make( $r->all(),  User::rules() );
+        $validator = Validator::make( $r->all(),  UserEntity::rules() );
 
         if( $validator->fails() ){
             $this->errors = $validator->errors()->all();
@@ -61,6 +62,8 @@ class UserEntity extends Model{
 
             $user->username     = $r->email;
             $user->password     = \Hash::make( $password );
+            $user->confirmation_code = Text::random( null, 16 );
+            $user->status = 'new';
 
         }
 
@@ -102,6 +105,22 @@ class UserEntity extends Model{
         $html .= '</ul>';
 
         return $html;
+    }
+
+
+    public function displayName( $style = 'default')
+    {
+        $name = $this->last_name.', '.$this->first_name.' ';
+        switch( $style ){
+           case  'simple':
+               $name = $this->first_name.' '.$this->last_name;
+           break;
+           default:
+               $name = $this->last_name.', '.$this->first_name.' ';
+           break;
+        }
+
+        return $name;
     }
 
     /**

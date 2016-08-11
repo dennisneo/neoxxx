@@ -24,12 +24,12 @@
         <div class="animate form login_form">
             <section class="login_content">
                 <?php if( isset( $error )){ ?>
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" style="font-family: helvetica, sans-serif;">
                     <?php echo $error ?>
                 </div>
                 <?php } ?>
                 <form method="post" action="<?php echo Url('login') ?>">
-                    <h1>Login Form</h1>
+                    <h1>Login</h1>
                     <div>
                         <input type="text" name="username" class="form-control" placeholder="Username" required />
                     </div>

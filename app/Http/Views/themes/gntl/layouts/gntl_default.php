@@ -13,13 +13,19 @@
     <?php echo \Helpers\Html::instance()->renderStyle( '/public/plugins/fa/font-awesome.min.css' ); ?>
     <!-- Custom Theme Style -->
     <?php echo \Helpers\Html::instance()->renderStyle( '/public/themes/gntl/css/custom.min.css' ); ?>
+    <?php echo \Helpers\Html::instance()->renderStyle( '/public/css/addon.css' ); ?>
     <?php echo \Helpers\Html::instance()->renderPageStyles() ?>
+
+    <!--- start of JS ------->
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/vue/vue.1.0.26.min.js' ); ?>
-    <!-- jQuery -->
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
-    <!-- Bootstrap -->
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/bootstrap/bootstrap.min.js' ); ?>
     <?php echo \Helpers\Html::instance()->renderScript( '/public/app/js/en.js' ); ?>
+
+    <!--
+    <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+    -->
 </head>
 
 <body class="nav-md">
@@ -57,10 +63,13 @@
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
+                    <a href="<?php echo Url('logout') ?>"><i class="fa fa-power-off"></i> Logout</a>
+
                     <!--
                     <a data-toggle="tooltip" data-placement="top" title="Settings">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </a>
+
                     <a data-toggle="tooltip" data-placement="top" title="FullScreen">
                         <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
                     </a>
@@ -107,7 +116,9 @@
 
 <!-- Custom Theme Scripts -->
 <!--<script src="../build/js/custom.min.js"></script>-->
+
 <?php echo \Helpers\Html::instance()->renderPageScripts(); ?>
 
 </body>
+
 </html>

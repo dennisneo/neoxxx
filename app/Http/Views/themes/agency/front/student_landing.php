@@ -1,6 +1,5 @@
 <h4>Student Registration Form</h4>
 <i>* Required fields</i>
-
 <form method="POST" id="sForm">
     <div class="col-lg-12" style="border: 1px solid #CFCFCF">
     <div class="row">
@@ -29,7 +28,7 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <h5>QQ ID *</h5>
-                <?php echo \Form::text( 'skype' , $r->skype , [ 'class' => 'form-control' , 'id'=>'skype' , 'required'] ) ?>
+                <?php echo \Form::text( 'qq' , $r->skype , [ 'class' => 'form-control' , 'id'=>'qq' , 'required'] ) ?>
             </div>
         </div>
     </div>
@@ -51,7 +50,7 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <h5>Country * </h5>
-                <select class="form-control">
+                <select class="form-control" name="country">
                     <option value="CH">China</option>
                     <option value="JP">Japan</option>
                     <option value="KOR">Korea</option>
@@ -81,11 +80,11 @@
     <div class="col-lg-12">
         <div class="form-group">
             <h5>How is your English?</h5>
-            <input type="checkbox" name="certificates[]" value="LET" />  &nbsp;&nbsp;
-            <input type="checkbox" name="certificates[]" value="LET" /> Still Starting &nbsp;&nbsp;
-            <input type="checkbox" name="certificates[]" value="LET" /> Good &nbsp;&nbsp;
-            <input type="checkbox" name="certificates[]" value="" /> Very Good &nbsp;&nbsp;
-            <input type="checkbox" name="certificates[]" value="" /> Exceptional &nbsp;&nbsp;
+            <input type="radio" name="level" value="1" /> Still Starting &nbsp;&nbsp;
+            <input type="radio" name="level" value="2" /> Not Good &nbsp;&nbsp;
+            <input type="radio" name="level" value="3" /> Good &nbsp;&nbsp;
+            <input type="radio" name="level" value="4" /> Very Good &nbsp;&nbsp;
+            <input type="radio" name="level" value="5" /> Exceptional &nbsp;&nbsp;
         </div>
     </div>
 
@@ -97,6 +96,7 @@
         </div>
     </div>
 </div>
+    <?php echo csrf_field() ?>
 </form>
 <div class="col-lg-12" style="height:200px">
 

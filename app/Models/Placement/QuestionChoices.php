@@ -25,7 +25,7 @@ class QuestionChoices extends Model
     public function store( Request $r , $choice )
     {
         $validator = Validator::make( $r->all(), [
-            'choice' => 'required'
+            //'choice' => 'required'
         ]);
 
         if( $validator->fails() ){
@@ -34,6 +34,7 @@ class QuestionChoices extends Model
         }
 
         $this->fill( $r->all() );
+        $this->choice = $choice;
 
         if( $r->c_id ) {
             $this->exists = true;

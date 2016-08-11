@@ -19,17 +19,38 @@ class Controller extends BaseController
     protected $layout_path;
     public $layout;
 
-    public function __construct()
+    public function __construct( $theme = null )
     {
-        $this->setViews();
-
+        $this->setLayout( $theme );
     }
 
-    public function setViews()
+    /**
+     * allows controllers to change layouts
+     * @param null $theme
+     */
+    public function setLayout( $theme = null )
     {
-        $this->theme = env( 'APP_THEME' );
-        $this->theme_path = __DIR__.'/../Views/themes/'.$this->theme.'/';
+        // set the theme
+        $this->setTheme( $theme );
+        // include all views to the path
+        $this->setViews();
+        // define the default layout
+        $this->layout = view( 'layouts.'.$this->theme.'_default' );
+    }
 
+    /**
+     * override the default theme
+     * in env( 'APP_THEME' )
+     */
+
+    private function setTheme( $theme = null )
+    {
+        $this->theme = $theme ? $theme : env( 'APP_THEME' );
+    }
+
+    private function setViews()
+    {
+        $this->theme_path = __DIR__.'/../Views/themes/'.$this->theme.'/';
         view()->addLocation( $this->theme_path );
     }
 

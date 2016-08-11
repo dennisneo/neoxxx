@@ -8,15 +8,15 @@
 
 namespace App\Models\Users;
 
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 
-class Applicant extends UserEntity{
-    use ValidatesRequests;
-
+class Students extends StudentEntity{
 
     public function getErrors()
     {
         return $this->errors;
     }
+
+
 
 }

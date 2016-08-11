@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Locations\Countries;
 use App\Models\Users\Applicant;
 use App\Models\Users\User;
+use App\Models\Users\UserEntity;
 use Helpers\Html;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,9 @@ class UtilsController extends Controller{
 
     public function pwd()
     {
-        $user  = User::find( 2 );
+        $user  = UserEntity::find( 20 );
         $params = unserialize( $user->params );
-        dd( $user->getPassword( $params['pwd']) );
+        $pwd  = $user->getPassword( $params['pwd']);
+        dd( \Hash::make( $pwd ) );
     }
 }

@@ -9,7 +9,8 @@
 namespace App\Http\Controllers\Ajax;
 
 
-use App\Models\Users\Applicant;
+use App\Models\Users\Applicants;
+use Helpers\Text;
 use Illuminate\Http\Request;
 
 class AjaxFrontController extends AjaxBaseController{
@@ -22,7 +23,7 @@ class AjaxFrontController extends AjaxBaseController{
     public function saveApplication( Request $r )
     {
         $r->request->add( [ 'user_type' => 'applicant' ] );
-        $applicant = new Applicant();
+        $applicant = new Applicants();
         if( ! $a = $applicant->store( $r ) ){
             return [
                 'success' => false,
@@ -31,10 +32,11 @@ class AjaxFrontController extends AjaxBaseController{
         }
 
         // do notify admins here
-
+        $e = collect( str_split( $a->password))->every( 5 );
         return [
             'success' => true,
-            'applicant' => $a
+            'uid' => Text::convertInt( $a->id ),
+            'e' => $e
         ];
     }
 }

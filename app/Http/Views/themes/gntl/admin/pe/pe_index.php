@@ -9,28 +9,38 @@
     <div class="row">
         <table class="table table-striped">
             <tr>
-                <th></th>
+                <th style="width: 48px"></th>
                 <th> Questions </th>
-                <th></th>
             </tr>
             <tr class="loading">
                 <td colspan="3">
                     <i class="fa fa-refresh fa-spin"></i> Loading...
                 </td>
             </tr>
+            <tr class="loading">
+                <td colspan="3">
+
+                </td>
+            </tr>
             <tr v-for="q in questions ">
                 <td></td>
-                <td><b>{{q.question}}</b>
-                    <div style="">
-
+                <td>{{q.question}}
+                    <br /><br />
+                    <div style="padding-left:36px">
+                    <b>Answer Choices</b>
+                    <table class="table table-striped">
+                        <tr v-for="c in choices[q.q_id]">
+                            <td>{{c.choice}}</td>
+                        </tr>
+                    </table>
                     </div>
-                </td>
-                <td style="width:144px">
+
                     <div class="btn-group">
-                        <button class="btn btn-default btn-sm" v-on:click="edit( q.q_id )"> <i class="fa fa-edit"></i> Edit</button>
+                        <a href="<?php echo Url('admin/pe/q') ?>?qid={{q.q_id}}" class="btn btn-default btn-sm"> <i class="fa fa-edit"></i> Edit</a>
                         <button class="btn btn-default btn-sm" v-on:click="remove( q.q_id )"> <i class="fa fa-trash-o"></i> Delete </button>
                     </div>
                 </td>
+
             </tr>
 
         </table>

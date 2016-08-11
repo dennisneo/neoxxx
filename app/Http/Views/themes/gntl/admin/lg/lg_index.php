@@ -27,10 +27,7 @@
                     </div>
                 </td>
             </tr>
-
         </table>
-
-
     </div>
     <div id="lgdiv" class="modal fade" style="z-index:99999999">
         <div class="modal-dialog">
