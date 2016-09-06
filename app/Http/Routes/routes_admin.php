@@ -6,17 +6,30 @@
  * Time: 8:03 AM
  */
 
+Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,function(){
 
-Route::get( 'admin/dashboard', 'Admin\AdminController@dashboard' );
+    Route::get( 'dashboard', 'Admin\AdminController@dashboard' );
 
-/************ Learning Goals section *********/
-Route::get( 'admin/learning-goals', 'Admin\AdminLearningGoalsController@index' );
+    /************ Learning Goals section *********/
+    Route::get( 'learning-goals', 'Admin\AdminLearningGoalsController@index' );
 
-/************ Exam management section *****************/
-Route::get( 'admin/pe', 'Admin\AdminPlacementExamController@index' );
-Route::get( 'admin/pe/q', 'Admin\AdminPlacementExamController@question' );
+    /************ Applicants Section *****************/
+    Route::get( 'applicants', 'Admin\AdminApplicantsController@index' );
+    Route::get( 'applicant/{id}', 'Admin\AdminApplicantsController@applicant' );
 
-/************ Applicants Section *****************/
-Route::get( 'admin/applicants', 'Admin\AdminApplicantsController@index' );
-Route::get( 'admin/applicant/{id}', 'Admin\AdminApplicantsController@applicant' );
+    /************ Exam management section *****************/
+    Route::get( 'pe', 'Admin\AdminPlacementExamController@index' );
+    Route::get( 'pe/q', 'Admin\AdminPlacementExamController@question' );
+
+    /************ Teachers section *****************/
+    Route::get( 'teachers', 'Admin\AdminTeachersController@index' );
+    Route::get( 'teacher/{id}', 'Admin\AdminTeachersController@teacher' );
+    Route::get( 'teacher/edit/profile/{id}', 'Admin\AdminTeachersController@editTeacherProfile' );
+
+    /************ Teachers section *****************/
+    Route::get( 'students', 'Admin\AdminStudentsController@index' );
+
+    Route::get( 'settings', 'Admin\AdminSettingsController@index' );
+});
+
 

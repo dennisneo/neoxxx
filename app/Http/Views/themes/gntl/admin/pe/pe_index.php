@@ -6,46 +6,36 @@
         </div>
         <h3>Placement Exam Questionaire</h3>
     </div>
-    <div class="row">
-        <table class="table table-striped">
-            <tr>
-                <th style="width: 48px"></th>
-                <th> Questions </th>
-            </tr>
-            <tr class="loading">
-                <td colspan="3">
-                    <i class="fa fa-refresh fa-spin"></i> Loading...
-                </td>
-            </tr>
-            <tr class="loading">
-                <td colspan="3">
+    <div class="x_panel panel-white">
+        <div class="x_content">
+            <div class="row">
+                <table class="table table-striped">
+                    <tr class="loading">
+                        <td colspan="2">
+                            <i class="fa fa-refresh fa-spin"></i> Loading...
+                        </td>
+                    </tr>
+                    <tr v-for="q in questions ">
+                        <td>{{q.question}}
+                            <br /><br />
+                            <div style="padding-left:36px">
+                                <b>Answer Choices</b>
+                                <table class="table">
+                                    <tr v-for="c in choices[q.q_id]">
+                                        <td>{{c.choice}}</td>
+                                    </tr>
+                                </table>
+                            </div>
 
-                </td>
-            </tr>
-            <tr v-for="q in questions ">
-                <td></td>
-                <td>{{q.question}}
-                    <br /><br />
-                    <div style="padding-left:36px">
-                    <b>Answer Choices</b>
-                    <table class="table table-striped">
-                        <tr v-for="c in choices[q.q_id]">
-                            <td>{{c.choice}}</td>
-                        </tr>
-                    </table>
-                    </div>
-
-                    <div class="btn-group">
-                        <a href="<?php echo Url('admin/pe/q') ?>?qid={{q.q_id}}" class="btn btn-default btn-sm"> <i class="fa fa-edit"></i> Edit</a>
-                        <button class="btn btn-default btn-sm" v-on:click="remove( q.q_id )"> <i class="fa fa-trash-o"></i> Delete </button>
-                    </div>
-                </td>
-
-            </tr>
-
-        </table>
-
-
+                            <div class="btn-group">
+                                <a href="<?php echo Url('admin/pe/q') ?>?qid={{q.q_id}}" class="btn btn-default btn-sm"> <i class="fa fa-edit"></i> Edit</a>
+                                <button class="btn btn-default btn-sm" v-on:click="remove( q.q_id )"> <i class="fa fa-trash-o"></i> Delete </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
     <div id="pediv" class="modal fade" style="z-index:99999999">
         <div class="modal-dialog">

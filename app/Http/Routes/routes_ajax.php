@@ -1,11 +1,34 @@
 <?php
 
-/********************** Ajax Routes ********************************/
+/*************** Ajax Routes **************/
 
 Route::group( ['middleware'=>'auth', 'namespace'=>'Ajax\Student', 'prefix' => 'ajax/student', 'as'=> 'ajax.student' ],  function(){
-    Route::post('ss',  'AjaxStudentController@saveClassSession');
+    // student setup a class session
+    Route::post('ss',  'AjaxStudentController@setupClassSession');
+    // find available teachers given a class session
+    Route::get('at',  'AjaxStudentController@availableTeachers');
+    // teacher selected
+    Route::post('ts',  'AjaxStudentController@teacherSelected' );
+    // save the session
+    Route::post('sas',  'AjaxStudentController@saveClassSession' );
+    // cancel the session
+    Route::post('cs',  'AjaxStudentController@cancelClassSession' );
+    // get the credits amount of the student
+    Route::get( 'credits',  'AjaxStudentController@getStudentCredits' );
 });
 
+Route::group( ['middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'prefix' => 'ajax/teachers', 'as'=> 'ajax.teachers' ],  function(){
+    Route::get('getall',  'AjaxTeachersController@getTeachers');
+});
+
+Route::group( ['middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'prefix' => 'ajax/teacher', 'as'=> 'ajax.teachers' ],  function(){
+    Route::post('save',  'AjaxTeachersController@saveTeacher');
+});
+
+Route::group( ['middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'prefix' => 'ajax/students', 'as'=> 'ajax.students' ],  function(){
+    Route::get('getall',  'AjaxStudentsController@getStudents');
+    Route::get('getAvailableTeachers',  'AjaxStudentsController@getAvailableTeachers');
+});
 
 Route::post( 'ajax/application/s', 'Ajax\AjaxFrontController@saveApplication' );
 // update applicant status
@@ -22,6 +45,8 @@ Route::get( 'ajax/admin/a/get', 'Ajax\Admin\AjaxApplicantsController@getApplican
 // get all placement exam questionaires
 Route::get( 'ajax/admin/pe/get', 'Ajax\Admin\AjaxPlacementExamController@getQuestions' );
 Route::post( 'ajax/admin/pe/sq', 'Ajax\Admin\AjaxPlacementExamController@saveQuestion' );
+
+Route::post( 'ajax/admin/settings/s', 'Ajax\Admin\AjaxSettingsController@saveSettings' );
 
 
 

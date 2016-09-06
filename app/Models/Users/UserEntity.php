@@ -8,6 +8,8 @@
 
 namespace App\Models\Users;
 
+use App\Http\Models\Locations\Countries;
+use Helpers\Html;
 use Helpers\Text;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
@@ -19,18 +21,19 @@ class UserEntity extends Model{
     protected $primaryKey = 'id';
 
     public $fillable = [ 'id', 'email' , 'user_type' , 'first_name' , 'last_name',
-     'birthday', 'landline' , 'mobile' , 'country', 'city', 'gender' , 'skype' , 'qq' ];
+     'birthday', 'landline' , 'mobile' , 'country', 'city', 'gender' , 'skype' , 'qq' , 'address' , 'timezone' ];
 
     protected  $errors = [];
 
     private static $instances = [];
+    protected $hidden =['password' , 'confirmation_code' , 'remember_token' , 'params' ];
 
     public static function rules()
     {
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'email|unique:users'
+            'email' => 'email'
         ];
     }
 
@@ -55,7 +58,9 @@ class UserEntity extends Model{
         $user->fill( $r->all() );
         $params = unserialize( $user->params );
 
-        if( ! $user->id ){
+        if(  $user->id ) {
+            $this->exists = true;
+        }else{
 
             $params['pwd']  = md5( str_random( 12 ) );
             $password       = $this->getPassword( $params['pwd'] );
@@ -64,10 +69,10 @@ class UserEntity extends Model{
             $user->password     = \Hash::make( $password );
             $user->confirmation_code = Text::random( null, 16 );
             $user->status = 'new';
-
+            $user->created_at   = date( 'Y-m-d H:i:s');
         }
 
-        $user->created_at   = date( 'Y-m-d H:i:s');
+
         $user->params = serialize( $params );
         $user->save();
 
@@ -107,7 +112,6 @@ class UserEntity extends Model{
         return $html;
     }
 
-
     public function displayName( $style = 'default')
     {
         $name = $this->last_name.', '.$this->first_name.' ';
@@ -115,12 +119,24 @@ class UserEntity extends Model{
            case  'simple':
                $name = $this->first_name.' '.$this->last_name;
            break;
+           case  'short':
+                $name = $this->first_name.' '.substr( $this->last_name ,0 , 1 );
+           break;
            default:
                $name = $this->last_name.', '.$this->first_name.' ';
            break;
         }
 
         return $name;
+    }
+
+    public function vuefyUser()
+    {
+        $this->profile_photo_url = $this->profile_photo_url ? $this->profile_photo_url : Html::absPath( 'public/images/blank_face.png' );
+        $this->short_name = $this->displayName( 'short' );
+        $this->full_name = $this->displayName( 'default' );
+        $this->cid =  Text::convertInt( $this->id );
+        return $this;
     }
 
     /**
@@ -134,10 +150,19 @@ class UserEntity extends Model{
         return $user;
     }
 
+    /**
+     * @return UserEntity
+     */
     public static function me()
     {
         return isset( static::$instances[ 'me' ] ) ? static::$instances[ 'me' ] : null;
 
     }
+
+    public function isAdmin()
+    {
+        return $this->user_type == 'admin' ? true : false;
+    }
+
 
 }

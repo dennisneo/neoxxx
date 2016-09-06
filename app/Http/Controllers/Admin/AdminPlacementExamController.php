@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use Helpers\Html;
 
 class AdminPlacementExamController extends AdminBaseController{
@@ -16,13 +15,13 @@ class AdminPlacementExamController extends AdminBaseController{
     public function __construct()
     {
         parent::__construct();
+        Html::loadToastr();
     }
 
     public function index()
     {
         $this->layout->content = view('admin.pe.pe_index');
         Html::instance()->addScript( 'public/app/admin/pe/pe.js' );
-        Html::loadToastr();
         return $this->layout;
     }
 
@@ -30,8 +29,6 @@ class AdminPlacementExamController extends AdminBaseController{
     {
         $this->layout->content = view('admin.pe.pe_question');
         Html::instance()->addScript( 'public/app/admin/pe/q.js' );
-        //Html::
-        Html::loadToastr();
         return $this->layout;
     }
     

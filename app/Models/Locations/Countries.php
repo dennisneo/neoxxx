@@ -23,7 +23,7 @@ class Countries extends Model{
 
         $default = isset( $options['default'] ) ? $options['default'] : 0;
 
-        return \Form::select( 'country_id', $c_arr  , $default , [ 'class' => 'form-control' ] );
+        return \Form::select( 'country', $c_arr  , $default , [ 'class' => 'form-control' ] );
     }
 
     public static function vueFy( Collection $articles )

@@ -15,7 +15,6 @@
     <?php echo \Helpers\Html::instance()->renderStyle( '/public/themes/gntl/css/custom.min.css' ); ?>
     <?php echo \Helpers\Html::instance()->renderStyle( '/public/css/addon.css' ); ?>
     <?php echo \Helpers\Html::instance()->renderPageStyles() ?>
-
     <!--- start of JS ------->
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/vue/vue.1.0.26.min.js' ); ?>
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
@@ -26,17 +25,21 @@
     <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
     -->
+    <style>
+        h2,h3,h4{
+            color:black
+        }
+    </style>
 </head>
 
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
-        <div class="col-md-3 left_col">
+        <div class="col-md-3 left_col" style="">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span><?php echo env('SITE_ABBR') ?></span></a>
                 </div>
-
                 <div class="clearfix"></div>
                 <!-- menu profile quick info -->
                 <div class="profile">
@@ -91,14 +94,92 @@
             <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="" alt=""> <?php echo \App\Models\Users\UserEntity::me()->displayName( 'short' ) ?>
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a href="<?php echo url('profile') ?>"> Profile</a></li>
+                        <li><a href="<?php echo url('faq') ?>"> <i class="fa fa-question-circle-o"></i> Help</a></li>
+                        <li><a href="<?php echo url('logout') ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                    </ul>
+                </li>
 
+                <li role="presentation" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-globe fa-2x"></i>
+                        <span class="badge bg-red">6</span>
+                    </a>
+                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                        <li>
+                            <a>
+                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="text-center">
+                                <a>
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </nav>
     </div>
     </div>
     <!-- /top navigation -->
 
     <!-- page content -->
-    <div class="right_col" role="main" style="min-height:92vh;">
+    <!--<div class="right_col" role="main" style=" min-height:92vh; ">-->
+    <div class="right_col" role="main" style="min-height:96vh;">
         <?php echo $content ?>
     </div>
     <!-- /page content -->
@@ -120,5 +201,19 @@
 <?php echo \Helpers\Html::instance()->renderPageScripts(); ?>
 
 </body>
+<script>
+    $('#menu_toggle').on('click', function() {
+        if ($('body').hasClass('nav-md')) {
+            $('#sidebar-menu').find('li.active ul').hide();
+            $('#sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');
+        } else {
+            $('#sidebar-menu').find('li.active-sm ul').show();
+            $('#sidebar-menu').find('li.active-sm').addClass('active').removeClass('active-sm');
+        }
 
+        $('body').toggleClass('nav-md nav-sm');
+
+        //setContentHeight();
+    });
+</script>
 </html>

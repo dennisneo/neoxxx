@@ -24,9 +24,13 @@ class UtilsController extends Controller{
 
     public function pwd()
     {
+        /**
         $user  = UserEntity::find( 20 );
         $params = unserialize( $user->params );
         $pwd  = $user->getPassword( $params['pwd']);
+         **/
+        $pwd = 'arfarf';
         dd( \Hash::make( $pwd ) );
+
     }
 }

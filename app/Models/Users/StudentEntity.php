@@ -12,5 +12,9 @@ use Illuminate\Http\Request;
 
 class StudentEntity extends UserEntity{
 
-
+    public function vuefyStudent()
+    {
+        $this->vuefyUser();
+        return $this;
+    }
 }

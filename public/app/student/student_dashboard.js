@@ -2,7 +2,7 @@
 var sVue = new Vue({
     el:'#sDiv',
     data:{
-    
+        credits: 0
     },
     methods:{
         showCalendar:function(){
@@ -15,7 +15,7 @@ var sVue = new Vue({
             $.post( subdir+'/ajax/student/ss' , $('#sForm').serialize())
             .done(function( data ){
                 if(data.success){
-                   url = subdir+'/student/newsession?sid='+data.sid;
+                   url = subdir+'/student/newsession?cid='+data.cid;
                    window.location.href  = url;
                    return;
                 }else{
@@ -32,7 +32,19 @@ var sVue = new Vue({
     },
     ready:function(){
         $( "#date" ).datepicker({});
+        $.get( subdir+'/ajax/student/credits' , { sid: $('#student_id').val()} )
+        .done(function( data ){
+            if(data.success){
+                sVue.$data.credits = data.credits
+            }else{
+               toastr.error( data.message );
+            }
+        })
+        .error(function( data ){
+                toastr.error( 'Something went wrong' );
+        });
     }
 });
+
 
 

@@ -45,7 +45,7 @@ class Controller extends BaseController
 
     private function setTheme( $theme = null )
     {
-        $this->theme = $theme ? $theme : env( 'APP_THEME' );
+       $this->theme = $theme ? $theme : env( 'APP_THEME' );
     }
 
     private function setViews()
