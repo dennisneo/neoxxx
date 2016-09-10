@@ -4,22 +4,43 @@
 
         <div class="x_panel tile" style="">
             <div class="x_title">
-                <h2><?php echo trans('general.teachers') ?></h2>
+                <div class="pull-right">
+                    <button class="btn btn-success"> <b><?php echo trans('general.hire_teacher') ?></b>  </button>
+                    <a href="<?php echo Url('student/teachers') ?>" class="btn btn-default"> < Back </a>
+                </div>
+                <h3><?php echo trans('general.teacher') ?></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
 
-                <div class="col-lg-3" style=""  v-for="t in teachers">
-                    <div class="">
-                        <div>
-                            <img src="" class="img-responsive" v-bind:src="t.profile_photo_url"/>
+                <div class="col-lg-3" style="text-align:center ">
+                    <img src="<?php echo $t->profile_photo_url ?>" class="img-responsive"/>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h3><b><?php echo $t->full_name ?></b></h3>
                         </div>
-                        <div>
-                            <a href="<?php echo Url('student/t/') ?>/{{t.cid}}">{{t.short_name}}</a>
+                        <div class="col-lg-8">
                         </div>
-                        <div>
-                            Stars here
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
                         </div>
+                        <div class="col-lg-8">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            Since:
+                        </div>
+                        <div class="col-lg-8">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3><?php echo trans('general.feedbacks') ?></h3>
+                        <hr />
                     </div>
                 </div>
             </div>

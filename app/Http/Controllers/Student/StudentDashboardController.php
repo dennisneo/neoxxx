@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
 use Helpers\Html;
+use Helpers\Text;
 use Illuminate\Http\Request;
 
 class StudentDashboardController extends StudentBaseController{
@@ -33,10 +35,18 @@ class StudentDashboardController extends StudentBaseController{
         return $this->layout;
     }
 
-    public function teacher( Request $r )
+    public function teacher( $id , Request $r )
     {
-        $this->layout->content = view( 'student.teacher');
-        Html::instance()->addScript( '/public/app/student/student_teacher.js' );
+        $id = Text::recoverInt( $id );
+
+        if( $teacher = TeacherEntity::find( $id ) ){
+            $teacher->vuefyTeacher();
+            $this->layout->content = view( 'student.teacher' , ['t'=> $teacher ]);
+            Html::instance()->addScript( '/public/app/student/student_teacher.js' );
+        }else{
+            $this->layout->content =  'Teacher not found';
+        }
+
         return $this->layout;
     }
 
