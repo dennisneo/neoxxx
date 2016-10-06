@@ -119,6 +119,7 @@ class Html extends HtmlFacade{
 	{
 		static::instance()->addScript( '/public/plugins/datepicker/jquery-ui-datepicker.js' );
 		static::instance()->addStyle( '/public/plugins/datepicker/datepicker.css' );
+		static::instance()->addStyle( '/public/css/jquery-ui/base.css' );
 	}
 
 	public static function loadSummernote()
@@ -139,10 +140,10 @@ class Html extends HtmlFacade{
 		Html::instance()->addStyle( '/css/autocomplete.css' );
 	}
 
-	public static function loadFileupload(){
-		Html::instance()->addScript( '/themes/v1/plugins/jQuery-File-Upload/js/vendor/jquery.ui.widget.js' );
-		Html::instance()->addScript( '/themes/v1/plugins/jQuery-File-Upload/js/jquery.iframe-transport.js' );
-		Html::instance()->addScript( '/themes/v1/plugins/jQuery-File-Upload/js/jquery.fileupload.js' );
+	public static function loadFileupload( $file_type = null ){
+		Html::instance()->addScript( '/public/plugins/fileupload/js/vendor/jquery.ui.widget.js' );
+		Html::instance()->addScript( '/public/plugins/fileupload/js/jquery.iframe-transport.js' );
+		Html::instance()->addScript( '/public/plugins/fileupload/js/jquery.fileupload.js' );
 	}
 
 	public static function placeholderImage(){

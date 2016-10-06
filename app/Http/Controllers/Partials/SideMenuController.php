@@ -17,6 +17,7 @@ class SideMenuController extends  Controller{
     {
         $theme = env('APP_THEME');
         $theme_path = __DIR__.'/../../Views/themes/'.$theme.'/partials/sidebars/';
+
         view()->addLocation( $theme_path );
         $user_type = strtolower( str_replace( ' ', '_' , $user->user_type ) );
 

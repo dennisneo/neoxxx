@@ -194,7 +194,17 @@ class AjaxStudentController extends AjaxBaseController{
             'credits' => $credits
         ];
 
-
     }
 
+    public function getStudentSessions( Request $r )
+    {
+        $cs = new ClassSessions;
+        $class_sessions = $cs->byStudentId( $r->sid , $r );
+        
+        return [
+            'success' =>true,
+            'sessions' => $class_sessions
+        ];
+
+    }
 }

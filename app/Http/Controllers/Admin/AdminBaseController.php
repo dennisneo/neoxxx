@@ -16,7 +16,7 @@ class AdminBaseController extends Controller{
     public function __construct()
     {
         parent::__construct();
-        // check user if admin
+        $this->layout->background_color = '#DD4444';
         $this->checkUser();
     }
 

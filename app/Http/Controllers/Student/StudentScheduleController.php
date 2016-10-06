@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Models\Users\TeacherEntity;
-use App\Models\Users\Teachers;
 use Helpers\Html;
-use Helpers\Text;
-use Illuminate\Http\Request;
 
 class StudentScheduleController extends StudentBaseController{
 
@@ -25,7 +21,7 @@ class StudentScheduleController extends StudentBaseController{
     private function indexAssets()
     {
         Html::loadToastr();
-        Html::instance()->addScript( '/public/app/student/student_dashboard.js' );
+        Html::instance()->addScript( '/public/app/student/student_session.js' );
     }
 
 }

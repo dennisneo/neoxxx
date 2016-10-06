@@ -41,8 +41,12 @@ if( Request::segment(1) == 'student' ){
 }
 
 if( Request::segment(1) == 'ajax' ){
-    require_once( __DIR__."/Routes/routes_ajax.php" );
-    return;
+    // check if called through ajax
+    Route::group( [ 'middleware'=>'ajax' ], function(){
+        require_once( __DIR__."/Routes/routes_ajax.php" );
+        return;
+    });
+
 }
 
 Route::any( 'login', 'FrontController@login' );

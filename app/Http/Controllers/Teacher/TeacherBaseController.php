@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Users\UserEntity;
+use Helpers\Html;
 
 class TeacherBaseController extends Controller{
 
     public function __construct()
     {
         parent::__construct();
-        // check user if teacher
+        $this->layout->background_color = 'green';
+        Html::loadToastr();
+        // move this to Middleware
         $this->checkUser();
     }
 

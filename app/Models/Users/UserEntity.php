@@ -130,6 +130,12 @@ class UserEntity extends Model{
         return $name;
     }
 
+    public function profilePhotoUrl()
+    {
+        $subdir = env( 'SUBDIR' ) ? '/'.env( 'SUBDIR' ):'';
+        return $this->profile_photo_url ? $this->profile_photo_url : $subdir.'/public/images/blank_face.png';
+    }
+
     public function vuefyUser()
     {
         $this->profile_photo_url = $this->profile_photo_url ? $this->profile_photo_url : Html::absPath( 'public/images/blank_face.png' );

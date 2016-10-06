@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use Helpers\Html;
 
 class TeacherDashboardController extends TeacherBaseController{
 

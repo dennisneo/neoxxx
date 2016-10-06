@@ -85,3 +85,33 @@ var sVue = new Vue({
 });
 
 
+var ssVue = new Vue({
+    el:'#ssDiv',
+    data:{
+     sessions:[]
+    },
+    methods:{
+    
+    },
+    ready:function(){
+        $.get( subdir+'/ajax/student/gss' , {sid:$('#student_id').val()} )
+        .done(function( data ){
+
+            if(data.success){
+                if( data.sessions.length ){
+                    ssVue.$data.sessions = data.sessions
+                }else{
+                    $('.loading').html( 'No entry found')
+                }
+
+
+            }else{
+
+            }
+        })
+        .error(function( data ){
+
+        });
+    }
+});
+

@@ -8,77 +8,15 @@
 
 namespace App\Models\ClassSessions;
 
-
+use App\Models\BaseModel;
 use App\Models\Financials\Credits;
 use App\Models\Users\UserEntity;
+use Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
 
-class ClassSessions extends Model{
-
-    protected $table        = 'class_sessions';
-    protected $primaryKey   = 'class_id';
-    public $timestamps = false;
-
-    public $fillable    = [ 'class_id' , 'student_id', 'teacher_id' , 'duration' ];
-    private $errors     =  [];
-
-    public function store( Request $r )
-    {
-        $validator = Validator::make( $r->all(), [] );
-
-        if( $validator->fails() ){
-            $this->errors[] = '';
-            return false;
-        }
-
-        $this->fill( $r->all() );
-        $this->schedule_start_at =  date( 'Y-m-d H:i:s' , strtotime( $r->date.' '.$r->time ) );
-
-        // check if session is in the future
-
-        // get credits by duration
-        $this->credits = Credits::getCreditsByDuration( $r->duration );
-
-        if( $this->credits === false ){
-            $this->errors[] = trans( 'invalid_credit_value' );
-            return false;
-        }
-
-        // check if credit is not more than credit available
-        $available_credit = Credits::getCreditsByStudentId( $this->student_id );
-
-        if( $available_credit < $this->credits ){
-            $this->errors[] = trans( 'insufficient_credits' );
-            return false;
-        }
-
-        if( $r->class_id ) {
-            $this->exists = true;
-        }else{
-            $this->set_at   =   date( 'Y-m-d H:i:s' );
-            $this->set_by   =   UserEntity::me()->id;
-        }
-
-        if( ! $this->save() ){
-            return false;
-        }
-
-        return $this;
-
-    }
-
-    public function vuefy()
-    {
-
-        $this->time = date( 'H:i a' , strtotime( $this->schedule_start_at ));
-        $this->day = date( 'M d, Y' , strtotime( $this->schedule_start_at ));
-
-        $this->teacher_short_name = ucwords( strtolower( $this->t_fname.' '.substr( $this->t_lname , 0 , 1 ).'.' ) );
-
-        return $this;
-    }
+class ClassSessions extends ClassSessionEntity{
 
     public function getClassSession( $cid )
     {
@@ -98,15 +36,64 @@ class ClassSessions extends Model{
         return $cs;
     }
 
-
-    public function getErrors()
+    public function byStudentId( $student_id , Request $r )
     {
-        $html = '<ul>';
-        foreach( $this->errors as $e ){
-            $html .= '<li>'.$e.'</li>';
-        }
-        $html .= '</ul>';
+        $cs =  ClassSessions::where( 'student_id' , $student_id )
+            ->from( 'class_sessions as cs' )
+            ->leftjoin( 'users as t', 't.id', '=' , 'cs.teacher_id' );
 
-        return $html;
+        $this->total = $cs->count();
+        $schedules = $cs->get( [ 'cs.*' , 't.first_name as t_fname' , 't.last_name as t_lname' , 't.id as tid', ] );
+
+        return $this->vuefyCollection( $schedules );
     }
+
+    public function byTeacherId( Request $r )
+    {
+        $tid = Text::recoverInt( $r->tid );
+
+        $cs =  ClassSessions::where( 'teacher_id' , $tid )
+            ->from( 'class_sessions as cs' )
+            ->leftjoin( 'users as s', 's.id', '=' , 'cs.student_id' );
+
+        if( $r->date_from && $r->date_to ){
+
+            $date_from = strtotime( $r->date_from );
+            $date_to = strtotime( $r->date_to );
+
+            $cs->where( 'schedule_start_at' , '>=' , $date_from );
+            $cs->where( 'schedule_start_at' , '<=' , $date_to );
+
+        }elseif( $r->date_from ){
+
+        }
+
+        $this->total = $cs->count();
+        $schedules = $cs->get( [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid', ] );
+
+        return $this->vuefyCollection( $schedules );
+    }
+
+    public static function statusSelect()
+    {
+        $status =[
+            'active' => 'Active',
+            'done' => 'Done',
+            'absent' => 'Absent',
+            'cancelled' => 'Cancelled'
+        ];
+
+        return \Form::select( 'class_status' , $status ,  '' , [ 'class' => 'form-control' , 'id'=>'class_status' ] );
+    }
+
+    public static function durationSelect()
+    {
+        $duration = [ 0 => 'None' ];
+        for( $i = 10 ; $i <= 60 ; $i = $i + 5 ){
+            $duration[ $i ] = $i.' min';
+        }
+
+        return \Form::select( 'actual_duration' , $duration ,  '' , [ 'class' => 'form-control' , 'id'=>'actual_duration', 'style'=>'width:120px' ] );
+    }
+
 }

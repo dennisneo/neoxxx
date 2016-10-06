@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Ajax;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Users\UserEntity;
 use Illuminate\Http\Request;
 
 class AjaxBaseController extends Controller{
@@ -24,11 +25,25 @@ class AjaxBaseController extends Controller{
         }
 
         // TODO check if user is an admin or not
-
         // check auth middleware here
-        if( ! $this->user = $this->setUser() ){
 
+        $this->checkUser();
+    }
+
+    protected function checkUser()
+    {
+        if( \Auth::check() ){
+
+            $user = UserEntity::find( \Auth::user()->id );
+            UserEntity::setupMe( $user ) ;
+
+            return true;
         }
+
+        return [
+          'success'=>false,
+          'message'=>'User not logged in'
+        ];
     }
 
 }
