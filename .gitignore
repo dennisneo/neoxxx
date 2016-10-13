@@ -6,3 +6,5 @@ Homestead.json
 .env
 .idea
 /storage
+/config/env.php
+/public/audio

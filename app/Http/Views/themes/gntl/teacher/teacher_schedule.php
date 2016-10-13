@@ -3,6 +3,7 @@
     table tr td{
         padding: 4px;
         vertical-align: top;
+        font-size: 1.2em;
     }
 </style>
 
@@ -16,7 +17,7 @@
                 <div class="row" style="padding:4px;margin:2px;margin-bottom:12px;background-color: #EFEFEF">
                     <div class="form-group">
                         <div class="col-lg-3">
-                            Student Name: <?php echo \Form::text( 'student' , '' , [ 'class' => 'form-control inline' , 'id'=>'student' ] ) ?>
+                            Student Name: <?php echo \Form::text( 'q' , '' , [ 'class' => 'form-control inline' , 'id'=>'q' ] ) ?>
                         </div>
                         <div class="col-lg-3">
                             Date From: <?php echo \Form::text( 'date_from' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_from' ] ) ?>
@@ -42,10 +43,10 @@
                         <th></th>
                     </tr>
                     <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
-                        <td colspan="5"><span class="loading"><i class="fa fa-spin fa-refresh"></i></span></td>
+                        <td colspan="6"><span class="loading"><i class="fa fa-spin fa-refresh"></i></span></td>
                     </tr>
                     <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
-                        <td colspan="5"></td>
+                        <td colspan="6"></td>
                     </tr>
                     <tr v-for="s in sessions">
                         <td></td>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\ClassSessions\ClassFeedback;
 use Helpers\Html;
 
 class StudentScheduleController extends StudentBaseController{
@@ -13,6 +14,7 @@ class StudentScheduleController extends StudentBaseController{
 
     public function index()
     {
+
         $this->indexAssets();
         $this->layout->content = view( 'student.student_schedule' );
         return $this->layout;

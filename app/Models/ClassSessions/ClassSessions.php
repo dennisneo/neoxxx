@@ -51,15 +51,21 @@ class ClassSessions extends ClassSessionEntity{
     public function byTeacherId( Request $r )
     {
         $tid = Text::recoverInt( $r->tid );
+        $fields = [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid' ];
 
         $cs =  ClassSessions::where( 'teacher_id' , $tid )
             ->from( 'class_sessions as cs' )
             ->leftjoin( 'users as s', 's.id', '=' , 'cs.student_id' );
 
+        if( $r->q ){
+            $cs->whereRaw(" MATCH( first_name, last_name ) against (? in boolean mode)", [$r->q] );
+            $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
+        }
+
         if( $r->date_from && $r->date_to ){
 
-            $date_from = strtotime( $r->date_from );
-            $date_to = strtotime( $r->date_to );
+            $date_from = date( 'Y-m-d' , strtotime( $r->date_from ) );
+            $date_to = date( 'Y-m-d', strtotime( $r->date_to ) );
 
             $cs->where( 'schedule_start_at' , '>=' , $date_from );
             $cs->where( 'schedule_start_at' , '<=' , $date_to );
@@ -69,7 +75,7 @@ class ClassSessions extends ClassSessionEntity{
         }
 
         $this->total = $cs->count();
-        $schedules = $cs->get( [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid', ] );
+        $schedules = $cs->get( $fields );
 
         return $this->vuefyCollection( $schedules );
     }

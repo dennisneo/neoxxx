@@ -11,12 +11,17 @@
         Route::post('ts',  'AjaxStudentController@teacherSelected' );
         // save the session
         Route::post('sas',  'AjaxStudentController@saveClassSession' );
+        // save feedback
+        Route::post('sf',  'AjaxStudentController@saveFeedback' );
+        // get feedback
+        Route::get('gf',  'AjaxStudentController@getFeedback' );
         // cancel the session
         Route::post('cs',  'AjaxStudentController@cancelClassSession' );
         // get the credits amount of the student
         Route::get( 'credits',  'AjaxStudentController@getStudentCredits' );
         // get student class sessions
         Route::get( 'gss',  'AjaxStudentController@getStudentSessions' );
+
     });
 
     Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){
@@ -30,6 +35,10 @@
         Route::post( 'daf',  'AjaxTeacherController@deleteAudioFile' );
         //upload Audio
         Route::post( 'ua',  'AjaxTeacherController@uploadAudio' );
+        // save performance record
+        Route::post( 'spr',  'AjaxTeacherController@savePerformanceRecord' );
+        // get performance record
+        Route::get( 'gpr',  'AjaxTeacherController@getPerformanceRecord' );
     });
 
     Route::group( ['middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'prefix' => 'ajax/teachers', 'as'=> 'ajax.teachers' ],  function(){

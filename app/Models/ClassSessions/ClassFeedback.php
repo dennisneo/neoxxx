@@ -1,70 +1,63 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/28/2016
- * Time: 10:31 AM
- */
 
 namespace App\Models\ClassSessions;
 
 use App\Models\BaseModel;
 use App\Models\Financials\Credits;
+use App\Models\Users\TeacherPivot;
 use App\Models\Users\UserEntity;
 use Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
 
-class ClassSessionEntity extends BaseModel{
+class ClassFeedback extends BaseModel{
 
-    protected $table        = 'class_sessions';
-    protected $primaryKey   = 'class_id';
+    protected $table        = 'feedback';
+    protected $primaryKey   = 'feedback_id';
     public $timestamps = false;
 
-    public $fillable    = [ 'class_id' , 'student_id', 'teacher_id' , 'duration', 'class_status' , 'actual_duration',
-        'comments' , 'class_performance' ];
+    public $fillable    = [ ];
 
     public function store( Request $r )
     {
+        /**
         $validator = Validator::make( $r->all(), [] );
 
         if( $validator->fails() ){
             $this->errors[] = '';
             return false;
         }
+        ***/
 
-        $this->fill( $r->all() );
-        $this->schedule_start_at =  date( 'Y-m-d H:i:s' , strtotime( $r->date.' '.$r->time ) );
+        $this->satisfaction     = $r->st;
+        $this->internet_quality = $r->iq;
+        $this->pronunciation    = $r->p ;
+        $this->teaching_skills  = $r->ts;
+        $this->comment = $r->comment;
 
-        // check if session is in the future
-
-        // get credits by duration
-        $this->credits = Credits::getCreditsByDuration( $r->duration );
-
-        if( $this->credits === false ){
-            $this->errors[] = trans( 'invalid_credit_value' );
-            return false;
-        }
-
-        // check if credit is not more than credit available
-        $available_credit = Credits::getCreditsByStudentId( $this->student_id );
-
-        if( $available_credit < $this->credits ){
-            $this->errors[] = trans( 'insufficient_credits' );
-            return false;
-        }
-
-        if( $r->class_id ) {
+        if( $this->fid ){
             $this->exists = true;
         }else{
-            $this->set_at   =   date( 'Y-m-d H:i:s' );
-            $this->set_by   =   UserEntity::me()->id;
+            $this->added_at  = date( 'Y-m-d H:i:s' );
         }
+
+        // get teacher
+        $class = ClassSessionEntity::find( $this->class_id );
+        $this->teacher_id = $class->teacher_id;
+
+        $this->rating = ( $this->satisfaction + $this->internet_quality +  $this->pronunciation + $this->teaching_skills ) / 4 ;
 
         if( ! $this->save() ){
             return false;
         }
+
+        // compute teacher rating
+        $a = ClassFeedback::from( 'feedback as f' )
+            ->where( 'teacher_id' , $this->teacher_id )
+            ->avg( 'rating' );
+
+        TeacherPivot::where( 'user_id' , $this->teacher_id )->first();
 
         return $this;
 

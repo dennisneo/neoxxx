@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Models\Users\UserEntity;
 use Helpers\Html;
+use Illuminate\Http\Request;
 
 class TeacherDashboardController extends TeacherBaseController{
 
@@ -11,9 +13,12 @@ class TeacherDashboardController extends TeacherBaseController{
         parent::__construct();
     }
 
-    public function index()
+    public function index( Request $r )
     {
-        $this->layout->content = ' OKKK Content ';
+        $teacher = UserEntity::me();
+        $this->layout->content  =  view('teacher.teacher_dashboard',
+            ['t' => $teacher ]
+        );
         return $this->layout;
     }
 

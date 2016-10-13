@@ -15,6 +15,7 @@ use App\Models\ClassSessions\ClassSessionEntity;
 use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
 use App\Models\LearningGoals\LearningGoals;
+use App\Models\Performance\TeacherPerformance;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
@@ -97,6 +98,33 @@ class AjaxTeacherController extends AjaxBaseController{
             'success' => true,
             'sessions' => $sessions
 
+        ];
+    }
+
+    public function getPerformanceRecord( Request $r )
+    {
+        $records = ( new TeacherPerformance )->getAll( $r );
+
+        return [
+            'success' => true,
+            'records' => $records
+        ];
+
+    }
+    
+    public function savePerformanceRecord( Request $r )
+    {
+        $p = new TeacherPerformance;
+        if( ! $p->store( $r ) ){
+            return [
+                'success' =>false,
+                'messsage' => $p->displayErrors()
+            ];
+        }
+
+        return [
+            'success' => true,
+            'p'=>$p
         ];
     }
 

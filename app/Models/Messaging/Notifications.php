@@ -51,6 +51,7 @@ class Notifications extends Model{
         $n->notification = $no->notification;
         $n->nkey    = $no->nkey;
         $n->params = serialize( [] );
+
         $n->save();
 
         return $n;

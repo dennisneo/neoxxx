@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Ajax\Student;
 use App\Events\CancelClassSessionEvent;
 use App\Events\NewClassSession;
 use App\Http\Controllers\Ajax\AjaxBaseController;
+use App\Models\ClassSessions\ClassFeedback;
 use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
 use App\Models\LearningGoals\LearningGoals;
@@ -205,6 +206,39 @@ class AjaxStudentController extends AjaxBaseController{
             'success' =>true,
             'sessions' => $class_sessions
         ];
-
     }
+
+    public function getFeedback( Request $r )
+    {
+        $class_id = Text::recoverInt( $r->class_id );
+        $feedback = ClassFeedback::where( 'class_id' , $class_id )->first();
+
+        return [
+            'success' =>true ,
+            'feedback' => $feedback
+        ];
+    }
+
+    public function saveFeedback( Request $r )
+    {
+        $class_id = Text::recoverInt( $r->class_id );
+
+        if( ! $feedback = ClassFeedback::where( 'class_id' , $class_id )->first() ){
+            $feedback = new ClassFeedback();
+            $feedback->class_id = $class_id;
+        }
+
+        if( ! $feedback->store( $r ) ) {
+            return [
+                'success' => false,
+                'messsage' => ' Failed to save feedback '
+            ];
+        }
+
+        return [
+            'success' =>true ,
+            'feedback' => $feedback
+        ];
+    }
+
 }
