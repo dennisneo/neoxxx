@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Ajax;
 
 
 use App\Models\Users\Applicants;
+use App\Models\Users\StudentEntity;
 use Helpers\Text;
 use Illuminate\Http\Request;
 
@@ -39,4 +40,27 @@ class AjaxFrontController extends AjaxBaseController{
             'e' => $e
         ];
     }
+
+    public function saveNewStudent( Request $r )
+    {
+
+        $r->request->add(['user_type' => 'student']);
+
+        $student = new StudentEntity();
+
+        if( ! $student->store( $r ) ){
+            return [
+                'success' => false,
+                'message' => $student->displayErrors()
+            ];
+        }
+
+        $student->ccid = Text::convertInt( $student->id );
+
+        return [
+            'success' => true,
+            'student' => $student
+        ];
+    }
+
 }

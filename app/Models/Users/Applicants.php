@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 class Applicants extends UserEntity{
     use ValidatesRequests;
 
-
     public function getErrors()
     {
         return $this->errors;
@@ -22,11 +21,18 @@ class Applicants extends UserEntity{
 
     public function getAllApplicants( Request $r )
     {
+        $limit = $r->limit ? $r->limit : 20;
+        $page = $r->page ? $r->page : 1;
+        $offset = ( $page-1 ) * $limit;
         $order_by  = $r->orderby ? $r->orderby : 'created_at';
         $direction = $r->direction ? $r->direction : 'DESC';
 
-        $applicants = static::where('user_type' , 'applicant')
-        ->orderby( $order_by , $direction );
+        $applicants = static::where( 'user_type' , 'applicant');
+
+        $this->total = $applicants->count();
+
+        $applicants->orderby( $order_by , $direction );
+        $applicants->limit( $limit );
 
         return $applicants->get();
     }

@@ -26,19 +26,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row padr" >
-                <div class="col-lg-3"> Cost for 1 hr</div>
-                <div class="col-lg-9">
-                    <div class="col-lg-4">
-                        <input type="text" class="form-control" name="settings_credits_one_hour" id="credits_one_hour" value="<?php echo $settings->credits_one_hour ?>" />
-                    </div>
-                </div>
-            </div>
             <div class="row padr">
-                <div class="col-lg-3"> Cost for 30 mins</div>
+                <div class="col-lg-3"> Credit Cost for 20 mins</div>
                 <div class="col-lg-9">
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" name="settings_credits_thirty_minutes" id="credits_thirty_minutes" value="<?php echo $settings->credits_thirty_minutes ?>" />
+                        <input type="text" class="form-control" name="settings_credits_twenty_minutes" id="credits_twenty_minutes" value="<?php //echo $settings->credits_twenty_minutes ?>" />
                     </div>
                 </div>
             </div>

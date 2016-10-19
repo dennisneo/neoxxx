@@ -9,20 +9,8 @@ var tVue = new Vue({
     methods:{
         openPerformanceRecord:function( teacher_id )
         {
-        },
-        savePerformanceRecord:function(){
-            $.post( subdir+'/ajax/teacher/spr' , $('#pForm').serialize() )
-            .done(function( data ){
-                if(data.success){
-                   toastr.success( 'Teacher performance report successfully saved' );
-                }else{
-                   toastr.error( data.message );
-                }
-            })
-            .error(function( data ){
-                    toastr.error( 'Something went wrong' );
-            });
         }
+
     },
     ready:function(){
         $.get(  subdir+'/ajax/teachers/getall')

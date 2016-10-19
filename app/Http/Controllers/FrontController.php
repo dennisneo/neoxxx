@@ -24,6 +24,7 @@ class FrontController extends Controller{
     {
         // frontend theme is called agency
         parent::__construct( 'agency' );
+        Html::loadToastr();
     }
 
     public function login( Request $r )
@@ -81,31 +82,9 @@ class FrontController extends Controller{
 
     public function studentLandingPage( Request $r )
     {
-
-        if( $r->isMethod('post') ){
-
-            $s = new StudentEntity();
-            $r->request->add(['user_type' => 'student']);
-
-            if( ! $student = $s->store( $r ) ){
-             return [
-                 'success' => false,
-                 'message' => $s->displayErrors()
-             ];
-            }
-
-            // send confirmation email
-             $this->sendConfirmationEmail( $student );
-
-            return redirect( 'student/application/success' );
-        }
-
-        $content    = view( 'front.student_landing' )
-            ->with( 'r' , $r );
-
-        return $this->layout
-            ->with( 'content' , $content )
-            ->render();
+        $content    = view( 'front.student_landing', [ 'r' => $r ]  );
+        Html::instance()->addScript( 'public/app/front/student_application.js' );
+        return $this->layout->with( 'content' , $content )->render();
     }
 
     /**
@@ -141,9 +120,17 @@ class FrontController extends Controller{
 
     }
 
-    public function studentSuccess()
+    public function studentSuccess( Request $r )
     {
-        return [];
+        $id = Text::recoverInt( $r->ccid );
+
+        if( $student = UserEntity::find( $id ) ){
+
+            \Auth::loginUsingId(  $id );
+            return redirect( 'student/gs' );
+        }
+        // login the account immediately
+
     }
 
     public function apply( Request $r )

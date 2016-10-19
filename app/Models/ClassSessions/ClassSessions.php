@@ -80,6 +80,13 @@ class ClassSessions extends ClassSessionEntity{
         return $this->vuefyCollection( $schedules );
     }
 
+    public function vuefy()
+    {
+        $this->start_timestamp = strtotime($this->schedule_start_at);
+        $this->end_timestamp = $this->start_timestamp + ( $this->duration*60 ) ;
+        return $this;
+    }
+
     public static function statusSelect()
     {
         $status =[

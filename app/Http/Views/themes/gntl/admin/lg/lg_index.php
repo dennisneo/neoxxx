@@ -1,12 +1,13 @@
 <div id="lgDiv">
-    <div class=row" style="padding:24px 18px 18px 18px;">
-        <br /><br />
-        <div class="pull-right">
-            <button class="btn btn-primary" v-on:click="add()"> Add New </button>
-        </div>
-        <h3>Learning Goals</h3>
+    <div class="x_panel tile" style="padding-bottom:60px">
+        <div class="x_content">
+            <div class=row" style="">
+            <div class="pull-right">
+                <button class="btn btn-primary" v-on:click="add()"> Add New </button>
+            </div>
+            <h3><b>Learning Goals</b></h3>
     </div>
-    <div class="row">
+            <div class="row">
         <table class="table table-striped">
             <tr>
                 <th></th>
@@ -28,6 +29,8 @@
                 </td>
             </tr>
         </table>
+    </div>
+        </div>
     </div>
     <div id="lgdiv" class="modal fade" style="z-index:99999999">
         <div class="modal-dialog">

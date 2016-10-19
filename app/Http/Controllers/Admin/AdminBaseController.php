@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Users\UserEntity;
+use Helpers\Html;
 
 class AdminBaseController extends Controller{
 
@@ -18,6 +19,7 @@ class AdminBaseController extends Controller{
         parent::__construct();
         $this->layout->background_color = '#DD4444';
         $this->checkUser();
+        Html::loadToastr();
     }
 
     private function checkUser()

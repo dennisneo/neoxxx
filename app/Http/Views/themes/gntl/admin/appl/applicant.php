@@ -7,7 +7,10 @@
     }
 </style>
 <div id="aDiv">
-    <div class=row" style="padding:24px 18px 18px 18px;">
+<div class="x_panel tile" style="">
+    <div class="x_content">
+
+        <div class=row" style="padding:24px 18px 18px 18px;">
         <br /><br />
         <div class="pull-right">
             <button class="btn btn-success" v-on:click="updateStatus()"> Update Status </button>
@@ -15,7 +18,7 @@
         <h1 style="display: inline"> <?php echo $a->displayName(); ?> </h1>
         <b>Applicant</b>
     </div>
-    <div class="row">
+        <div class="row">
         <div class="col-lg-6">
         <div class="x_panel tile">
             <div class="x_content">
@@ -54,7 +57,7 @@
                         <td></td>
                     </tr>
                 </table>
-                
+
 
 
             </div>
@@ -111,8 +114,9 @@
 
     </div>
 
-    <div class="clearfix"></div>
-
+        <div class="clearfix"></div>
+    </div>
+    </div>
     <div id="aModal" class="modal fade">
         <div class="modal-dialog">
             <form id="aForm">
@@ -139,6 +143,8 @@
             </form>
         </div>
     </div>
+
+
 </div>
 
 

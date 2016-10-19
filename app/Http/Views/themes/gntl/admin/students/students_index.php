@@ -1,12 +1,10 @@
-<style>
-    td{
 
-    }
-</style>
 <div id="sDiv">
-    <div class="row">
+    <div class="x_panel tile" style="">
+        <div class="x_content">
+            <div class="row">
         <div class="col-lg-8">
-            <h3> Students </h3>
+            <h3> <b>Students</b> </h3>
         </div>
         <div class="col-lg-4" style="">
             <div class="input-group">
@@ -16,7 +14,7 @@
         </div>
 
     </div>
-    <div class="row">
+        <div class="row">
         <table class="table table-striped">
             <tr>
                 <th style="width: 48px"></th>
@@ -28,6 +26,8 @@
                 <td colspan="4">
                     <i class="fa fa-refresh fa-spin"></i> Loading...
                 </td>
+
+
             </tr>
             <tr class="loading" v-bind:class=" students.length > 0 ? 'hide' : 'show' ">
                 <td colspan="4">
@@ -48,6 +48,9 @@
             </tr>
         </table>
     </div>
+         </div>
+    </div>
+
     <div id="aModalDiv" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

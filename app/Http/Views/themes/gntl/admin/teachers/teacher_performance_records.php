@@ -24,7 +24,7 @@
                         <th>Warnings</th>
                         <th>Status</th>
                     </tr>
-                    <tr v-for="r in records">
+                    <tr v-for="r in records | orderBy occured_at -1">
                         <td>{{r.occurred_at}}</td>
                         <td>{{r.teacher_name}}</td>
                         <td>{{r.type}}</td>
@@ -50,7 +50,6 @@
                             <div class="form-group">
                                 <label for="teacher">Teacher</label>
                                 <?php echo \Form::text( 'teacher' , '' , [ 'class' => 'form-control' , 'id'=>'teacher' ] ) ?>
-                                <input type="hidden" name="teacher_id" id="teacher_id" value="" />
                             </div>
                             <div class="form-group">
                                 <label for="type">Type</label>
@@ -67,12 +66,13 @@
                             </div>
                             <div class="form-group" >
                                 <label for="warning">Warnings</label>
-                                <?php echo \Form::select( 'warnings', [1,2,3,4,5],  '' , [ 'class' => 'form-control' , 'id'=>'warnings' ] ) ?>
+                                <?php echo \Form::select( 'warnings', [ 1=>1,2=>2,3=>3,4=>4,5=>5],  '' , [ 'class' => 'form-control' , 'id'=>'warnings' ] ) ?>
                             </div>
                             <div>
                                 <a href="javascript:" v-on:click="savePerformanceRecord()" type="button" class="btn btn-primary">Save</a>
                             </div>
-                            <input type="hidden" name="teacher_id" class="teacher_id" value="" />
+                            <input type="hidden" name="teacher_id" id="teacher_id" class="teacher_id" value="" />
+                            <input type="hidden" name="status" id="status" value="new" />
                             <?php echo csrf_field(); ?>
 
                         </form>

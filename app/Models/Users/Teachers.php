@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 
 class Teachers extends TeacherEntity{
 
-    private $total = 0;
     public static function getAvailableTeachers( $start_time )
     {
         $weekday    = strtolower( date( 'D', strtotime( $start_time )) );
@@ -36,9 +35,19 @@ class Teachers extends TeacherEntity{
         $page   = $r->page ? $r->page : 1;
         $offset = ( $r->page - 1 ) * $limit;
 
-        $t = static::where( 'user_type' , 'teacher' );
+        $t = static::where( 'user_type' , 'teacher' )
+         ->from( 'users as u')
+         ->join( 'teachers as t', 't.user_id' , '=', 'u.id' , 'LEFT');
+
         if( isset( $r->is_active ) ){
             $t->where( 'is_active' , $r->is_active );
+        }
+
+        if( $r->q ){
+            $t->where( function( $q ) use ( $r ) {
+                $q->where( 'first_name' , 'like' , $r->q.'%')
+                  ->orWhere( 'last_name' , 'like' , $r->q.'%' );
+            });
         }
 
         $this->total = $t->count();

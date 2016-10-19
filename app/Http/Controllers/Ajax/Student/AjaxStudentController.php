@@ -18,6 +18,8 @@ use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
+use App\Models\Users\UserEntity;
+use Helpers\DateTimeHelper;
 use Helpers\Text;
 use Illuminate\Http\Request;
 use Event;
@@ -27,6 +29,34 @@ class AjaxStudentController extends AjaxBaseController{
     public function __construct( Request $r )
     {
         parent::__construct( $r );
+    }
+
+    public function getTeacherSchedule( Request $r )
+    {
+        $me = UserEntity::me();
+
+        // get only the seven day sched
+
+        if( $r->date_from  ) {
+            $from = new \DateTime( $r->date_from );
+        }else{
+            $from = DateTimeHelper::now( $me->timezone );
+        }
+
+        $date_from = $from->format( 'Y-m-d' );
+        $date_to = $from->add(new \DateInterval('P7D'))->format('Y-m-d');
+
+
+        $r->request->add(['date_from'=>$date_from , 'date_to'=>$date_to ]);
+
+        $sessions = ( new ClassSessions )->byTeacherId( $r );
+
+        return [
+            'success' => true,
+            'sessions' => $sessions,
+            'date_from' => $date_from,
+            'date_to' => $date_to
+        ];
     }
 
     /**

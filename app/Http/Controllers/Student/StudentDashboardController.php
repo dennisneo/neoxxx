@@ -22,6 +22,12 @@ class StudentDashboardController extends StudentBaseController{
         return $this->layout;
     }
 
+    public function gettingStarted( Request $r )
+    {
+        $this->layout->content = view( 'student.getting_started' , [ 'r' => $r ] );
+        return $this->layout;
+    }
+
     public function buyCredits()
     {
         $this->layout->content = view( 'student.buy_credits' );
@@ -30,7 +36,7 @@ class StudentDashboardController extends StudentBaseController{
 
     public function teachers( Request $r )
     {
-        $this->layout->content = view( 'student.available_teachers');
+        $this->layout->content = view( 'student.available_teachers' , ['r' => $r ] );
         Html::instance()->addScript( '/public/app/student/student_teachers.js' );
         return $this->layout;
     }

@@ -9,8 +9,20 @@
 namespace App\Models\Users;
 
 use Illuminate\Http\Request;
+use Validator;
 
 class StudentEntity extends UserEntity{
+
+    public static function rules()
+    {
+        return [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'email|unique:users',
+            'qq' => 'required'
+        ];
+    }
+
 
     public function vuefyStudent()
     {

@@ -6,11 +6,85 @@ class DateTimeHelper {
 
 	public static function timeDropdown()
 	{
-		$mins = [ 0, 15, 30 , 45 ];
+		$mins = [ 0, 20, 40 ];
 		$hr = [ 1,2,3,4,5,6,7,8,9,10,11,12 ];
 
-		\Form::select( 'hr' , $hr,'' , [ 'class' =>'form-control'] );
-		\Form::select( 'min' , $mins , '' , [ 'class' =>'form-control'] );
+		//\Form::select( 'hr' , $hr,'' , [ 'class' =>'form-control'] );
+		//\Form::select( 'min' , $mins , '' , [ 'class' =>'form-control'] );
+
+		for( $i = 360; $i <= 1320; $i = $i + 20 ){
+
+		}
+	}
+
+	public static function daysOfTheWeek()
+	{
+		return [
+			'Sun' => 'Sun', 'Mon' => 'Mon', 'Tue'=> 'Tue', 'Wed'=>'Wed' , 'Thu' => 'Thu', 'Fri'=> 'Fri' , 'Sat' => 'Sat'
+		];
+	}
+
+	public static function timeTrList()
+	{
+		$mins = [ 0, 20, 40 ];
+		$hr = [ 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 ];
+
+		$tr_arr = [];
+		foreach( $hr as  $v ){
+			$ampm = $v < 12 ? 'am' : 'pm';
+			$v = $v > 12 ? ( $v -12 ) : $v;
+			$tr_arr[] = $v.':00 '.$ampm;
+		}
+
+		return $tr_arr;
+	}
+
+	/**
+	 * used in showing a 7 day range for teacher availability
+	 * @param string $timezone
+	 * @return array
+	 */
+	public static function nextSevenDays( $timezone = 'Asia/Singapore', $start = 'now' )
+	{
+		$date 	= 	new \DateTime( $start , new \DateTimeZone( $timezone ) );
+		$d_arr =[];
+		for( $i = 0 ; $i < 7 ; $i++ ){
+			$date->add(new \DateInterval('P1D'));
+			$d_arr[] =  $date->format('D M d');
+		}
+
+		return $d_arr;
+	}
+
+	/**
+	 * get the current time base on timezone
+	 * @param $timezone
+	 * @return \DateTime
+	 */
+	public static function now( $timezone = 'Asia/Singapore' )
+	{
+		return new \DateTime( 'now' , new \DateTimeZone( $timezone ) );
+	}
+
+	/**
+	 * given time format H:m ampm returns the numeric minute value
+	 * @param $time
+	 */
+	public static function convertToMinutes( $time )
+	{
+		$min = null;
+		$ampm = null;
+
+		sscanf( $time , "%d:%d %s" , $hr , $min , $ampm );
+
+		if( $ampm == 'pm' ){
+			if( $hr != 12 ){
+				$hr = $hr + 12;
+			}
+		}
+
+		return ( $hr*60 ) +  $min;
+
 	}
 
 }

@@ -25,7 +25,7 @@
     <!-- Theme CSS -->
     <link href="/<?php echo env('SUBDIR') ?>/public/themes/agency/css/agency.css" rel="stylesheet">
     <link href="/<?php echo env('SUBDIR') ?>/public/css/addon.css" rel="stylesheet">
-
+    <?php echo \Helpers\Html::instance()->renderPageStyles() ?>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

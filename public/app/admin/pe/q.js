@@ -32,6 +32,7 @@ var qVue = new Vue({
                 .done(function( data ){
                     if(data.success){
                        toastr.success( 'Question successfully saved' );
+                       window.location.href=subdir+'/admin/pe';
                     }else{
                        toastr.error( data.message );
                     }

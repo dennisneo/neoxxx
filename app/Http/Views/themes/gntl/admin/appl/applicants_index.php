@@ -1,15 +1,16 @@
 <div id="aDiv">
-    <div class=row" style="padding:24px 18px 18px 18px;">
-        <br /><br />
-        <div class="pull-right">
-            <div class="input-group">
-                <input type="text" class="form-control" />
-                <span class="input-group-btn"><button class="btn btn-default"> <i class="fa fa-search"></i> Search</button></span>
+    <div class="x_panel tile" style="">
+        <div class="x_content">
+            <div class=row">
+            <div class="pull-right">
+                <div class="input-group">
+                    <input type="text" class="form-control" />
+                    <span class="input-group-btn"><button class="btn btn-default"> <i class="fa fa-search"></i> Search</button></span>
+                </div>
             </div>
-        </div>
-        <h3> Teaching Applicants </h3>
-    </div>
-    <div class="row">
+            <h3> <b>Teaching Applicants</b> </h3>
+            </div>
+            <div class="row">
         <table class="table table-striped">
             <tr>
                 <th style="width: 48px"></th>
@@ -42,6 +43,8 @@
                 </td>
             </tr>
         </table>
+    </div>
+        </div>
     </div>
     <div id="aModalDiv" class="modal fade">
         <div class="modal-dialog modal-lg">

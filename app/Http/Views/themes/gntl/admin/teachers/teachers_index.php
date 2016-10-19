@@ -1,14 +1,9 @@
-<style>
-    td{
-
-    }
-</style>
 <div id="tDiv">
     <div class="x_panel tile" style="padding-bottom:60px">
         <div class="x_content">
             <div class="row">
                 <div class="col-lg-8">
-                    <h3> Teachers </h3>
+                    <h3><b> Teachers </b></h3>
                 </div>
                 <div class="col-lg-4" style="">
                     <div class="input-group">
@@ -49,6 +44,7 @@
                                     <ul class="dropdown-menu" style="padding:12px;font-size: 1em">
                                         <li><a href="<?php echo Url('admin/teacher') ?>/{{ t.id }}"> <i class="fa fa-edit"></i> View / Edit</a></li>
                                         <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
+                                        <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ t.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
                                         <li><a href="javascript:" v-on:click="openNotificationModal( t.ccid )"> <i class="fa fa-comment"></i> Send Message </a></li>
                                     </ul>
                                 </div>
@@ -60,6 +56,7 @@
             </div>
         </div>
     </div>
+
     <div id="aModalDiv" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -109,5 +106,4 @@
             </div>
         </div>
     </div>
-
 </div>

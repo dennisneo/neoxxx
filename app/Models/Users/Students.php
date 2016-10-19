@@ -18,10 +18,16 @@ class Students extends StudentEntity{
         $limit  = $r->limit ? $r->limit : 50;
         $page   = $r->page ? $r->page : 1;
         $offset = ( $r->page - 1 ) * $limit;
+        $order_by  = $r->orderby ? $r->orderby : 'created_at';
+        $direction = $r->direction ? $r->direction : 'DESC';
 
         $t = static::where( 'user_type' , 'student' );
 
         $this->total = $t->count();
+
+        $t->limit( $limit );
+        $t->offset( $offset );
+        $t->orderby( $order_by , $direction );
 
         return $t->get();
     }

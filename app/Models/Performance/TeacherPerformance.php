@@ -5,6 +5,7 @@ namespace App\Models\Performance;
 
 use App\Models\BaseModel;
 use App\Models\Messaging\Notifications;
+use App\Models\Users\UserEntity;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -15,7 +16,7 @@ class TeacherPerformance extends BaseModel{
 
     public $timestamps = false;
 
-    protected  $fillable = [ 'pid',  'description' , 'type' , 'warnings' , 'status' , 'occurred_at'  ];
+    protected  $fillable = [ 'pid', 'teacher_id', 'description' , 'type' , 'warnings' , 'status' , 'occurred_at'  ];
 
     public function store( Request $r )
     {
@@ -27,6 +28,8 @@ class TeacherPerformance extends BaseModel{
         }
 
         $this->fill( $r->all() );
+
+        $this->occurred_at  =  date( 'Y-m-d' , strtotime( $r->date_of_occurence ));
 
         if( ! $this->pid  ){
             $this->recorded_at = date( 'Y-m-d H:i:s' );
@@ -88,7 +91,13 @@ class TeacherPerformance extends BaseModel{
 
     public function vuefy()
     {
-        $this->teacher_name = $this->last_name.', '.$this->first_name;
+        if( ! $this->last_name ){
+            $teacher = UserEntity::find( $this->teacher_id );
+            $this->teacher_name = $teacher->last_name.', '.$teacher->first_name;
+        }else{
+            $this->teacher_name = $this->last_name.', '.$this->first_name;
+        }
+
         $this->occurred_at = date( 'M d, Y' , strtotime( $this->occurred_at ));
         return $this;
     }

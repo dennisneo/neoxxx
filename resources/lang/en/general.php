@@ -2,6 +2,7 @@
 
 return [
     'already confirmed' => 'You had already previously confirmed your account. You may continue and login',
+    'availability' => 'Availability',
     'cancel' => 'Cancel',
     'choose_a_teacher' => 'Choose a Teacher',
     'confirm' => 'Confirm',
@@ -9,6 +10,7 @@ return [
     'confirmation_subject' => ' Please confirm your account ',
     'date' =>'Date',
     'duration' => 'Duration',
+    'feedback' => 'Feedback',
     'feedbacks' => 'Feedbacks',
     'hire_teacher' => 'Hire Teacher',
     'invlaid_class_session' =>'Invalid Class Session',
@@ -19,8 +21,10 @@ return [
     'new_class_assigned' => ' You got new class assignment ',
     'new_class_session' => ' New class session ',
     'preferred_start_time'=>'Preferred Start Time',
+    'schedule_me_a_class' => 'Schedule me a class',
     'searching_for_available_teachers'=>'Searching for available teachers',
     'teacher' => 'Teacher',
+    'teacher_profile' => 'Teacher Profile',
     'teachers' => 'Teachers',
     'username_password_incorrect' => 'Username or password is incorrect',
     'view_profile' => 'View profile'

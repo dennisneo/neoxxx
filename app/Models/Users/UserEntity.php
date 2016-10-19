@@ -9,13 +9,14 @@
 namespace App\Models\Users;
 
 use App\Http\Models\Locations\Countries;
+use App\Models\BaseModel;
 use Helpers\Html;
 use Helpers\Text;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class UserEntity extends Model{
+class UserEntity extends BaseModel{
 
     protected $table      = 'users';
     protected $primaryKey = 'id';
@@ -33,50 +34,49 @@ class UserEntity extends Model{
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'email'
+            'email' => 'email|unique:users'
         ];
     }
 
     public function store( Request $r )
     {
         // save a new applicant
+        // save a new student
         // check if email is already found
-        $validator = Validator::make( $r->all(),  UserEntity::rules() );
+        $validator = Validator::make( $r->all(),  static::rules() );
 
         if( $validator->fails() ){
             $this->errors = $validator->errors()->all();
             return false;
         }
 
-        $user =  $r->id ? static::find( $r->id ) : new static();
-
-        if( ! $user ){
-            $this->errors = ['Invalid user'];
-            return false;
+        if( $r->id ){
+            $this->exists = true;
         }
 
-        $user->fill( $r->all() );
-        $params = unserialize( $user->params );
 
-        if(  $user->id ) {
+        $this->fill( $r->all() );
+        $params = unserialize( $this->params );
+
+        if(  $this->id ) {
             $this->exists = true;
         }else{
 
             $params['pwd']  = md5( str_random( 12 ) );
             $password       = $this->getPassword( $params['pwd'] );
 
-            $user->username     = $r->email;
-            $user->password     = \Hash::make( $password );
-            $user->confirmation_code = Text::random( null, 16 );
-            $user->status = 'new';
-            $user->created_at   = date( 'Y-m-d H:i:s');
+            $this->username     = $r->email;
+            $this->password     = \Hash::make( $password );
+            $this->confirmation_code = Text::random( null, 16 );
+            $this->status       = 'new';
+            $this->created_at   = date( 'Y-m-d H:i:s');
         }
 
 
-        $user->params = serialize( $params );
-        $user->save();
+        $this->params = serialize( $params );
+        $this->save();
 
-        return $user;
+        return $this;
     }
 
     /**
@@ -142,6 +142,7 @@ class UserEntity extends Model{
         $this->short_name = $this->displayName( 'short' );
         $this->full_name = $this->displayName( 'default' );
         $this->cid =  Text::convertInt( $this->id );
+        $this->location = $this->city.' '.$this->country;
         return $this;
     }
 

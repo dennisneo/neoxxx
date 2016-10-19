@@ -58,6 +58,7 @@ Route::post( 'landing', 'FrontController@applicantLandingPage' );
 Route::get( 'apply', 'FrontController@apply' );
 
 Route::any( 's/application', 'FrontController@studentLandingPage' );
+Route::any( 'student/application/success', 'FrontController@studentSuccess' );
 Route::any( 's/application/success', 'FrontController@studentSuccess' );
 Route::any( 's/confirm', 'FrontController@studentConfirm' );
 

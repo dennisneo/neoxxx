@@ -64,18 +64,32 @@ class Html extends HtmlFacade{
 	}
 
 	public function renderPageScripts(){
-		$html = array();		
+		$html = array();
+		$s_array = [];
+
 		foreach( $this->getScripts() as $script ){
+			if( in_array( $script , $s_array) ){
+				continue;
+			}
+			$s_array[] = $script;
 			$html[] = $this->renderScript( $script );
 		}
+
 		return implode( "" , $html );
 	}
 	
 	public function renderPageStyles(){
-		$html = array();		
+		$html = array();
+		$s_array = [];
+
 		foreach( $this->getStyles() as $style ){
+			if( in_array( $style , $s_array) ){
+				continue;
+			}
+			$s_array[] = $style;
 			$html[] = $this->renderStyle( $style );
 		}
+
 		return implode( '' , $html );
 	}
 
@@ -105,7 +119,7 @@ class Html extends HtmlFacade{
 
 	public static function loadBlockUI()
 	{
-		static::instance()->addScript( '/themes/v1/plugins/blockUI/jquery.blockUI.js' );
+		//static::instance()->addScript( '/themes/v1/plugins/blockUI/jquery.blockUI.js' );
 	}
 
 	public static function loadJQueryUI()
@@ -136,8 +150,17 @@ class Html extends HtmlFacade{
 
 	public static function loadAutoComplete()
 	{
-		Html::instance()->addScript( '/js/jquery_plugins/jquery.autocomplete.js' );
-		Html::instance()->addStyle( '/css/autocomplete.css' );
+		Html::instance()->addScript( '/public/plugins/autocomplete/jquery.autocomplete.js' );
+		Html::instance()->addStyle( '/public/plugins/autocomplete/autocomplete.css' );
+	}
+
+	public static function loadFullCalendar()
+	{
+		Html::instance()->addScript( '/public/plugins/fullcalendar/moment.js' );
+		Html::instance()->addScript( '/public/plugins/fullcalendar/fullcalendar.min.js' );
+		Html::instance()->addStyle( '/public/plugins/fullcalendar/fullcalendar.min.css' );
+		//Html::instance()->addStyle( '/public/plugins/fullcalendar/fullcalendar.print.css' );
+
 	}
 
 	public static function loadFileupload( $file_type = null ){
@@ -164,33 +187,32 @@ class Html extends HtmlFacade{
 
 	}
 
-	public static function timezoneSelect( $default = 8 ){
+	public static function timezoneSelect( $default ='Asia/Singapore' ){
 		$tz = [
-			'-12'=>'(GMT-12:00) International Date Line West',
-			'-11'=>'(GMT-11:00) Midway Island, Samoa',
-			'-10'=>'(GMT-10:00) Hawaii',
-			'-9'=>'(GMT-9:00) Alaska',
-			'-8'=>'(GMT-8:00) Pacific Time (US & Canada)',
-			'-7'=>'(GMT-7:00) Mountain Time , Arizona (US & Canada)',
-			'-6'=>'(GMT-6:00) Central Time (US & Canada)',
-			'-5'=>'(GMT-5:00) Eastern Time (US & Canada)',
-			'-4'=>'(GMT-4:00) Atlantic Time (Canada), Caracas, La Paz',
-			'-3'=>'(GMT-3:00) Brasilia, Buenos Aires, Georgetown',
-			'-2'=>'(GMT-2:00) Mid-Atlantic',
-			'-1'=>'(GMT-1:00) Cape Verde Island',
-			'0'=>'(GMT) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London',
-			'1'=>'(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna',
-			'2'=>'(GMT+02:00) Athens, Beirut, Bucharest, Cairo, Istanbul',
-			'3'=>'(GMT+03:00) Kuwait, Riyadh, Baghdad, Moscow',
-			'4'=>'(GMT+04:00) Abu Dhabi, Muscat',
-			'5'=>'(GMT+05:00) Islamabad, Karachi, Tashkent',
-			'6'=>'(GMT+06:00) Almaty, Astana, Dhaka, Novosibirsk',
-			'7'=>'(GMT+07:00) Bangkok, Hanoi, Jakarta',
-			'8'=>'(GMT+08:00) Manila,Beijing, Kuala Lumpur, Singapore, Hong Kong',
-			'9'=>'(GMT+09:00) Osaka, Seoul, Tokyo',
-			'10'=>'(GMT+10:00) Canberra, Melbourne, Sydney, Brisbane',
-			'11'=>'(GMT+11:00) Magadan, Solomon Is., New Caledonia',
-			'12'=>'(GMT+12:00) Auckland, Fiji, Marshall Island',
+			'Pacific/Midway'=>'(GMT-11:00) Midway Island, Samoa',
+			'Pacific/Honolulu'=>'(GMT-10:00) Hawaii',
+			'America/Anchorage'=>'(GMT-9:00) Alaska',
+			'America/Los_Angeles'=>'(GMT-8:00) Pacific Time (US & Canada)',
+			'America/Denver'=>'(GMT-7:00) Mountain Time , Arizona (US & Canada)',
+			'America/Chicago'=>'(GMT-6:00) Central Time (US & Canada)',
+			'America/New_York'=>'(GMT-5:00) Eastern Time (US & Canada)',
+			'America/Caracas'=>'(GMT-4:00) Atlantic Time (Canada), Caracas, La Paz',
+			'America/Argentina/Buenos_Aires'=>'(GMT-3:00) Brasilia, Buenos Aires, Georgetown',
+			'Atlantic/Stanley'=>'(GMT-2:00) Mid-Atlantic',
+			'Atlantic/Cape_Verde'=>'(GMT-1:00) Cape Verde Island',
+			'Europe/Dublin'=>'(GMT) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London',
+			'Europe/Berlin'=>'(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna',
+			'Asia/Beirut'=>'(GMT+02:00) Athens, Beirut, Bucharest, Cairo, Istanbul',
+			'Asia/Kuwait'=>'(GMT+03:00) Kuwait, Riyadh, Baghdad, Moscow',
+			'Asia/Muscat'=>'(GMT+04:00) Abu Dhabi, Muscat',
+			'Asia/Karachi'=>'(GMT+05:00) Islamabad, Karachi, Tashkent',
+			'Asia/Almaty'=>'(GMT+06:00) Almaty, Astana, Dhaka, Novosibirsk',
+			'Asia/Bangkok'=>'(GMT+07:00) Bangkok, Hanoi, Jakarta',
+			'Asia/Singapore'=>'(GMT+08:00) Beijing, Hong Kong, Singapore, Manila,  Kuala Lumpur',
+			'Asia/Seoul'=>'(GMT+09:00) Osaka, Seoul, Tokyo',
+			'Australia/Melbourne'=>'(GMT+10:00) Canberra, Melbourne, Sydney, Brisbane',
+			'Asia/Vladivosto'=>'(GMT+11:00) Magadan, Solomon Is., New Caledonia',
+			'Pacific/Auckland'=>'(GMT+12:00) Auckland, Fiji, Marshall Island',
 		];
 
 		//view()->addLocation( __DIR__.'/view/' );

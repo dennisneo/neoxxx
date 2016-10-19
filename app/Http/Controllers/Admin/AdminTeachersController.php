@@ -53,6 +53,24 @@ class AdminTeachersController extends AdminBaseController{
     {
         $this->layout->content = view('admin.teachers.teacher_performance_records', [ ]);
         Html::instance()->addScript( 'public/app/admin/teachers/teacher_records.js' );
+        Html::loadDatepicker();
+        Html::loadAutoComplete();
+        return $this->layout;
+    }
+
+    public function manageTeacherSchedule( $teacher_id , Request $r )
+    {
+        if( ! $t = TeacherEntity::find( $teacher_id ) ){
+             // send to error page
+        }
+        $t->vuefyTeacher();
+
+        //dd(  date( 'Y-m-d H:i:s', strtotime('next Mon' )  ) );
+
+        $this->layout->content = view('admin.teachers.teacher_schedule', [ 't' => $t ]);
+        Html::loadFullCalendar();
+        Html::loadDateCombo();
+        Html::instance()->addScript( 'public/app/admin/teachers/teacher_schedule.js' );
         return $this->layout;
     }
 

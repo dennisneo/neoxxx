@@ -9,6 +9,8 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Helpers\Html;
+
 class AdminController extends AdminBaseController{
 
     public function __construct()
@@ -18,8 +20,11 @@ class AdminController extends AdminBaseController{
 
     public function dashboard()
     {
-        $this->layout->content = ' OKKK Content ';
+
+        $this->layout->content = view('admin.dashboard.dashboard');
+        Html::instance()->addScript( 'public/app/admin/dashboard/dashboard.js' );
         return $this->layout;
+
     }
 
 }

@@ -30,8 +30,9 @@ class Questions extends Model
         $offset = ( $page - 1 ) * $limit;
 
         $orderby = $r->orderby ?  $r->orderby : 'added_at';
+        $order_direction = $r->order_direction ?  $r->order_direction : 'DESC';
 
-        $qs  = static::orderby( $orderby );
+        $qs  = static::orderby( $orderby , $order_direction );
         $this->total = $qs->count();
 
         $qs->limit( $limit );

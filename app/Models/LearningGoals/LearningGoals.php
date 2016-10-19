@@ -9,19 +9,18 @@
 namespace App\Models\LearningGoals;
 
 
+use App\Models\BaseModel;
 use App\Models\Users\UserEntity;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
 
-class LearningGoals extends Model{
+class LearningGoals extends BaseModel{
 
     protected $table        = 'learning_goals';
     protected $primaryKey   = 'goal_id';
     public $timestamps = false;
 
     public $fillable    = [ 'goal_id','goal','summary','parent_id' ];
-    private $errors     =  [];
 
     public function store( Request $r )
     {
@@ -50,14 +49,17 @@ class LearningGoals extends Model{
 
     }
 
-    public function getErrors()
+    /**
+     * used uding student registration
+     */
+    public static function checkboxList()
     {
-        $html = '<ul>';
-        foreach( $this->errors as $e ){
-            $html .= '<li>'.$e.'</li>';
+        $l_arr = [];
+        $learning_goals = static::all();
+        foreach( $learning_goals as $lg ){
+            $l_arr[] = '<input type="checkbox" name="lg[]" value="'.$lg->goal_id.'" /> '.$lg->goal;
         }
-        $html .= '</ul>';
 
-        return $html;
+        return implode( "<br />" , $l_arr );
     }
 }

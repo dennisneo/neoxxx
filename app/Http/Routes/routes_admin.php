@@ -25,6 +25,7 @@ Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,
     Route::get( 'teachers', 'Admin\AdminTeachersController@index' );
     Route::get( 'teacher/{id}', 'Admin\AdminTeachersController@teacher' );
     Route::get( 'teacher/edit/profile/{id}', 'Admin\AdminTeachersController@editTeacherProfile' );
+    Route::get( 'teacher/schedule/{id}', 'Admin\AdminTeachersController@manageTeacherSchedule' );
 
     Route::get( 'records', 'Admin\AdminTeachersController@performanceRecords' );
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Users\UserEntity;
+use Helpers\Html;
 
 class StudentBaseController extends Controller{
 
@@ -12,6 +13,7 @@ class StudentBaseController extends Controller{
         parent::__construct();
         // check user if  student
         $this->checkUser();
+        $this->loadDefaultAssets();
     }
 
     private function checkUser()
@@ -31,4 +33,8 @@ class StudentBaseController extends Controller{
         redirect('login')->send();
     }
 
+    private function loadDefaultAssets()
+    {
+        Html::loadToastr();
+    }
 }
