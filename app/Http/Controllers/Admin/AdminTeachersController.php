@@ -68,9 +68,11 @@ class AdminTeachersController extends AdminBaseController{
         //dd(  date( 'Y-m-d H:i:s', strtotime('next Mon' )  ) );
 
         $this->layout->content = view('admin.teachers.teacher_schedule', [ 't' => $t ]);
+
         Html::loadFullCalendar();
         Html::loadDateCombo();
         Html::instance()->addScript( 'public/app/admin/teachers/teacher_schedule.js' );
+
         return $this->layout;
     }
 

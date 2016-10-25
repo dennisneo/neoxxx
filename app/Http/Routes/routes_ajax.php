@@ -8,8 +8,10 @@ Route::group( [  'prefix' => 'ajax/front' ],  function(){
 });
 
 Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'Ajax\Student',  'as'=> 'ajax.student' ],  function(){
-        // student setup a class session
+    // student setup a class session
     Route::post('ss',  'AjaxStudentController@setupClassSession');
+    Route::post('scancel',  'AjaxStudentController@cancelClassSession');
+
     // find available teachers given a class session
     Route::get('at',  'AjaxStudentController@availableTeachers');
     // teacher selected
@@ -18,6 +20,11 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     Route::post('sas',  'AjaxStudentController@saveClassSession' );
     // save feedback
     Route::post('sf',  'AjaxStudentController@saveFeedback' );
+
+    Route::get('glg',  'AjaxStudentController@getLearningGoals' );
+    // save learning goal
+    Route::post('slg',  'AjaxStudentController@saveLearningGoals' );
+
     // get feedback
     Route::get('gf',  'AjaxStudentController@getFeedback' );
     // cancel the session
@@ -28,6 +35,10 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     Route::get( 'gss',  'AjaxStudentController@getStudentSessions' );
     // get the schedule of a teacher
     Route::get('teacher/sessions',  'AjaxStudentController@getTeacherSchedule');
+
+    /***** placement exam routes ****/
+    Route::get( 'pe/gpeq',  'AjaxStudentExamController@getQuestions' );
+    Route::post( 'pe/sa',  'AjaxStudentExamController@submitAnswer' );
 });
 
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
@@ -57,41 +68,41 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
     });
 
 
-    Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
-        //get all teachers base on query
-        Route::get('getall',  'AjaxTeachersController@getTeachers');
-        // get teachers for autocomplete
-        // will return value and name only
-        Route::get('gta',  'AjaxTeachersController@getTeachersForAutocomplete');
-    });
+Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
+    //get all teachers base on query
+    Route::get('getall',  'AjaxTeachersController@getTeachers');
+    // get teachers for autocomplete
+    // will return value and name only
+    Route::get('gta',  'AjaxTeachersController@getTeachersForAutocomplete');
+});
 
-    Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
-        Route::post( 'save',  'AjaxTeachersController@saveTeacher' );
-    });
+Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
+    Route::post( 'save',  'AjaxTeachersController@saveTeacher' );
+});
 
-    Route::group( [  'prefix' => 'ajax/students', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'as'=> 'ajax.students' ],  function(){
-        Route::get('getall',  'AjaxStudentsController@getStudents');
-        Route::get('getAvailableTeachers',  'AjaxStudentsController@getAvailableTeachers');
-    });
+Route::group( [  'prefix' => 'ajax/students', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'as'=> 'ajax.students' ],  function(){
+    Route::get('getall',  'AjaxStudentsController@getStudents');
+    Route::get('getAvailableTeachers',  'AjaxStudentsController@getAvailableTeachers');
+});
 
-    Route::post( 'ajax/application/s', 'Ajax\AjaxFrontController@saveApplication' );
+Route::post( 'ajax/application/s', 'Ajax\AjaxFrontController@saveApplication' );
 
-    // update applicant status
-    Route::post( 'ajax/admin/a/us', 'Ajax\Admin\AjaxApplicantsController@updateStatus' );
+// update applicant status
+Route::post( 'ajax/admin/a/us', 'Ajax\Admin\AjaxApplicantsController@updateStatus' );
 
-    // save learning goal
-    Route::post( 'ajax/admin/savelg', 'Ajax\Admin\AjaxLearningGoalController@saveLearningGoal' );
-    // delete learning goals
-    Route::post( 'ajax/admin/lg/d', 'Ajax\Admin\AjaxLearningGoalController@deleteLearningGoal' );
-    // get all learning goals
-    Route::get( 'ajax/admin/lg/get', 'Ajax\Admin\AjaxLearningGoalController@getLearningGoals' );
-    Route::get( 'ajax/admin/a/get', 'Ajax\Admin\AjaxApplicantsController@getApplicants' );
+// save learning goal
+Route::post( 'ajax/admin/savelg', 'Ajax\Admin\AjaxLearningGoalController@saveLearningGoal' );
+// delete learning goals
+Route::post( 'ajax/admin/lg/d', 'Ajax\Admin\AjaxLearningGoalController@deleteLearningGoal' );
+// get all learning goals
+Route::get( 'ajax/admin/lg/get', 'Ajax\Admin\AjaxLearningGoalController@getLearningGoals' );
+Route::get( 'ajax/admin/a/get', 'Ajax\Admin\AjaxApplicantsController@getApplicants' );
 
-    // get all placement exam questionaires
-    Route::get( 'ajax/admin/pe/get', 'Ajax\Admin\AjaxPlacementExamController@getQuestions' );
-    Route::post( 'ajax/admin/pe/sq', 'Ajax\Admin\AjaxPlacementExamController@saveQuestion' );
+// get all placement exam questionaires
+Route::get( 'ajax/admin/pe/get', 'Ajax\Admin\AjaxPlacementExamController@getQuestions' );
+Route::post( 'ajax/admin/pe/sq', 'Ajax\Admin\AjaxPlacementExamController@saveQuestion' );
 
-    Route::post( 'ajax/admin/settings/s', 'Ajax\Admin\AjaxSettingsController@saveSettings' );
+Route::post( 'ajax/admin/settings/s', 'Ajax\Admin\AjaxSettingsController@saveSettings' );
 
 
 

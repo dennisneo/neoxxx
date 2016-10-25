@@ -28,10 +28,15 @@ class Settings extends Model
      return $this->total;
     }
 
-    public static function getByKey( $key )
+    public static function getByKey( $key , $default = 0 )
     {
-        return  static::where( 'skey' , $key )
+         $value =  static::where( 'skey' , $key )
             ->first();
+         if( ! $value ){
+             return $default;
+         }
+
+         return $value->value;
     }
 
     public static function store( $setting , $value )

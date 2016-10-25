@@ -1,27 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 8/1/2016
- * Time: 8:29 PM
- */
 
 namespace App\Models\Placement;
 
+use App\Models\BaseModel;
 use App\Models\Users\UserEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
 
-class Questions extends Model
+class Questions extends BaseModel
 {
     protected $table = 'questions';
     protected $primaryKey = 'q_id';
     public $timestamps = false;
 
     public $fillable = ['q_id', 'question' , 'cat_id'];
-    private $errors = [];
-    private $total = 0;
 
     public function getQuestions( Request $r )
     {
@@ -83,13 +76,6 @@ class Questions extends Model
         return $this;
     }
 
-    public function getTotal()
-    {
-     return $this->total;
-    }
 
-    public function getErrors()
-    {
-        return $this->errors;
-    }
+
 }

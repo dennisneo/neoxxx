@@ -27,6 +27,11 @@ var ftVuew = new Vue({
                 }
             }
             $('#profileModal').modal()
+        },
+        bookTeacher:function( tid ) {
+            $('#profileModal').modal('toggle');
+            $('#bookClassModal').modal();
+            bcVue.$data.teacher = this.teacher
         }
     },
     ready:function(){

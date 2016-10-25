@@ -20,7 +20,6 @@ class ClassSessions extends ClassSessionEntity{
 
     public function getClassSession( $cid )
     {
-
         $cs =  ClassSessions::where( 'class_id' , $cid )
             ->from( 'class_sessions as cs' )
             ->leftjoin( 'users as t', 't.id', '=' , 'cs.teacher_id' )
@@ -43,6 +42,7 @@ class ClassSessions extends ClassSessionEntity{
             ->leftjoin( 'users as t', 't.id', '=' , 'cs.teacher_id' );
 
         $this->total = $cs->count();
+        $cs->orderBy( 'schedule_start_at', 'DESC' );
         $schedules = $cs->get( [ 'cs.*' , 't.first_name as t_fname' , 't.last_name as t_lname' , 't.id as tid', ] );
 
         return $this->vuefyCollection( $schedules );
@@ -84,6 +84,10 @@ class ClassSessions extends ClassSessionEntity{
     {
         $this->start_timestamp = strtotime($this->schedule_start_at);
         $this->end_timestamp = $this->start_timestamp + ( $this->duration*60 ) ;
+        $this->day = date( 'M d, Y' , $this->start_timestamp );
+        $this->time = date( 'H:s a' , $this->start_timestamp );
+        $this->teacher_short_name = $this->t_fname.' '.strtoupper(substr( $this->t_lname , 0 , 1 )).'. ';
+        $this->cid = Text::convertInt( $this->class_id );
         return $this;
     }
 

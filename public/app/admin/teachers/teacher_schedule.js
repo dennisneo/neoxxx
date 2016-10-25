@@ -4,14 +4,13 @@ var tsVue = new Vue({
 
     },
     methods:{
-        openNewSched:function()
-        {
+        openNewSched:function() {
             // clean all fields
             $('#schedModal').modal();
+            $('.dow').prop( 'checked' , false);
         },
 
-        saveSched:function()
-        {
+        saveSched:function() {
             var event;
             $('.btn').prop('disabled', true );
             $.post(subdir+'/ajax/admin/teacher/add_schedule' , $('#tForm').serialize() )
@@ -20,13 +19,16 @@ var tsVue = new Vue({
                     toastr.success( ' Schedule added ');
                     $('#schedModal').modal( 'toggle' );
 
-                    if( data.error_messages ){
-                        toastr.warning( data.error_messages);
+                    if( data.error_message ){
+                        toastr.warning( data.error_message );
                     }
 
                     for( i = 0 ; i < data.schedules.length ; i++ ){
                         s = data.schedules[i];
-                        event = { id: s.sid , title:' Vacant ', start:  new Date( s.start_timestamp ).toISOString() , end: new Date( s.end_timestamp ).toISOString() };
+                        start_timestamp = parseInt( s.start_timestamp ) * 1000;
+                        end_timestamp   = parseInt( s.end_timestamp ) * 1000;
+
+                        event = { id: s.sid , title:'  ', start:  new Date( start_timestamp ).toISOString() , end: new Date( end_timestamp ).toISOString() };
                         $('#calendar').fullCalendar( 'renderEvent', event, true);
                     }
 

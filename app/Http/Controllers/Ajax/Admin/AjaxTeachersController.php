@@ -8,6 +8,7 @@ use App\Models\Users\Applicant;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
 use Helpers\DateTimeHelper;
+use Helpers\Text;
 use Illuminate\Http\Request;
 
 class AjaxTeachersController extends AjaxBaseController{
@@ -80,14 +81,14 @@ class AjaxTeachersController extends AjaxBaseController{
             ];
         }
 
-        $r->request->add([ 'teacher_id'=> $r->teacher_id, 'from_time' => $start_time , 'to_time' => $end_time  ]);
+        $teacher_id = Text::recoverInt( $r->teacher_id );
+
+        $r->request->add([ 'teacher_id'=> $teacher_id, 'from_time' => $start_time , 'to_time' => $end_time  ]);
 
         foreach( $r->dow as $dow ){
 
-            $r->request->add([ 'weekday' => $dow ]);
-
             $schedule = new Teachers\TeacherSchedule;
-            if( ! $s = $schedule->store( $r ) ){
+            if( ! $s = $schedule->store( $r , $dow ) ){
                 $errors[] = $schedule->conflict_message;
                 continue;
             }

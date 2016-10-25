@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Models\ClassSessions\ClassFeedback;
 use Helpers\Html;
+use Illuminate\Http\Request;
 
 class StudentPlacementExamController extends StudentBaseController{
 
@@ -12,17 +13,23 @@ class StudentPlacementExamController extends StudentBaseController{
         parent::__construct();
     }
 
-    public function index()
+    public function index(  Request $r )
     {
-
         $this->indexAssets();
-        $this->layout->content = view( 'student.student_placement_exam' );
+        $this->layout->content = view( 'student.student_placement_exam' , [ 'r' => $r ] );
+        return $this->layout;
+    }
+
+    public function start( Request $r )
+    {
+        Html::instance()->addScript( '/public/app/student/student_placement_exam.js' );
+        $this->layout->content = view( 'student.pe.pe_intro' , [ 'r' => $r ] );
         return $this->layout;
     }
 
     private function indexAssets()
     {
-        Html::instance()->addScript( '/public/app/student/student_placement_exam.js' );
+        //Html::instance()->addScript( '/public/app/student/student_placement_exam.js' );
     }
 
 }

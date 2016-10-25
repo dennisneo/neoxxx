@@ -80,7 +80,7 @@
                     <div class="col-lg-8">
                         <div>
                             <div class="pull-right">
-                                <button class="btn btn-success"><i class="fa fa-plus"></i> <b><?php echo trans('general.schedule_me_a_class') ?></b> </button>
+                                <button class="btn btn-success" v-on:click="bookTeacher( teacher.id )"><i class="fa fa-plus"></i> <b><?php echo trans('general.schedule_me_a_class') ?></b> </button>
                             </div>
                             <h2><b>{{teacher.short_name}}</b></h2>
                         </div>

@@ -18,11 +18,13 @@ class StudentSessionsController extends StudentBaseController{
     public function newSession( Request $r )
     {
         $cid = Text::recoverInt( $r->cid );
-        if( ! $class_session = ClassSessions::find( $cid ) ){
+
+        if( ! $class_session = ( new ClassSessions)->getClassSession( $cid ) ){
             // redirect somewhere
             session()->flash( 'error_message' , trans( 'general.invalid_class_session'));
             return redirect( '' );
         }
+
         $class_session->vuefy();
         $this->newSessionAssets();
 

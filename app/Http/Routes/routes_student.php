@@ -13,6 +13,8 @@ Route::group( [ 'prefix' => 'student' , 'as'=> 'student' , 'middleware' =>'auth'
     Route::get( 'placement_exam', 'Student\StudentPlacementExamController@index' );
     Route::get( 'learning_goals', 'Student\StudentLearningGoalsController@index' );
 
+    Route::get( 'pe/start', 'Student\StudentPlacementExamController@start' );
+
     // show teacher view on student perspective
     Route::get( 't/{id}', 'Student\StudentDashboardController@teacher' );
     Route::get( 'sdetails', 'Student\StudentSessionsController@classSessionDetails' );

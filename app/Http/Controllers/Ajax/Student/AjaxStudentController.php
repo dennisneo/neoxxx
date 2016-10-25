@@ -13,6 +13,7 @@ use App\Http\Controllers\Ajax\AjaxBaseController;
 use App\Models\ClassSessions\ClassFeedback;
 use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
+use App\Models\LearningGoals\LearningGoalMap;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
@@ -69,10 +70,13 @@ class AjaxStudentController extends AjaxBaseController{
     {
         $s = new ClassSessions();
 
+        $r->request->add(['class_status'=>'for confirmation']);
+
         if( ! $session = $s->store( $r ) ){
             return [
                 'success' => false,
                 'message' => $s->getErrors(),
+                'error_code' => $s->error_code
             ];
         }
 
@@ -110,7 +114,7 @@ class AjaxStudentController extends AjaxBaseController{
             ];
         }
 
-        $s->status = 'active';
+        $s->class_status = 'active';
         $s->save();
 
         // fire new class event
@@ -156,7 +160,10 @@ class AjaxStudentController extends AjaxBaseController{
         // fire new class event
         Event::fire( new CancelClassSessionEvent( $s ) );
 
-
+        return [
+            'success' =>true,
+            'session' => $s
+        ];
     }
 
     public function availableTeachers( Request $r )
@@ -268,6 +275,37 @@ class AjaxStudentController extends AjaxBaseController{
         return [
             'success' =>true ,
             'feedback' => $feedback
+        ];
+    }
+
+    public function getLearningGoals( Request $r ){
+        $lg = LearningGoalMap::getLearningGoalsByStudentId( $r->sid );
+        return [
+            'success' =>true,
+            'lg' => $lg
+        ];
+    }
+
+    public function saveLearningGoals( Request $r )
+    {
+        \DB::beginTransaction();
+
+        try{
+
+            LearningGoalMap::purgeAndSave( $r );
+
+        }catch( \Exception $e ){
+            \DB::rollback();
+            return [
+                'success'   => false,
+                'message'  => $e->getMessage()
+            ];
+        }
+
+        \DB::commit();
+
+        return [
+            'success' =>true
         ];
     }
 

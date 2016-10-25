@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 
-class BaseModel extends Model
+class BaseModel extends \Eloquent
 {
     protected $total     = 0;
     protected $pages     = 1;
     protected $page      = 1; // current_page
     protected $limit     = 20;
     protected $errors    = [];
+
+    public $error_code;
 
     public function getTotal()
     {

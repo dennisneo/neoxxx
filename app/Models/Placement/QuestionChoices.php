@@ -22,6 +22,8 @@ class QuestionChoices extends Model
     public $fillable = ['c_id', 'q_id' , 'choice'];
     private $errors = [];
 
+    public $choices = [];
+
     public function store( Request $r , $choice )
     {
         $validator = Validator::make( $r->all(), [
@@ -47,6 +49,35 @@ class QuestionChoices extends Model
         $this->save();
 
         return $this;
+    }
+
+    public function getByQuestionId( $q_id )
+    {
+        $choices =  static::where('q_id' , $q_id )
+            ->orderByRaw('RAND()')
+            ->get();
+
+
+        $this->choices = $choices;
+        return $this;
+    }
+
+    public function vuefy()
+    {
+        // do not return answer in vue calls
+        unset( $this->is_answer );
+        unset( $this->added_by );
+        return $this;
+    }
+
+    public function vuefyCollection( )
+    {
+        $c_arr = [];
+        foreach( $this->choices as $c ){
+            $c_arr[] = $c->vuefy();
+        }
+
+        return $c_arr;
     }
 
     public function getErrors()

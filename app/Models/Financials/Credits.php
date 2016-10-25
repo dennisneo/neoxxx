@@ -78,14 +78,19 @@ class Credits extends Model{
     public static function getCreditsByDuration( $duration )
     {
         switch( $duration ){
-            case 30:
-                if( $s = Settings::getByKey( 'credits_thirty_minutes' ) ){
-                    return $s->value;
+            case 20:
+                if( $value = Settings::getByKey( 'credits_twenty_minutes' ) ){
+                    return $value;
+                }
+            break;
+            case 40:
+                if( $value = Settings::getByKey( 'credits_fourty_minutes' ) ){
+                    return $value;
                 }
             break;
             case 60:
-                if( $s = Settings::getByKey( 'credits_one_hour' ) ){
-                    return $s->value;
+                if( $value = Settings::getByKey( 'credits_one_hour' ) ){
+                    return $value;
                 }
             break;
             default:

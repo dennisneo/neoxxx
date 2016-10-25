@@ -15,10 +15,10 @@ class StudentDashboardController extends StudentBaseController{
         parent::__construct();
     }
 
-    public function index()
+    public function index( Request $r )
     {
         $this->indexAssets();
-        $this->layout->content = view( 'student.student_dashboard' );
+        $this->layout->content = view( 'student.student_dashboard' , [ 'r' => $r ] );
         return $this->layout;
     }
 
@@ -58,7 +58,7 @@ class StudentDashboardController extends StudentBaseController{
 
     private function indexAssets()
     {
-        Html::loadDateCombo();
+
         Html::loadDatepicker();
         Html::loadToastr();
         Html::instance()->addScript( '/public/app/student/student_dashboard.js' );

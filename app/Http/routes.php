@@ -68,6 +68,11 @@ if( Request::segment(1) == 'test' ){
     return;
 }
 
+if( Request::segment(1) == 'utils' ){
+    Route::get( 'utils/pq', 'UtilsController@populateQuestions' );
+    return;
+}
+
 Route::get( 'pwd', 'UtilsController@pwd' );
 
 

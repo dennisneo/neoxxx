@@ -28,10 +28,14 @@ var sVue = new Vue({
                 $('.btn').prop('disabled', false );
                 $('#next').html( ' Next ' );
             });
+        },
+        bookClass:function()
+        {
+            bcVue.$data.teacher = {};
+            $('#bookClassModal').modal();
         }
     },
     ready:function(){
-        $( "#date" ).datepicker({});
         $.get( subdir+'/ajax/student/credits' , { sid: $('#student_id').val()} )
         .done(function( data ){
             if(data.success){

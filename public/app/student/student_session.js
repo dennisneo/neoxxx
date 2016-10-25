@@ -53,9 +53,14 @@ var sVue = new Vue({
         cancelSession:function()
         {
             if( confirm( 'Are you sure you want to cancel this class session?') ){
-                $.post( subdir+'/ajax/student/sas' , $('#sForm').serialize() )
+                $.post( subdir+'/ajax/student/scancel' , $('#sForm').serialize() )
                 .done(function( data ){
-
+                    if(data.success){
+                       toastr.success( 'Class session successfully canceled' );
+                        url = subdir+'/student/dashboard';
+                    }else{
+                       toastr.error( data.message );
+                    }
                 })
                 .error(function( data ){
 

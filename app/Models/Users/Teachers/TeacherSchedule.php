@@ -20,11 +20,13 @@ class TeacherSchedule extends BaseModel{
     public $conflict_message;
     protected $schedules;
 
-    public function store( Request $r )
+    public function store( Request $r , $weekday )
     {
         if( $r->sid ){
             $this->exists = true;
         }
+
+        $this->weekday = $weekday;
 
         $this->fill( $r->all() );
 
@@ -43,6 +45,7 @@ class TeacherSchedule extends BaseModel{
     {
         // check if
         $f = static::where( 'weekday' , $this->weekday )
+            ->where( 'teacher_id' , $this->teacher_id )
             ->where(function($q){
                 $q->whereBetween( 'from_time', [ $this->from_time , $this->to_time ] )
                     ->orWhereBetween( 'to_time' ,  [ $this->from_time , $this->to_time ] );

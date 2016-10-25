@@ -7,8 +7,10 @@
                 <table class="table table-striped">
                     <tr>
                         <th></th>
+                        <th>Session ID</th>
                         <th>Teacher</th>
                         <th>Date</th>
+                        <th>Time</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -20,8 +22,10 @@
                     </tr>
                     <tr v-for="s in sessions">
                         <td></td>
+                        <td>{{s.cid}}</td>
                         <td>{{s.teacher_short_name}}</td>
-                        <td>{{s.day}} {{s.time}}</td>
+                        <td>{{s.day}}</td>
+                        <td>{{s.time}}</td>
                         <td>{{s.class_status}}</td>
                         <td>
                             <div class="dropdown pull-right">
@@ -29,6 +33,7 @@
                                     <i class="fa fa-chevron-down"></i>
                                 </button>
                                 <ul class="dropdown-menu" style="padding:4px">
+                                    <li><a href="javascript:">Send Notification to Teacher</a></li>
                                     <li class="" v-bind:class="s.class_status == 'Done' ? '' : 'hide'  ">
                                         <a href="javascript:" v-on:click="evaluateTeacherModal( s.ccid , s.teacher_short_name+' - '+s.day )"> <i class="fa fa-user"></i> Evaluate Teacher </a>
                                     </li>

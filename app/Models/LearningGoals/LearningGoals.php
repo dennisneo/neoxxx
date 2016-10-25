@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/28/2016
- * Time: 10:31 AM
- */
 
 namespace App\Models\LearningGoals;
 
@@ -57,7 +51,7 @@ class LearningGoals extends BaseModel{
         $l_arr = [];
         $learning_goals = static::all();
         foreach( $learning_goals as $lg ){
-            $l_arr[] = '<input type="checkbox" name="lg[]" value="'.$lg->goal_id.'" /> '.$lg->goal;
+            $l_arr[] = '<input type="checkbox" class="lg_cb" name="lg[]" value="'.$lg->goal_id.'" /> '.$lg->goal;
         }
 
         return implode( "<br />" , $l_arr );

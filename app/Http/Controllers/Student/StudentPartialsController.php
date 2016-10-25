@@ -34,5 +34,19 @@ class StudentPartialsController extends StudentBaseController{
         );
     }
 
+    public static function placementExamPartial( Request $r )
+    {
+        Html::instance()->addScript( '/public/app/student/partials/placement_exam.js'  );
+        return view( 'student.partials.placement_exam' ,
+            []
+        );
+    }
 
+    public static function bookClassPartial( Request $r )
+    {
+        Html::instance()->addScript( '/public/app/student/partials/book_class.js'  );
+        Html::loadDateCombo();
+        Html::loadDatepicker();
+        return view( 'student.partials.book_class' , [] );
+    }
 }

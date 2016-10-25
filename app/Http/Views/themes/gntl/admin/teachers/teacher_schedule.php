@@ -41,21 +41,21 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="start_time">Start Time</label>
-                                <input type="text" id="start_time" data-format="h:mm a" data-template="hh : mm a" name="start_time">
+                                <input type="text" id="start_time" data-format="h:mm a" value="8:00 am" data-template="hh : mm a" name="start_time">
 
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="end_time">End Time</label>
-                                <input type="text" id="end_time" data-format="h:mm a" data-template="hh : mm a" name="end_time">
+                                <input type="text" id="end_time" data-format="h:mm a" value="11:00 am" data-template="hh : mm a" name="end_time">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <b> Day of the Week: </b>
                             <div>
                             <?php foreach ( \Helpers\DateTimeHelper::daysOfTheWeek() as $k => $v ) { ?>
-                                <input type="checkbox" name="dow[]" value="<?php echo $k ?>" /> <?php echo  $v ?> &nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" class="dow" name="dow[]" value="<?php echo $k ?>" /> <?php echo  $v ?> &nbsp;&nbsp;&nbsp;
                             <?php } ?>
                             </div>
                         </div>

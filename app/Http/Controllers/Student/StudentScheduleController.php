@@ -14,7 +14,6 @@ class StudentScheduleController extends StudentBaseController{
 
     public function index()
     {
-
         $this->indexAssets();
         $this->layout->content = view( 'student.student_schedule' );
         return $this->layout;

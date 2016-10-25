@@ -38,12 +38,18 @@ class ClassSessionEntity extends BaseModel{
         $this->schedule_start_at =  date( 'Y-m-d H:i:s' , strtotime( $r->date.' '.$r->time ) );
 
         // check if session is in the future
+        $twelve_hrs = time() + ( 60 * 60 * 12 );
+        if( strtotime( $this->schedule_start_at ) < $twelve_hrs  ){
+            $this->errors[] = trans( 'errors.later_than_twelve_hours' );
+            return false;
+        }
 
         // get credits by duration
         $this->credits = Credits::getCreditsByDuration( $r->duration );
 
         if( $this->credits === false ){
-            $this->errors[] = trans( 'invalid_credit_value' );
+            $this->errors[] = trans( 'general.not_enough_credit' );
+            $this->error_code = 'NOT_ENOUGH_CREDIT';
             return false;
         }
 
