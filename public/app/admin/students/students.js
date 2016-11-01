@@ -2,10 +2,51 @@
 var sVue = new Vue({
     el:'#sDiv',
     data:{
-        students:[]
+        students:[],
+        student:{},
+        classes: [],
+        notes:[],
+        exams: []
     },
     methods:{
+        openStudentView:function( sid )
+        {
+            $.get(subdir+'/ajax/student/gs' , { sid:sid })
+            .done(function( data ){
+                if(data.success){
+                    sVue.$data.student = data.student;
+                    sVue.$data.classes = data.classes;
+                    sVue.$data.notes = data.notes;
+                    sVue.$data.exams = data.exams;
+                }else{
+                   toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
 
+            });
+            $('#studentViewModal').modal()
+        },
+        saveNote:function()
+        {
+            $('#note-btn').html( '<i class="fa fa-refresh fa-spin"></i>' );
+
+            $.post( subdir+'/ajax/admin/sn', $('#nForm').serialize() )
+            .done(function( data ){
+
+                if(data.success){
+                    toastr.success('Note successfully saved');
+                    $('#note').val('')
+                }else{
+                   toastr.error( data.message );
+                }
+
+                $('#note-btn').html( 'Save Note' );
+            }).error(function( data ){
+                toastr.error( 'Something went wrong');
+                $('#note-btn').html( 'Save Note' );
+            });
+        }
     },
     ready:function(){
         $.get(  subdir+'/ajax/students/getall')
@@ -21,3 +62,16 @@ var sVue = new Vue({
         });
     }
 });
+
+$('.li-tab').click(
+    function(){
+        d = $(this).attr('data-tab');
+
+        $('.li-tab').removeClass('active');
+        $('li[data-tab="'+d+'"]').addClass('active');
+        $('.tab-content').addClass('hide');
+        $('#'+d).removeClass('hide');
+
+        //$('#'+d+'-tab').addClass('active');
+    }
+);

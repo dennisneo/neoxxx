@@ -23,7 +23,7 @@ class ClassSessionEntity extends BaseModel{
     public $timestamps = false;
 
     public $fillable    = [ 'class_id' , 'student_id', 'teacher_id' , 'duration', 'class_status' , 'actual_duration',
-        'comments' , 'class_performance' ];
+        'comments' , 'performance_notes' ];
 
     public function store( Request $r )
     {
@@ -94,15 +94,26 @@ class ClassSessionEntity extends BaseModel{
         $class->fill( $r->all() );
         $class->save();
 
-        return $class;
+        $cs =  ClassSessions::where( 'class_id' , $class->class_id )
+            ->from( 'class_sessions as cs' )
+            ->leftjoin( 'users as s', 's.id', '=' , 'cs.student_id' )
+            ->leftjoin( 'users as t', 't.id', '=' , 'cs.teacher_id' );
+
+        $fields = [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid'
+        ,'t.first_name as t_fname' , 't.last_name as t_lname' , 't.id as tid'];
+
+        return $cs->first( $fields );
     }
 
     public function vuefy()
     {
+
+        $this->start_timestamp = strtotime($this->schedule_start_at);
+        $this->end_timestamp = $this->start_timestamp + ( $this->duration*60 ) ;
         $this->time = date( 'H:i a' , strtotime( $this->schedule_start_at ));
         $this->day = date( 'M d, Y' , strtotime( $this->schedule_start_at ));
         $this->class_status = ucwords( $this->class_status );
-        $this->ccid = Text::convertInt( $this->class_id );
+        $this->cid = Text::convertInt( $this->class_id );
         // for teachers
         if( isset( $this->t_fname )){
             $this->teacher_short_name = ucwords( strtolower( $this->t_fname.' '.substr( $this->t_lname , 0 , 1 ).'.' ) );

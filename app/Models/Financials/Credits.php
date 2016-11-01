@@ -9,10 +9,14 @@
 namespace App\Models\Financials;
 
 use App\Models\Settings\Settings;
+use App\Models\Users\Students\StudentCredits;
 use App\Models\Users\UserEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
+
+// Deprecated
+// use StudentCredits instead
 
 class Credits extends Model{
 
@@ -23,82 +27,15 @@ class Credits extends Model{
     public $fillable    = [];
     private $errors     = [];
 
-    public function store( Request $r )
-    {
-        $validator = Validator::make( $r->all(), [
-            'goal' => 'required'
-        ]);
-
-        if( $validator->fails() ){
-            $this->errors[] = '';
-            return false;
-        }
-
-        $this->fill( $r->all() );
-        $pkey = $this->primaryKey;
-        if( $r->$pkey ) {
-            $this->exists = true;
-        }else{
-            $this->added_at = date('Y-m-d H:i:s');
-            $this->added_by = UserEntity::me()->id;
-        }
-
-
-        $this->save();
-
-        return $this;
-
-    }
-
-    public function getErrors()
-    {
-        $html = '<ul>';
-        foreach( $this->errors as $e ){
-            $html .= '<li>'.$e.'</li>';
-        }
-        $html .= '</ul>';
-
-        return $html;
-    }
 
     public static function getCreditsByStudentId( $student_id , $return_model = false )
     {
-        $credit = static::where( 'student_id' , $student_id )->first();
-        if( ! $credit ){
-           return false;
-        }
-
-        if( $return_model ){
-            return $credit;
-        }
-
-        return $credit->credits;
+        return StudentCredits::getCreditsByStudentId( $student_id , $return_model );
     }
 
     public static function getCreditsByDuration( $duration )
     {
-        switch( $duration ){
-            case 20:
-                if( $value = Settings::getByKey( 'credits_twenty_minutes' ) ){
-                    return $value;
-                }
-            break;
-            case 40:
-                if( $value = Settings::getByKey( 'credits_fourty_minutes' ) ){
-                    return $value;
-                }
-            break;
-            case 60:
-                if( $value = Settings::getByKey( 'credits_one_hour' ) ){
-                    return $value;
-                }
-            break;
-            default:
-                return false;
-            break;
-        }
-
-        return false;
+        return StudentCredits::getCreditsByDuration( $duration );
     }
 
 }

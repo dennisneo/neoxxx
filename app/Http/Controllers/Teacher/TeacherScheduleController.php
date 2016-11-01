@@ -14,10 +14,10 @@ class TeacherScheduleController extends TeacherBaseController{
 
     public function index()
     {
-        $this->layout->content  =  view('teacher.teacher_schedule');
-        Html::instance()->addScript( 'public/app/teacher/teacher_schedule.js' );
         Html::loadFileupload();
         Html::loadDatepicker();
+        $this->layout->content  =  view('teacher.teacher_schedule');
+        Html::instance()->addScript( 'public/app/teacher/teacher_schedule.js' );
         return $this->layout;
     }
 

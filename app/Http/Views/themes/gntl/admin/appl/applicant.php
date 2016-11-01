@@ -66,48 +66,65 @@
         <div class="col-lg-6">
             <div class="x_panel">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">Requirements</a></li>
-                    <li role="presentation"><a href="#">Notes</a></li>
-                    <li role="presentation"><a href="#">Messages</a></li>
+                    <li role="presentation" data-tab="tab1" class="tab active"><a href="#">Requirements</a></li>
+                    <li role="presentation" data-tab="tab2" class="tab"><a href="#">Notes</a></li>
                 </ul>
 
                 <br />
-                <div>
-                    <h4>Requirements:</h4>
-                </div>
-                <div>
-                    <ul class="list-group">
-                        <li class="list-group-item" >
-                            <div class="pull-right" >
-                                <input type="checkbox" class="req" name="cred">
-                            </div>
-                            Valid Credentials
-                        </li>
-                        <li class="list-group-item">
-                            <div class="pull-right" >
-                                <input type="checkbox" class="req" name="connection">
-                            </div>
-                            Reliable and Fast Internet Connection
-                        </li>
-                        <li class="list-group-item">
-                            <div class="pull-right" >
-                                <input type="checkbox" class="req" name="home_office">
-                            </div>
-                            Comfortable Home Office
-                        </li>
-                        <li class="list-group-item">
-                            <div class="pull-right" >
-                                <input type="checkbox" class="req" name="audio">
-                            </div>
-                            Audio Recording
-                        </li>
-                        <li class="list-group-item">
-                            <div class="pull-right" >
-                                <input type="checkbox" class="req" name="schedule">
-                            </div>
-                            Appropriate Schedule
-                        </li>
-                    </ul>
+                <div id="tab1" class="tabDiv">
+                    <div>
+                        <h4>Requirements:</h4>
+                    </div>
+                    <div>
+                        <form id="rForm">
+                        <ul class="list-group">
+                            <li class="list-group-item" >
+                                <div class="pull-right" >
+                                    <input type="checkbox" class="req" name="req[]" value="cred">
+                                </div>
+                                Valid Credentials
+                            </li>
+                            <li class="list-group-item">
+                                <div class="pull-right" >
+                                    <input type="checkbox" class="req" name="req[]" value="internet connection">
+                                </div>
+                                Reliable and Fast Internet Connection
+                            </li>
+                            <li class="list-group-item">
+                                <div class="pull-right" >
+                                    <input type="checkbox" class="req" name="req[]" value="home_office">
+                                </div>
+                                Comfortable Home Office
+                            </li>
+                            <li class="list-group-item">
+                                <div class="pull-right" >
+                                    <input type="checkbox" class="req" name="req[]" value="audio">
+                                </div>
+                                Audio Recording
+                            </li>
+                            <li class="list-group-item">
+                                <div class="pull-right" >
+                                    <input type="checkbox" class="req" name="schedule">
+                                </div>
+                                Appropriate Schedule
+                            </li>
+                        </ul>
+                        <?php echo csrf_field() ?>
+                        </form>
+                        <div>
+                            <button class="btn btn-primary" v-on:click="saveRequirements" id="rqBtn"> Save Requirements </button>
+                        </div>
+                    </div>
+                </div >
+
+                <div id="tab2" class="tabDiv hide">
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <?php echo \Form::textarea( 'note' , '' , [ 'class' => 'form-control' , 'id'=>'note' ] ) ?>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary"> Save Note </button>
+                    </div>
                 </div>
             </div>
         </div>

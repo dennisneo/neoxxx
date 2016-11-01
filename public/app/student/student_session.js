@@ -10,7 +10,8 @@ var sVue = new Vue({
             $.post( subdir+'/ajax/student/ts' , { cid: $('#cid').val() , tid:tid ,_token:$('#_token').val() })
             .done(function( data ){
                 if( data.success ){
-                    sVue.$data.selected_teacher = data.teacher
+                    sVue.$data.selected_teacher = data.teacher;
+                    $('#teacher_id').val( data.teacher.id )
                     toastr.success( 'Teacher selected' );
                 }else{
                    toastr.error( data.message );
@@ -24,7 +25,7 @@ var sVue = new Vue({
             $('.btn').prop('disabled', true );
             $('.save').html('<i class="fa fa-refresh fa-spin"></i>' );
 
-            if( ! this.selected_teacher.id ){
+            if( ! $('#teacher_id').val() ){
 
                 $('.btn').prop('disabled', false );
                 $('.save').html( '<i class="fa fa-check"></i> Confirm' );
@@ -69,6 +70,10 @@ var sVue = new Vue({
         }
     },
     ready:function(){
+
+        if( $('#teacher_id').val() ){
+            return;
+        }
         // load available teachers
         $.get( subdir+'/ajax/student/at' , { cid: $('#cid').val() } )
         .done(function( data ){

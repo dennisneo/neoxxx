@@ -5,6 +5,21 @@ var ftVuew = new Vue({
         teacher:{}
     },
     methods:{
+        search:function(){
+
+            $.get( subdir+'/ajax/student/teacher/search' , { q:$('#q').val() })
+            .done(function( data ){
+                if(data.success){
+                   ftVuew.$data.teachers = data.teachers
+                }else{
+                   toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+
+            });
+
+        },
         openAvailability:function( tid ){
             $('#availabilityModal').modal();
             $.get( subdir+'/ajax/student/teacher/sessions' , { tid:tid })
@@ -32,6 +47,9 @@ var ftVuew = new Vue({
             $('#profileModal').modal('toggle');
             $('#bookClassModal').modal();
             bcVue.$data.teacher = this.teacher
+        },
+        r:function( n ){
+            return parseInt( Math.round(n) );
         }
     },
     ready:function(){

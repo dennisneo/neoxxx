@@ -1,5 +1,6 @@
 <ul class="nav side-menu">
     <li><a href="<?php echo Url('admin/dashboard') ?>"><i class="fa fa-home"></i> <b>Dashboard</b> <span class="fa fa-chevron-down"></span></a></li>
+    <li><a href="<?php echo Url('admin/schedules') ?>"><i class="fa fa-home"></i> <b>Class Schedules</b> <span class="fa fa-chevron-down"></span></a></li>
     <li><a href="<?php echo Url('admin/applicants') ?>"><i class="fa fa-table"></i> <b>Applicants</b> <span class="fa fa-chevron-down"></span></a></li>
     <li><a href="<?php echo Url('admin/teachers') ?>"><i class="fa fa-table"></i> <b>Teachers</b> <span class="fa fa-chevron-down"></span></a></li>
     <li><a href="<?php echo Url('admin/students') ?>"><i class="fa fa-table"></i> <b>Students</b> <span class="fa fa-chevron-down"></span></a></li>

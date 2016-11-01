@@ -13,8 +13,11 @@ use App\Models\Performance\TeacherPerformance;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
+use App\Models\Users\TeacherPivot;
 use App\Models\Users\Teachers;
+use App\Models\Users\UserEntity;
 use Helpers\Text;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Event;
 
@@ -25,6 +28,142 @@ class AjaxTeacherController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function updateAbout( Request $r )
+    {
+        $user = UserEntity::me();
+        $teacher = TeacherPivot::where('user_id' , $user->id  )->first();
+        if( ! $teacher ){
+            return [
+                'success' =>false,
+                'message' => 'Cannot update write-up. Teacher not found'
+            ];
+        }
+        $teacher->about = $r->about;
+        $teacher->save();
+
+        return [
+            'success' =>true,
+            'about' => $r->about
+        ];
+    }
+
+    public function uploadVoice( Request $r )
+    {
+        if( ! $teacher = TeacherEntity::find( UserEntity::me()->id ) ){
+            return [
+                'success' => false,
+                'message' => 'Invalid user id'
+            ];
+        }
+
+        if( $teacher->user_type != 'teacher' ){
+            return [
+                'success' => false,
+                'message' => 'Only teachers are allowed to upload voice files'
+            ];
+        }
+
+        if( $r->hasFile('audio') ){
+
+            if (! $r->file('audio')->isValid()) {
+                return [
+                    'success' =>   false,
+                    'message' =>   'File not valid'
+                ];
+            }
+
+            $user = UserEntity::me();
+
+            if( ! $url = $teacher->uploadVoice( $r ) ){
+                return [
+                    'success' => false,
+                    'message' => $user->displayErrors()
+                ];
+            }
+
+            return [
+                'success' =>true,
+                'url' => $url
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Audio file not found'
+        ];
+    }
+
+    public function deleteVoice( Request $r ){
+
+        $user_id = Text::recoverInt( $r->cid );
+
+        $teacher = TeacherPivot::where('user_id' , $user_id  )
+            ->first();
+        if( ! $teacher ){
+            return [
+                'success' =>false,
+                'message' => 'Cannot delete audio file. Teacher not found'
+            ];
+        }
+
+        $teacher->voice_url = '';
+        $teacher->save();
+
+        return [
+            'success' =>true
+        ];
+
+    }
+
+    public function uploadProfilePhoto( Request $r )
+    {
+        if( $r->hasFile('photo') ){
+
+            if (! $r->file('photo')->isValid()) {
+                return [
+                    'success' =>   false,
+                    'message' =>   'File not valid'
+                ];
+            }
+
+            $user = UserEntity::me();
+
+
+            if( ! $user->uploadProfilePhoto( $r ) ){
+                return [
+                    'success' => false,
+                    'message' => $user->displayErrors()
+                ];
+            }
+
+            return [
+                'success' =>true,
+                'user' => $user->vuefy()
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Uploaded file not found'
+        ];
+
+    }
+
+    public function saveProfile( Request $r )
+    {
+        $teacher = new TeacherEntity();
+
+        if( ! $teacher->store( $r ) ){
+            return [
+                'success' =>false,
+                'message' => $teacher->displayErrors()
+            ];
+        }
+
+        return [
+            'success' =>true
+        ];
+    }
 
     public function getTeacherSchedule( Request $r )
     {
@@ -59,9 +198,9 @@ class AjaxTeacherController extends AjaxBaseController{
 
     public function updateClassRecord( Request $r )
     {
-        $sessions = ClassSessions::find( $r->class_id );
+        $sessions = ClassSessionEntity::find( $r->class_id );
 
-        if( ! $sessions->updateRecord( $r ) ){
+        if( ! $s  = $sessions->updateRecord( $r ) ){
             return [
                 'success' => false,
                 'message' => $sessions->displayErrors()
@@ -70,7 +209,8 @@ class AjaxTeacherController extends AjaxBaseController{
 
         return [
             'success' => true,
-            'sessions' => $sessions
+            'n' => 1,
+            'sessions' => $s->vuefy()
 
         ];
     }

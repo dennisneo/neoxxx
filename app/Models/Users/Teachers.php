@@ -51,8 +51,9 @@ class Teachers extends TeacherEntity{
         }
 
         $this->total = $t->count();
+        $this->collection =  $t->get();
 
-        return $t->get();
+        return $this->collection;
     }
 
     public function vuefyAll( $teachers )
@@ -63,6 +64,11 @@ class Teachers extends TeacherEntity{
         }
 
         return $t_arr;
+    }
+
+    public function vuefy()
+    {
+        return $this;
     }
 
     public function getErrors()

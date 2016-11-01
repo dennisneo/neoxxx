@@ -4,6 +4,8 @@
     <li><a href="<?php echo Url('student/schedule') ?>"><i class="fa fa-table"></i> <b>Class Schedule</b> <span class="fa fa-chevron-down"></span></a></li>
     <li><a href="<?php echo Url('student/teachers') ?>"><i class="fa fa-users"></i> <b>Teachers</b> <span class="fa fa-chevron-down"></span></a></li>
     <li><a href="<?php echo Url('student/placement_exam') ?>"><i class="fa fa-check"></i> <b>Placement Exam</b> <span class="fa fa-chevron-down"></span></a></li>
+    <li><a href="<?php echo Url('student/profile') ?>"><i class="fa fa-user"></i> <b>My Profile</b> <span class="fa fa-chevron-down"></span></a></li>
+    <li><a href="<?php echo Url('student/credits/buy') ?>"><i class="fa fa-money"></i> <b>Buy Credits</b> <span class="fa fa-chevron-down"></span></a></li>
 
     <!--<li><a href="<?php echo Url('student/learning_goals') ?>"><i class="fa fa-university"></i> <b>Learning Goals</b> <span class="fa fa-chevron-down"></span></a></li>-->
 </ul>

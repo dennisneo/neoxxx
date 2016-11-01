@@ -12,6 +12,8 @@ class BaseModel extends \Eloquent
     protected $page      = 1; // current_page
     protected $limit     = 20;
     protected $errors    = [];
+    protected $collection    = [];
+
 
     public $error_code;
 

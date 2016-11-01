@@ -48,7 +48,7 @@
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
-                        <h2>John Doe</h2>
+                        <h2><?php echo \App\Models\Users\UserEntity::me()->displayName() ?></h2>
                     </div>
                 </div>
                 <!-- /menu profile quick info -->

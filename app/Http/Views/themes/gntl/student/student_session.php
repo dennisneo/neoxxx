@@ -48,7 +48,7 @@
 
     <input type="hidden" name="cid" id="cid" value="<?php echo $cs->class_id ?>" />
     <input type="hidden" name="_token" id="_token" value="<?php echo csrf_token() ?>" />
-    <input type="hidden" name="teacher_id" id="teacher_id" value="" />
+    <input type="hidden" name="teacher_id" id="teacher_id" value="<?php echo $cs->teacher_id ?>" />
 
     </form>
     </div>

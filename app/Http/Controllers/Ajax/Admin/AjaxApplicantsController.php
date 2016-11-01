@@ -25,6 +25,12 @@ class AjaxApplicantsController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function saveRequirements( Request $r )
+    {
+        return [
+            'success' =>true
+        ];
+    }
 
     public function getApplicants( Request $r )
     {

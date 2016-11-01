@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Ajax;
 
 
+use App\Models\Settings\Settings;
 use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
 use Helpers\Text;
@@ -54,6 +55,10 @@ class AjaxFrontController extends AjaxBaseController{
                 'message' => $student->displayErrors()
             ];
         }
+
+        $free_credits = Settings::getByKey('credits_free' , 0);
+        // add student some FREE credits
+        $student->addCredits( $free_credits );
 
         $student->ccid = Text::convertInt( $student->id );
 

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
+use App\Models\Users\UserEntity;
 use Helpers\Html;
-use Helpers\Text;
 use Illuminate\Http\Request;
 
 class StudentDashboardController extends StudentBaseController{
@@ -22,6 +23,17 @@ class StudentDashboardController extends StudentBaseController{
         return $this->layout;
     }
 
+    public function profile( Request $r )
+    {
+        $student = ( new StudentEntity() )->getByUserId( UserEntity::me()->id );
+
+        $this->layout->content  =  view('student.student_profile' , [ 's' => $student ] );
+        Html::instance()->addScript( 'public/app/student/student_profile.js' );
+        Html::loadDateCombo();
+        Html::loadFileupload();
+        return $this->layout;
+    }
+
     public function gettingStarted( Request $r )
     {
         $this->layout->content = view( 'student.getting_started' , [ 'r' => $r ] );
@@ -31,6 +43,8 @@ class StudentDashboardController extends StudentBaseController{
     public function buyCredits()
     {
         $this->layout->content = view( 'student.buy_credits' );
+        Html::instance()->addScript( '/public/app/student/buy_credits.js' );
+
         return $this->layout;
     }
 

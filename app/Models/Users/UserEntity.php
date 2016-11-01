@@ -21,7 +21,7 @@ class UserEntity extends BaseModel{
     protected $table      = 'users';
     protected $primaryKey = 'id';
 
-    public $fillable = [ 'id', 'email' , 'user_type' , 'first_name' , 'last_name',
+    public $fillable = [ 'id', 'email' , 'user_type' , 'first_name' , 'last_name', 'middle_name',
      'birthday', 'landline' , 'mobile' , 'country', 'city', 'gender' , 'skype' , 'qq' , 'address' , 'timezone' ];
 
     protected  $errors = [];
@@ -29,31 +29,40 @@ class UserEntity extends BaseModel{
     private static $instances = [];
     protected $hidden =['password' , 'confirmation_code' , 'remember_token' , 'params' ];
 
-    public static function rules()
+    public static function rules( $exists = false )
     {
+
+        if( $exists ){
+            return [
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required'
+            ];
+        }
+
         return [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'email|unique:users'
         ];
+
     }
 
     public function store( Request $r )
     {
+        if( $r->id ){
+            $this->exists = true;
+        }
+
         // save a new applicant
         // save a new student
         // check if email is already found
-        $validator = Validator::make( $r->all(),  static::rules() );
+        $validator = Validator::make( $r->all(),  static::rules( $this->exists ) );
 
         if( $validator->fails() ){
             $this->errors = $validator->errors()->all();
             return false;
         }
-
-        if( $r->id ){
-            $this->exists = true;
-        }
-
 
         $this->fill( $r->all() );
         $params = unserialize( $this->params );
@@ -70,14 +79,55 @@ class UserEntity extends BaseModel{
             $this->confirmation_code = Text::random( null, 16 );
             $this->status       = 'new';
             $this->created_at   = date( 'Y-m-d H:i:s');
-        }
 
+        }
 
         $this->params = serialize( $params );
         $this->save();
 
         return $this;
     }
+
+    public function uploadProfilePhoto( Request $r )
+    {
+        if( ! $this->id ){
+            // can save photo only when user is set
+            $this->errors[] = 'Invalid user id';
+            return false;
+        }
+
+        $valid_files = [ 'png', 'jpg', 'jpeg', 'JPG', 'JPEG' ];
+        $ext = $r->file( 'photo' )->getClientOriginalExtension();
+
+        if( ! in_array( $ext , $valid_files  ) ){
+            $this->errors[] = 'Invalid file type. Only png and jpg files are allowed';
+            return false;
+        }
+
+        $orig_filename = $r->file( 'photo' )->getClientOriginalName();
+        $new_filename = 'profile_'.str_random( 12 ).'.'.$ext;
+
+        $destination = '/public/images/users/'.Text::convertInt( $this->id ).'/';
+        $url = url( $destination.$new_filename );
+
+        $destination  = public_path().''.$destination;
+
+        if( ! is_dir( $destination )){
+            mkdir( $destination , 755 , true );
+        }
+
+        $r->file('photo')->move( $destination , $new_filename );
+        $file_path = $destination.$new_filename;
+
+        $img = \Image::make( $file_path )->fit( 200, 200)->save();
+
+        $this->profile_photo_url = $url;
+        $this->save();
+
+        return $this;
+
+    }
+
 
     /**
      * so we can save password to db we used a simple md5 string to get pwd

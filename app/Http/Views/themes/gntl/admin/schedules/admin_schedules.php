@@ -11,14 +11,11 @@
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class="row">
-                <h3><b>My Class Schedule</b></h3>
+                <h3><b>Class Schedules</b></h3>
                 <br />
                 <form id="searchForm" method="POST">
                 <div class="row" style="padding:4px;margin:2px;margin-bottom:12px;background-color: #EFEFEF">
                     <div class="form-group">
-                        <div class="col-lg-3">
-                            Student Name: <?php echo \Form::text( 'q' , '' , [ 'class' => 'form-control inline' , 'id'=>'q' ] ) ?>
-                        </div>
                         <div class="col-lg-3">
                             Date From: <?php echo \Form::text( 'date_from' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_from' ] ) ?>
                         </div>
@@ -31,12 +28,14 @@
                         </div>
                     </div>
                 </div>
-                    <input type="hidden" name="tid" id="tid" value="<?php echo \Helpers\Text::convertInt(  \App\Models\Users\UserEntity::me()->id ); ?>" />
+                    <input type="hidden" name="tid" id="tid" value="" />
+                    <input type="hidden" name="sid" id="sid" value="" />
                 </form>
                 <table class="table table-striped">
                     <tr>
                         <th></th>
                         <th>Student</th>
+                        <th>Teacher</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Status</th>
@@ -51,6 +50,7 @@
                     <tr v-for="s in sessions">
                         <td></td>
                         <td><a href="javascript:" v-on:click="">{{s.s_fname+' '+s.s_lname}}</a></td>
+                        <td><a href="javascript:" v-on:click="">{{s.t_fname+' '+s.t_lname}}</a></td>
                         <td>{{s.day}} {{s.time}}</td>
                         <td>{{s.time}}</td>
                         <td>{{s.class_status}}</td>

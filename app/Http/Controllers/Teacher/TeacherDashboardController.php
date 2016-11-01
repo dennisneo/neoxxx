@@ -19,6 +19,7 @@ class TeacherDashboardController extends TeacherBaseController{
         $this->layout->content  =  view('teacher.teacher_dashboard',
             ['t' => $teacher ]
         );
+        Html::instance()->addScript( 'public/app/teacher/teacher_dashboard.js' );
         return $this->layout;
     }
 

@@ -107,7 +107,7 @@ var tVue = new Vue({
             this.sessions =  [];
             $('.loading').html( '<i class="fa fa-refresh fa-spin"></i>' );
 
-            $.get( subdir+'/ajax/teacher/gts' , $('#searchForm').serialize())
+            $.get( subdir+'/ajax/admin/gsched' , $('#searchForm').serialize())
                 .done(function( data ){
                     if(data.success){
                         tVue.$data.sessions =  data.sessions;

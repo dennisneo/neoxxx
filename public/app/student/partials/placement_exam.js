@@ -1,7 +1,7 @@
 var peVue = new Vue({
     el:'#peDiv',
     data:{
-    
+        learning_goals:[]
     },
     methods:{
         openLearningGoalModal:function(){
@@ -48,6 +48,16 @@ var peVue = new Vue({
         }
     },
     ready:function(){
-    
+        $.get( subdir+'/ajax/student/glg' , {sid:$('#student_id').val()} )
+        .done(function( data ){
+            if(data.success){
+               peVue.$data.learning_goals = data.lg
+            }else{
+               toastr.error( data.message );
+            }
+        })
+        .error(function( data ){
+
+        });
     }
 });

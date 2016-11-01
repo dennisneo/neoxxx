@@ -8,7 +8,6 @@
             <div class="form-group">
                 <label for="first_name"><h5>First Name *</h5></label>
                 <?php echo \Form::text( 'first_name' , $r->first_name , [ 'class' => 'form-control' , 'id'=>'first_name' ,  "required" ] ) ?>
-
             </div>
         </div>
         <div class="col-lg-4">

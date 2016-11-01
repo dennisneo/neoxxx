@@ -13,6 +13,18 @@
         <br />
         <div style="text-align: center">
             <a href="<?php echo Url('student/pe/start') ?>" class="btn btn-primary btn-lg"> <b><?php echo trans('general.start_placement_exam') ?></b> </a>
+        </div>
+    </div>
+
+    <div class="x_title">
+        <h3><b>My Learning Goals</b></h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div v-for="g in learning_goals" style="font-size:1.2em">
+            <i class="fa fa-check" style="color:green"></i> {{g.goal}}
+        </div>
+        <div style="text-align: center">
             <a href="javascript:" class="btn btn-default btn-lg" v-on:click="openLearningGoalModal()"> <?php echo trans('general.set_learning_goals') ?>  </a>
         </div>
     </div>
@@ -37,4 +49,6 @@
             </div>
         </div>
     </div>
+
+
 </div>

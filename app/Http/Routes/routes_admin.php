@@ -10,6 +10,8 @@ Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,
 
     Route::get( 'dashboard', 'Admin\AdminController@dashboard' );
 
+    Route::get( 'schedules', 'Admin\AdminSchedulesController@index' );
+
     /************ Learning Goals section *********/
     Route::get( 'learning-goals', 'Admin\AdminLearningGoalsController@index' );
 

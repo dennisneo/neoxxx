@@ -17,6 +17,25 @@ class ExamSessions extends BaseModel
 
     public $fillable = [];
 
+    public function getByStudentId( $student_id , Request $r )
+    {
+
+        $this->limit =  20;
+        $page       = $r->page ? $r->page : 1;
+        $offset     = ( $page - 1 ) * $this->limit;
+        $order_by   = $r->order_by ? $r->order_by : 'started_at';
+        $order_direction = $r->order_direction ? $r->order_direction : 'ASC';
+
+        $exams = static::where( 'student_id' , $student_id  )
+        ->from( 'exam_sessions as es')
+        ->join( 'exam_results as er', 'er.session_id' , '=' ,  'es.eid' )
+        ->limit( $this->limit )
+        ->orderBy( $order_by , $order_direction )
+        ->get( [ 'es.*', 'er.*', 'es.session_id as session_id' ] );
+
+        return $exams;
+    }
+
     public function createNew( Request $r )
     {
         if( ! $r->student_id ){
@@ -158,4 +177,5 @@ class ExamSessions extends BaseModel
 
         return $session_id;
     }
+
 }

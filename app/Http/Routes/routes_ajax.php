@@ -8,6 +8,10 @@ Route::group( [  'prefix' => 'ajax/front' ],  function(){
 });
 
 Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'Ajax\Student',  'as'=> 'ajax.student' ],  function(){
+    // save student profile
+    Route::post( 'sp',  'AjaxStudentController@saveProfile' );
+    // get a student
+    Route::get('gs',  'AjaxStudentController@getStudent');
     // student setup a class session
     Route::post('ss',  'AjaxStudentController@setupClassSession');
     Route::post('scancel',  'AjaxStudentController@cancelClassSession');
@@ -35,16 +39,30 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     Route::get( 'gss',  'AjaxStudentController@getStudentSessions' );
     // get the schedule of a teacher
     Route::get('teacher/sessions',  'AjaxStudentController@getTeacherSchedule');
+    Route::get('teacher/search',  'AjaxStudentController@searchTeachers');
 
     /***** placement exam routes ****/
     Route::get( 'pe/gpeq',  'AjaxStudentExamController@getQuestions' );
     Route::post( 'pe/sa',  'AjaxStudentExamController@submitAnswer' );
+    // buy credits
+    Route::post( 'bc',  'AjaxStudentCreditsController@buy' );
 });
 
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
 
+    // save applicant requirements
+    Route::post( 'a/srq',  'AjaxApplicantsController@saveRequirements' );
+
+    // get schedules
+    Route::get( 'gsched',  'AjaxSchedulesController@getSchedules' );
+
+    // save student note
+    Route::post( 'sn',  'AjaxStudentsController@saveNote');
+
+    Route::post( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
     Route::get( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
     Route::get( 'dashboard/latest_students',  'AjaxDashboardController@latestStudents' );
+
     Route::post( 'teacher/add_schedule',  'AjaxTeachersController@addSchedule' );
     Route::get( 'teacher/get_schedule',  'AjaxTeachersController@getSchedule' );
 });
@@ -65,6 +83,16 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         Route::post( 'spr',  'AjaxTeacherController@savePerformanceRecord' );
         // get performance record
         Route::get( 'gpr',  'AjaxTeacherController@getPerformanceRecord' );
+        // save profile
+        Route::post( 'sp',  'AjaxTeacherController@saveProfile' );
+        //upload profile photo
+        Route::post( 'upp',  'AjaxTeacherController@uploadProfilePhoto' );
+        //update about
+        Route::post( 'uab',  'AjaxTeacherController@updateAbout' );
+        //upload voice
+        Route::post( 'uv',  'AjaxTeacherController@uploadVoice' );
+        //upload voice
+        Route::post( 'dv',  'AjaxTeacherController@deleteVoice' );
     });
 
 

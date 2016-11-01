@@ -64,7 +64,9 @@ class LearningGoalMap extends BaseModel{
     public static function getLearningGoalsByStudentId( $student_id )
     {
         return static::where( 'student_id' , $student_id )
-            ->get();
+            ->from( 'learning_goal_map as map')
+            ->join( 'learning_goals as lg' , 'lg.goal_id' , '=' , 'map.learning_goal_id')
+            ->get( ['map.*' , 'goal'] );
     }
 
 }

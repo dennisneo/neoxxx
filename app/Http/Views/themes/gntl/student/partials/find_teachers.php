@@ -2,7 +2,12 @@
     <div class="x_panel tile"  style="min-height:280px">
         <div class="x_title">
             <div class="pull-right">
-
+                <div class="input-group">
+                      <input type="text" name="q" id="q" class="form-control" placeholder="Search by name...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" v-on:click="search()"> <i class="fa fa-search"></i> Search </button>
+                      </span>
+                </div>
             </div>
             <h3><b>Find a Teacher</b></h3>
             <div class="clearfix"></div>
@@ -14,7 +19,7 @@
                         <img src="" v-bind:src="t.profile_photo_url" class="img-responsive">
                     </div>
                     <div>
-                        <b>{{t.short_name}}</b>
+                        <b>{{t.short_name}}</b> <i v-for="r in r( t.rating )" class="fa fa-star" style="color:#ffAA44"></i>
                     </div>
                     <div style="">
                         <a href="javascript:" class="btn btn-success btn-xs" v-on:click="openAvailability( t.cid )"> <b>Check Availability </b> </a>
@@ -52,7 +57,7 @@
                                 <td></td>
                             </tr>
                         <?php } ?>
-                        
+
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -82,7 +87,10 @@
                             <div class="pull-right">
                                 <button class="btn btn-success" v-on:click="bookTeacher( teacher.id )"><i class="fa fa-plus"></i> <b><?php echo trans('general.schedule_me_a_class') ?></b> </button>
                             </div>
-                            <h2><b>{{teacher.short_name}}</b></h2>
+                            <h2>
+                                <b>{{teacher.short_name}}</b>
+
+                            </h2>
                         </div>
                         <div> {{ teacher.location }} </div>
                         <br />
@@ -91,12 +99,14 @@
                             {{ teacher.about }}
                         </div>
                         <b>Voice Demo</b>
-                        <div style="border-top:1px solid #EEEEEE;margin-bottom:32px ">
-
+                        <div style="border-top:1px solid #EEEEEE;margin-bottom:32px;padding-top:12px" >
+                            <div v-bind:class="teacher.voice_url ? '' : 'hide' ">
+                                <audio src="" id="audio_control" controls v-bind:src="teacher.voice_url"></audio>
+                            </div>
                         </div>
                     </div>
 
-                    
+
                     <div class="col-lg-12">
                         <b><h2><?php echo trans('general.feedbacks') ?> </h2></b>
                     </div>

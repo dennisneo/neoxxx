@@ -15,8 +15,11 @@ use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
 use App\Models\LearningGoals\LearningGoalMap;
 use App\Models\LearningGoals\LearningGoals;
+use App\Models\Messaging\Notes;
+use App\Models\Placement\ExamSessions;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
+use App\Models\Users\Students\StudentCredits;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
 use App\Models\Users\UserEntity;
@@ -32,12 +35,62 @@ class AjaxStudentController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function saveProfile( Request $r )
+    {
+        $student = new StudentEntity();
+
+        if( ! $student->store( $r ) ){
+            return [
+                'success' =>false,
+                'message' => $student->displayErrors()
+            ];
+        }
+
+        return [
+            'success' =>true
+        ];
+    }
+
+    public function getStudent( Request $r )
+    {
+
+        if( ! $student = StudentEntity::find( $r->sid ) ){
+            return [
+                'success' =>false,
+                'message' => 'Student not found'
+            ];
+        }
+
+        $classes    = ( new ClassSessions )->getAll( $r );
+        $notes      = Notes::byUserId( $r->sid , $r )->vuefyNotesCollection();
+        $pe         = ( new ExamSessions )->getByStudentId( $r->sid ,  $r );
+
+        return [
+            'success' =>true,
+            'student' => $student->vuefyStudent(),
+            'classes' => $classes,
+            'notes' => $notes,
+            'exams' => $pe
+        ];
+
+    }
+
+    public function searchTeachers( Request $r )
+    {
+        $t  =  ( new Teachers() )->getTeachers( $r ) ;
+        $teachers = ( new Teachers() )->vuefyAll( $t );
+
+        return [
+            'success' =>    true,
+            'teachers' => $teachers
+        ];
+    }
+
     public function getTeacherSchedule( Request $r )
     {
         $me = UserEntity::me();
 
         // get only the seven day sched
-
         if( $r->date_from  ) {
             $from = new \DateTime( $r->date_from );
         }else{
@@ -46,7 +99,6 @@ class AjaxStudentController extends AjaxBaseController{
 
         $date_from = $from->format( 'Y-m-d' );
         $date_to = $from->add(new \DateInterval('P7D'))->format('Y-m-d');
-
 
         $r->request->add(['date_from'=>$date_from , 'date_to'=>$date_to ]);
 
@@ -225,7 +277,8 @@ class AjaxStudentController extends AjaxBaseController{
             ];
         }
 
-        $credits = Credits::getCreditsByStudentId( $sid );
+        $credits = StudentCredits::getCreditsByStudentId( $sid );
+
         return [
             'success' =>true,
             'sid' => $sid,
