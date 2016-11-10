@@ -37,9 +37,12 @@
     <div class="main_container">
         <div class="col-md-3 left_col" >
             <div class="left_col scroll-view" style="background-color:<?php echo isset( $background_color ) ? $background_color : '' ?>">
-                <div class="navbar nav_title" style="border: 0;">
-                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span><?php echo env('SITE_ABBR') ?></span></a>
+                <div class="navbar nav_title" style="border: 0;padding:12px;height:90px">
+                    <a href="<?php echo Url('') ?>" class="site_title">
+                        <img src="<?php echo Url( 'public/images/neo-logo-light.png' ); ?>" style="height:48px" />
+                    </a>
                 </div>
+
                 <div class="clearfix"></div>
                 <!-- menu profile quick info -->
                 <div class="profile">

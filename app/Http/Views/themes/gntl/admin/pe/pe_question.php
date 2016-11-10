@@ -6,7 +6,6 @@
                     <a href="javascript:" class="btn btn-primary" v-on:click="saveQuestion()"> Save </a>
                 </div>
                 <h3>Question</h3>
-
             </div>
             <form method="post" id="pForm">
             <?php echo csrf_field(); ?>

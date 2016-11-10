@@ -8,3 +8,5 @@ Homestead.json
 /storage
 /config/env.php
 /public/audio
+/public/images/users
+/public/images/profile

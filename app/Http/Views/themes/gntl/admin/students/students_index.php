@@ -30,16 +30,14 @@
                 <td colspan="4">
                     <i class="fa fa-refresh fa-spin"></i> Loading...
                 </td>
-
-
             </tr>
             <tr class="loading" v-bind:class=" students.length > 0 ? 'hide' : 'show' ">
                 <td colspan="4">
 
                 </td>
             </tr>
-            <tr v-for="s in students" class="s"  v-on:click="openStudentView(s.id)">
-                <td><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
+            <tr v-for="s in students" class="s" >
+                <td v-on:click="openStudentView(s.id)"><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
                 <td style="">
                     {{ s.full_name }}
                 </td>
