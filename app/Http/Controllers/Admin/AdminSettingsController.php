@@ -36,6 +36,7 @@ class AdminSettingsController extends AdminBaseController{
 
         Html::instance()->addScript( 'public/app/admin/settings/settings_index.js' );
         Html::loadToastr();
+
         return $this->layout;
     }
 

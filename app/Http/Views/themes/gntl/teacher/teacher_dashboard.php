@@ -5,31 +5,41 @@
                 <h3><b>My Dashboard</b></h3>
                 <br /><br />
                 <div class="col-lg-6">
-                    <div class="x_panel tile">
+                    <div class="x_panel tile" style="height: 320px">
                         <div class="x_header">
-                            <h4><b>Today's Schedule</b></h4>
+                            <h4><b>Upcoming Schedule</b></h4>
                         </div>
                         <div class="x_content">
-
+                            <table class="table table-striped">
+                                <tr>
+                                    <th> Student </th>
+                                    <th> Start Time </th>
+                                    <th> Duration </th>
+                                </tr>
+                                <tr v-for="c in classes">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
+                    <input type="hidden" name="tid" id="tid" value="<?php echo \App\Models\Users\UserEntity::me()->id ?>" />
                 </div>
                 <div class="col-lg-6">
-                    <div class="x_panel tile">
+                    <div class="x_panel tile" style="height: 320px">
                         <div class="x_header">
                             <div class="pull-right">
                                 <!--<a href="javascript:"><i class="fa fa-edit"></i> Edit </a>-->
-                                <button class="btn btn-success btn-sm" v-on:click="editProfile()" >Edit</button>
+                                <a href="<?php echo Url('teacher/profile') ?>" class="btn btn-success btn-sm">Profile Page </a>
                             </div>
-
+                            <h4><b>My Profile</b></h4>
                         </div>
                         <div class="x_content">
                             <div class="col-lg-6">
                                 <img src="<?php echo Url('public/images/blank_face.png') ?>" class="img-responsive"/>
                                 <br />
-                                <div style="text-align: center">
-                                    <button class="btn btn-success btn-sm">Update Profile Photo</button>
-                                </div>
+
                             </div>
                             <div class="col-lg-6">
                                 <b><?php echo $t->first_name.' '.$t->last_name ?></b>

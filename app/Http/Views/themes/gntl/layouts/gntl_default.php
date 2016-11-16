@@ -39,7 +39,7 @@
             <div class="left_col scroll-view" style="background-color:<?php echo isset( $background_color ) ? $background_color : '' ?>">
                 <div class="navbar nav_title" style="border: 0;padding:12px;height:90px">
                     <a href="<?php echo Url('') ?>" class="site_title">
-                        <img src="<?php echo Url( 'public/images/neo-logo-light.png' ); ?>" style="height:48px" />
+                        <img src="<?php echo Url( 'public/images/neo-logo-light.png' ); ?>" style="height:42px" />
                     </a>
                 </div>
 
@@ -59,7 +59,7 @@
                 <br />
 
                 <!-- sidebar menu -->
-                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="">
                     <div class="menu_section">
                         <?php echo \App\Http\Controllers\Partials\SideMenuController::displaySidebar( \App\Models\Users\UserEntity::me() ) ?>
                     </div>
@@ -108,13 +108,11 @@
                         <li><a href="<?php echo url('logout') ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>
                 </li>
-
                 <li role="presentation" class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-globe fa-2x"></i>
-                        <span class="badge bg-red">6</span>
+                        <!--<span class="badge bg-red"> 6 </span>-->
                     </a>
-
                 </li>
             </ul>
         </nav>

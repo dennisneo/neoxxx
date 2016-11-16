@@ -104,6 +104,12 @@ class ClassSessions extends ClassSessionEntity{
 
     public function byTeacherId( Request $r )
     {
+        $limit      = $r->limit ? $r->limit : 20;
+        $page       = $r->page ? $r->page : 1;
+        $offset     = ($page-1) * $limit;
+        $order_by   = $r->order_by ? $r->order_by : 'schedule_start_at';
+        $order_direction = $r->order_direction ? $r->order_direction :   'DESC';
+
         $tid = Text::recoverInt( $r->tid );
         $fields = [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid' ];
 
@@ -129,7 +135,9 @@ class ClassSessions extends ClassSessionEntity{
         }
 
         $this->total = $cs->count();
-        $cs->orderby( 'schedule_start_at' , 'DESC');
+        $cs->orderby( $order_by , $order_direction );
+        $cs->limit( $limit );
+
         $schedules = $cs->get( $fields );
 
         return $this->vuefyCollection( $schedules );

@@ -3,6 +3,7 @@
 namespace App\Models\Users\Students;
 
 use App\Models\BaseModel;
+use App\Models\Financials\Payments;
 use App\Models\Settings\Settings;
 use Carbon\Carbon;
 use Helpers\Text;
@@ -19,14 +20,20 @@ class StudentCredits extends BaseModel{
 
     protected $fillable = [];
 
-    public function add( $value ){
+    public function add( Request $r ){
 
         if( empty( $this->map_id ) ){
            throw new Exception('StudentCredits model needs to have valid id');
         }
 
-        $this->credits = $this->credits + $value;
-        $this->save();
+        $payment = new Payments();
+        if( $payment->execute( $r ) ){
+            //\DB::beginTransaction();
+            $this->credits = $this->credits + $r->credits;
+            $this->save();
+        }
+
+
 
         return $this;
     }

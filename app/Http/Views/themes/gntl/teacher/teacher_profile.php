@@ -8,7 +8,7 @@
 </style>
 
 <div id="tpDiv" style="">
-    <div class="x_panel tile" style="">
+    <div class="x_panel tile" style="height:480px">
         <div class="x_content">
             <div class="row">
                 <div class="pull-right">
@@ -20,9 +20,9 @@
                 <h3><b>My Profile</b></h3>
                 <br />
                 <div class="col-lg-6">
-                    <div class="x_panel tile" style="">
+                    <div class="x_panel tile" style="height:384px">
                         <div class="x_content">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6" >
                                 <form>
                                 <div>
                                     <img src="<?php echo $t->profile_photo_url ?>" class="img-responsive" id="photo_src"/>
@@ -62,16 +62,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" style="height:420px">
                     <div class="x_panel tile" style="">
                         <div class="x_content">
-                            <div style="min-height: 180px;margin-bottom:24px ">
+                            <div style="margin-bottom:24px;">
                                 <div class="pull-right">
                                     <button class="btn btn-default" v-on:click="openAboutModal"> <i class="fa fa-pencil"></i> Edit Write-up</button>
                                 </div>
                                 <h2><b>About</b></h2>
                                 <hr />
-                                <div id="about">
+                                <div id="about" style="overflow-y: scroll;height:144px ">
                                     <?php echo $t->about ? $t->about : 'Nothing written' ?>
                                 </div>
                             </div>

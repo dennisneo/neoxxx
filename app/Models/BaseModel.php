@@ -61,6 +61,16 @@ class BaseModel extends \Eloquent
         return $html;
     }
 
+    public function vuefyThisCollection()
+    {
+        $c_arr = [];
+        foreach( $this->collection as $c ){
+            $c_arr[] = $c->vuefy();
+        }
+
+        return $c_arr;
+    }
+
     public function vuefyCollection( Collection $collection )
     {
         $c_arr = [];

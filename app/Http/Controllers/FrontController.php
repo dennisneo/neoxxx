@@ -49,8 +49,11 @@ class FrontController extends Controller{
                     case 'student':
                         return redirect( 'student/dashboard' );
                     break;
+                    case 'finance':
+                        return redirect( 'finance/dashboard' );
+                    break;
                     case 'superadmin':
-                        break;
+                    break;
                     case 'admin':
                         return redirect( 'admin/dashboard' );
                     break;

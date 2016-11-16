@@ -1,13 +1,12 @@
 var bVue = new Vue({
     el:'#bDiv',
     data:{
-
+        credits_cost: []
     },
     methods:{
-        buy:function( credits , t ){
+        buy:function( cost_id , t ){
             $(t).html( '<i class="fa fa-spin fa-refresh"></i>');
-            $('#credits').val( credits );
-
+            $('#cost_id').val( cost_id );
             $.post( subdir+'/ajax/student/bc', $('#cForm').serialize() )
             .done(function( data ){
                 if(data.success){
@@ -25,6 +24,16 @@ var bVue = new Vue({
         }
     },
     ready:function(){
-
+        $.get(subdir+'/ajax/student/settings/credits_cost')
+            .done(function( data ){
+                if( data.success ){
+                    bVue.$data.credits_cost = data.credits_cost;
+                }else{
+                    toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
     }
 });

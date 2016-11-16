@@ -28,6 +28,18 @@ class AjaxTeacherController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function getUpcomingClass( Request $r )
+    {
+        $r->request->add( ['tid'=>UserEntity::me()->id]);
+        $cs = new ClassSessions;
+        $classes = $cs->byTeacherId( $r );
+
+        return [
+            'success' => true,
+            'classes' => $classes
+        ];
+    }
+
     public function updateAbout( Request $r )
     {
         $user = UserEntity::me();

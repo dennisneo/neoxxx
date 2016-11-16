@@ -7,7 +7,12 @@ Route::group( [  'prefix' => 'ajax/front' ],  function(){
     Route::post( 'sns',  'Ajax\AjaxFrontController@saveNewStudent');
 });
 
+Route::group( ['prefix' => 'ajax/finance', 'middleware'=>['auth.finance'], 'namespace'=>'Ajax\Finance',  'as'=> 'ajax.finance' ],  function(){
+    Route::get('getpayments',  'AjaxFinanceController@getPayments');
+});
+
 Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'Ajax\Student',  'as'=> 'ajax.student' ],  function(){
+
     // save student profile
     Route::post( 'sp',  'AjaxStudentController@saveProfile' );
     // get a student
@@ -49,16 +54,17 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
 });
 
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
-
+    // get credits cost in settings
+    Route::get( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
+    Route::post( 'credits_cost/save',  'AjaxSettingsController@saveCreditsCost' );
+    Route::post( 'credits_cost/delete',  'AjaxSettingsController@deleteCreditsCost' );
+    Route::get( 'credits_cost/get',  'AjaxSettingsController@getCreditCost' );
     // save applicant requirements
     Route::post( 'a/srq',  'AjaxApplicantsController@saveRequirements' );
-
     // get schedules
     Route::get( 'gsched',  'AjaxSchedulesController@getSchedules' );
-
     // save student note
     Route::post( 'sn',  'AjaxStudentsController@saveNote');
-
     Route::post( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
     Route::get( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
     Route::get( 'dashboard/latest_students',  'AjaxDashboardController@latestStudents' );
@@ -67,8 +73,10 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     Route::get( 'teacher/get_schedule',  'AjaxTeachersController@getSchedule' );
 });
 
-
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){
+
+        // upcoming classes
+        Route::get( 'upcoming',  'AjaxTeacherController@getUpcomingClass' );
         // get class record
         Route::get( 'gcr',  'AjaxTeacherController@getClassRecord' );
         //get teacher schedule
@@ -112,6 +120,9 @@ Route::group( [  'prefix' => 'ajax/students', 'middleware'=>'auth', 'namespace'=
     Route::get('getall',  'AjaxStudentsController@getStudents');
     Route::get('getAvailableTeachers',  'AjaxStudentsController@getAvailableTeachers');
 });
+
+
+Route::get( 'ajax/student/settings/credits_cost',  'Ajax\Admin\AjaxSettingsController@getCreditCostAll' );
 
 Route::post( 'ajax/application/s', 'Ajax\AjaxFrontController@saveApplication' );
 
