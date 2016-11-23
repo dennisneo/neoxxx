@@ -1,7 +1,7 @@
 <?php
 
-Route::get( '/', function (){
-    return view('welcome');
+Route::get( '/',  function(){
+  return redirect( 'login' );
 });
 
 $first_segment  = \Request::segment( 1 );
@@ -56,6 +56,9 @@ Route::any( 'student/application/success', 'FrontController@studentSuccess' );
 Route::any( 's/application/success', 'FrontController@studentSuccess' );
 Route::any( 's/confirm', 'FrontController@studentConfirm' );
 
+/***** Alipay specific notifications ********/
+Route::any( 'alipay/notice', 'AlipayFrontendController@notify' );
+Route::any( 'alipay/return', 'AlipayFrontendController@ret' );
 
 if( Request::segment(1) == 'test' ){
     Route::get( 'test/mail', 'TestController@testMail' );
@@ -64,10 +67,12 @@ if( Request::segment(1) == 'test' ){
 
 if( Request::segment(1) == 'utils' ){
     Route::get( 'utils/pq', 'UtilsController@populateQuestions' );
+    Route::get( 'utils/alipay', 'UtilsController@alipay' );
     return;
 }
 
 Route::get( 'pwd', 'UtilsController@pwd' );
+
 
 
 

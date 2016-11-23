@@ -103,7 +103,6 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         Route::post( 'dv',  'AjaxTeacherController@deleteVoice' );
     });
 
-
 Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
     //get all teachers base on query
     Route::get('getall',  'AjaxTeachersController@getTeachers');
@@ -120,7 +119,6 @@ Route::group( [  'prefix' => 'ajax/students', 'middleware'=>'auth', 'namespace'=
     Route::get('getall',  'AjaxStudentsController@getStudents');
     Route::get('getAvailableTeachers',  'AjaxStudentsController@getAvailableTeachers');
 });
-
 
 Route::get( 'ajax/student/settings/credits_cost',  'Ajax\Admin\AjaxSettingsController@getCreditCostAll' );
 

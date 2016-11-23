@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers;
 
@@ -16,6 +10,7 @@ use App\Models\Users\Applicant;
 use App\Models\Users\User;
 use App\Models\Users\UserEntity;
 use Faker\Factory;
+use Helpers\Alipay;
 use Helpers\Html;
 use Illuminate\Http\Request;
 
@@ -23,6 +18,49 @@ class UtilsController extends Controller{
 
     public function __construct()
     {
+
+    }
+
+    public function alipay()
+    {
+        if( env('ALIPAY_LIVE') ){
+            echo 'OKK';
+        }else{
+            echo 'FALSE';
+        }
+        dd( 'test' );
+        /**
+        $pay         = new Alipay();
+        $payment_url = $pay->createPayment( 'Native English Online', 25 , 'USD', 'NEO Payment' );
+
+         return $payment_url;
+        ***/
+
+        $partner = "2088101122136241";//fill with the partnerID which we already offered you (required fields)
+        $security_code = "760bdzec6y9goq7ctyx96ezkz78287de";//fill with the security key which we already offered you (required fields)
+        $_input_charset = "utf-8";
+        $sign_type = "MD5";
+        $transport= "http";
+        $notify_url = env('ALIPAY_NOTIFY_URL');//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
+        $return_url = env('ALIPAY_RETURN_URL');
+
+        $parameter = array(
+            "service" => "create_forex_trade", //this is the service name
+            "partner" =>$partner,
+            "return_url" =>$return_url,
+            "notify_url" =>$notify_url,
+            "_input_charset" => $_input_charset,
+            "subject" => "NEO English Learning", //subject is the name of the product, you'd better change it
+            "body" =>"Test 1234",  //body is the description of the product , you'd beeter change it
+            "out_trade_no" => time() ,
+            "total_fee" => "10", //the price of products
+            "currency"=>"USD", // change it as the currency which you used on your website
+        );
+
+        $alipay = new Alipay\AlipayService( $parameter,$security_code,$sign_type);
+
+        $link   =   $alipay->create_url();
+        echo "<br/> <a href= $link  target= \"_blank\">submit</a>";
 
     }
 

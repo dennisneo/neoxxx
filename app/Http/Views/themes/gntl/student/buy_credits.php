@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="pricing_footer">
-                        <a href="javascript:" v-on:click="buy( cc.cost_id )" class="btn btn-success btn-block" role="button"> <b>BUY</b> <span> </span></a>
+                        <a href="{{cc.payment_url}}"  target="_blank" class="btn btn-success btn-block" role="button"> <b>BUY</b> <span> </span></a>
                     </div>
                 </div>
             </div>

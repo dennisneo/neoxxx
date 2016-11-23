@@ -6,7 +6,6 @@ use Collective\Html\HtmlFacade;
 use DateTimeZone;
 use DateTime;
 
-
 class Html extends HtmlFacade{
 	
 	protected $scripts  = array(); 
@@ -180,11 +179,6 @@ class Html extends HtmlFacade{
 		 }
 		$html .= '</ul>';
 		return $html;
-	}
-
-	public static function getCountries()
-	{
-
 	}
 
 	public static function timezoneSelect( $default ='Asia/Singapore' ){
