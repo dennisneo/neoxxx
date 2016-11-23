@@ -22,7 +22,7 @@ class Html extends HtmlFacade{
 
 	public static function absPath( $path ){
 
-		$subdir = config( 'env.SUBDIR' ) ? '/'.config( 'env.SUBDIR' ): '';
+		$subdir = env( 'SUBDIR' ) ? '/'.env( 'SUBDIR' ): '';
 		$path = substr( $path , 0 ,1 ) != '/' ? '/'.$path : $path;
 		return $subdir.$path;
 	}
