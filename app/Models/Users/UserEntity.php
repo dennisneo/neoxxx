@@ -188,7 +188,7 @@ class UserEntity extends BaseModel{
 
     public function vuefyUser()
     {
-        $this->profile_photo_url = $this->profile_photo_url ? $this->profile_photo_url : Html::absPath( 'public/images/blank_face.png' );
+        $this->profile_photo_url = $this->profile_photo_url ? $this->profile_photo_url : url( 'public/images/blank_face.png' );
         $this->short_name = $this->displayName( 'short' );
         $this->full_name = $this->displayName( 'default' );
         $this->cid =  Text::convertInt( $this->id );

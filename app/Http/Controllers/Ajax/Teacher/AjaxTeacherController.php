@@ -28,6 +28,24 @@ class AjaxTeacherController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function saveSettings( Request $r )
+    {
+        $teacher = ( new TeacherPivot)->getByTeacherId( $r->teacher_id );
+        if( !$teacher ){
+            return [
+                'success'   => false,
+                'message'   => 'Teacher record not found'
+            ];
+        }
+        $teacher->rate_per_hr   =   $r->rate;
+        $teacher->save();
+
+        return [
+            'success' =>true,
+            'teacher' => $teacher
+        ];
+    }
+
     public function getUpcomingClass( Request $r )
     {
         $r->request->add( ['tid'=>UserEntity::me()->id]);

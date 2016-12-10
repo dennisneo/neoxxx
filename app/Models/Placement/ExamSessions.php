@@ -11,11 +11,27 @@ use Validator;
 
 class ExamSessions extends BaseModel
 {
-    protected $table = 'exam_sessions';
-    protected $primaryKey = 'eid';
-    public $timestamps = false;
+    protected $table        = 'exam_sessions';
+    protected $primaryKey   = 'eid';
+    public $timestamps      = false;
 
     public $fillable = [];
+
+    public function getByStudentIdVuefy( Request $r )
+    {
+        $this->collection = $this->getByStudentIdRaw( $r );
+        return $this->vuefyThisCollection();
+    }
+
+    public function getByStudentIdRaw( Request $r )
+    {
+        $student_id = $r->sid;
+        $exams = static::where( 'student_id' , $student_id  )
+            ->from( 'exam_sessions as es')
+            ->get();
+
+        return $exams;
+    }
 
     public function getByStudentId( $student_id , Request $r )
     {

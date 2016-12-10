@@ -4,8 +4,10 @@ var peVue = new Vue({
         learning_goals:[]
     },
     methods:{
+
         openLearningGoalModal:function(){
-            $('.lg_cb').prop('checked' , false );
+
+            $( '.lg_cb' ).prop( 'checked', false );
 
             $.get(subdir+'/ajax/student/glg', {sid:$('#student_id').val() })
             .done(function( data ){
@@ -16,7 +18,6 @@ var peVue = new Vue({
                             $('.lg_cb[value='+ d.learning_goal_id+']').prop('checked' , true);
                         }
                     }
-
                 }else{
                    toastr.error( data.message );
                 }

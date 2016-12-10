@@ -22,13 +22,16 @@
 
     <div id="questionaireModal" class="modal fade">
         <div class="modal-dialog modal-lg">
-            <form id="peForm">
+            <form id="peForm" v-on:submit="doNothing()">
             <?php echo csrf_field() ?>
             <input type="hidden" name="session_id" id="session_id" value="{{ session.eid }}" />
             <input type="hidden" name="question_id" id="question_id" value="{{ question.q_id }}" />
 
             <div class="modal-content">
                 <div class="modal-header">
+                    <div class="pull-right">
+                        <a href="javascript:" class="btn btn-default" v-on:click="continueLater()"> Continue Later </a>
+                    </div>
                     <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
                     <div>
                         Item {{session.current_item}} of {{session.item_count}}

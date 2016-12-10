@@ -3,7 +3,7 @@
         <div class="x_content">
             <div class="row">
                 <div class="col-lg-8">
-                    <h3> <b>Salary History</b> </h3>
+                    <h2>Salary History</h2>
                 </div>
                 <div class="col-lg-4" style="">
                     <div class="input-group">

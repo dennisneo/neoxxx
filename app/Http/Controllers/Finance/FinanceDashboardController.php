@@ -26,9 +26,7 @@ class FinanceDashboardController extends FinanceBaseController{
 
     private function indexAssets()
     {
-        Html::loadDatepicker();
-        Html::loadToastr();
-        Html::instance()->addScript( '/public/app/finance/finance_dashboard.js' );
+
     }
 
 }

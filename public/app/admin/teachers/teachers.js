@@ -7,8 +7,35 @@ var tVue = new Vue({
         records:[]
     },
     methods:{
-        openPerformanceRecord:function( teacher_id )
-        {
+        openPerformanceRecord:function( teacher_id ){
+
+        },
+        openSettings:function( id ) {
+            n = this.teachers;
+            $('#settingsModal').modal();
+            for( i=0; i < n.length; i++ ){
+                d = n[i];
+                if(d.id == id ){
+                    this.teacher = d;
+                    $('#rate').val(d.rate_per_hr );hg
+                    return;
+                }
+            }
+
+        },
+        saveSettings:function(){
+            $.post(subdir+'/ajax/teacher/saveSettings' , $('#settingsForm').serialize())
+            .done(function( data ){
+                if(data.success){
+                   toastr.success('Teacher settings successfully updated');
+                    $('#settingsModal').modal( 'toggle' );
+                }else{
+                   toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
         }
 
     },

@@ -38,10 +38,10 @@
             </tr>
             <tr v-for="s in students" class="s" >
                 <td v-on:click="openStudentView(s.id)"><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
-                <td style="">
-                    {{ s.full_name }}
+                <td style=""><b>{{ s.full_name }}</b>
+                    <br />{{s.location}}
                 </td>
-                <td> {{ s.status }} </td>
+                <td>{{ s.status }}</td>
                 <td>
                     <div class="dropdown pull-right" >
                         <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -51,12 +51,14 @@
                             <li><a href="javascript:" v-on:click="openStudentView(s.id)"> <i class="fa fa-edit"></i> View </a></li>
                             <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
                             <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ t.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
-                            <li><a href="javascript:" v-on:click="openNotificationModal( t.ccid )"> <i class="fa fa-comment"></i> Send Message </a></li>
+                            <li><a href="javascript:" v-on:click="openNotificationModal()"> <i class="fa fa-comment"></i> Send Message </a></li>
+                            <li><a href="javascript:" v-on:click="openPlacementModal( s.id )"> <i class="fa fa-book"></i> Placement Exam Results </a></li>
                         </ul>
                     </div>
                 </td>
             </tr>
         </table>
+            <br /><br /><br /><br /><br /><br />
     </div>
          </div>
     </div>
@@ -190,4 +192,50 @@
         </div>
     </div>
 
+    <div id="placementModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Learning Goals</th>
+                            <th>Items</th>
+                            <th>Percentage Score</th>
+                            <th>Taken At</th>
+                            <th>Completed</th>
+                        </tr>
+                        <tr v-bind:class=" exams.length ? 'hide' : '' ">
+                            <td> No record found </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr v-bind:class=" exams.length ? 'hide' : '' ">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr v-for="e in exams" v-bind:class=" exams.length ? '' : 'hide' ">
+                            <td></td>
+                            <td>{{e.item_count}}</td>
+                            <td>{{e.rating}}</td>
+                            <td>{{ e.started_at }}</td>
+                            <td>{{ e.item_count == e.current_item ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <div class="" v-bind:class="">
+
+                    </div>
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

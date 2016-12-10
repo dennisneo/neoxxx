@@ -7,6 +7,14 @@ var peVue = new Vue({
         results:[]
     },
     methods:{
+        doNothing:function(){
+
+        },
+        continueLater:function(){
+            if( confirm('Are you sure you want to continue later?')){
+                $('#questionaireModal').modal( 'toggle');
+            }
+        },
         openPEModal:function()
         {
             $('#questionaireModal').modal();

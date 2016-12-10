@@ -18,6 +18,7 @@
                     <tr>
                         <th style="width: 48px"></th>
                         <th> Name </th>
+                        <th> Rate </th>
                         <th> Status </th>
                         <th></th>
                     </tr>
@@ -33,7 +34,11 @@
                     </tr>
                     <tr v-for="t in teachers | filterBy q ">
                         <td><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
-                        <td style="">{{ t.full_name }}</td>
+                        <td style="">
+                            <b>{{ t.full_name }}</b><br />
+                            {{ t.location }}
+                        </td>
+                        <td> $ {{ t.rate_per_hr ?  t.rate_per_hr : 0 }} </td>
                         <td> {{ t.status }} </td>
                         <td>
                             <div class="btn-group">
@@ -45,7 +50,8 @@
                                         <li><a href="<?php echo Url('admin/teacher') ?>/{{ t.id }}"> <i class="fa fa-edit"></i> View / Edit</a></li>
                                         <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
                                         <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ t.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
-                                        <li><a href="javascript:" v-on:click="openNotificationModal( t.ccid )"> <i class="fa fa-comment"></i> Send Message </a></li>
+                                        <li><a href="javascript:" v-on:click="openSettings( t.id )"> <i class="fa fa-gear"></i> Settings </a></li>
+                                        <li><a href="javascript:" v-on:click="openNotificationModal( t.id )"> <i class="fa fa-comment"></i> Send Message </a></li>
                                     </ul>
                                 </div>
 
@@ -102,6 +108,30 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{{teacher.full_name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="rate">Rate per Hour in $</label>
+                        <?php echo \Form::text( 'rate' , '{{teacher.rate_per_hr}}' , [ 'class' => 'form-control' , 'id'=>'rate' ] ) ?>
+                    </div>
+                    <?php echo csrf_field() ?>
+                    <input type="hidden" name="teacher_id" id="teacher_id" value="{{teacher.id}}" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" v-on:click="saveSettings" >Save Settings</button>
                 </div>
             </div>
         </div>

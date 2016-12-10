@@ -20,6 +20,7 @@ use App\Models\Placement\ExamSessions;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\Students\StudentCredits;
+use App\Models\Users\Students\StudentSettings;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
 use App\Models\Users\UserEntity;
@@ -33,6 +34,18 @@ class AjaxStudentController extends AjaxBaseController{
     public function __construct( Request $r )
     {
         parent::__construct( $r );
+    }
+
+    public function getPlacementExam( Request $r )
+    {
+        $exam_sessions = ( new ExamSessions() )->getByStudentIdVuefy( $r );
+        $can_retake = StudentSettings::getByKey( 'can_retake_exam' , false);
+
+        return [
+            'success' =>true,
+            'exam_sessions' => $exam_sessions,
+            'can_retake' => $can_retake
+        ];
     }
 
     public function saveProfile( Request $r )

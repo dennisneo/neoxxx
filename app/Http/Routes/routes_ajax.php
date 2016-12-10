@@ -12,7 +12,8 @@ Route::group( ['prefix' => 'ajax/finance', 'middleware'=>['auth.finance'], 'name
 });
 
 Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'Ajax\Student',  'as'=> 'ajax.student' ],  function(){
-
+    // get student placement exam
+    Route::get('per',  'AjaxStudentController@getPlacementExam');
     // save student profile
     Route::post( 'sp',  'AjaxStudentController@saveProfile' );
     // get a student
@@ -74,7 +75,8 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){
-
+        //
+        Route::post('saveSettings',  'AjaxTeacherController@saveSettings');
         // upcoming classes
         Route::get( 'upcoming',  'AjaxTeacherController@getUpcomingClass' );
         // get class record
@@ -101,6 +103,7 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         Route::post( 'uv',  'AjaxTeacherController@uploadVoice' );
         //upload voice
         Route::post( 'dv',  'AjaxTeacherController@deleteVoice' );
+
     });
 
 Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
@@ -109,6 +112,8 @@ Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>
     // get teachers for autocomplete
     // will return value and name only
     Route::get('gta',  'AjaxTeachersController@getTeachersForAutocomplete');
+    //
+
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){

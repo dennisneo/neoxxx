@@ -6,9 +6,30 @@ var sVue = new Vue({
         student:{},
         classes: [],
         notes:[],
-        exams: []
+        exams: [],
+        can_retake_pe:false
     },
     methods:{
+        openPlacementModal:function( sid )
+        {
+            $.get(subdir+'/ajax/student/per', {sid:sid} )
+            .done(function( data ){
+                if(data.success){
+                    if( data.exam_sessions.length ){
+                        sVue.$data.exams = data.exam_sessions;
+                        sVue.$data.can_retake_pe = data.can_retake;
+                    }
+                }else{
+                   toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
+
+            $('#placementModal').modal();
+
+        },
         openStudentView:function( sid )
         {
             $.get(subdir+'/ajax/student/gs' , { sid:sid })

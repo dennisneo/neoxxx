@@ -20,6 +20,8 @@ class FinanceController extends FinanceBaseController{
     public function payments( Request $r )
     {
         Html::loadDatepicker();
+        Html::loadToastr();
+        Html::instance()->addScript( '/public/app/finance/finance_dashboard.js' );
         $this->layout->content = view( 'finance.finance_payments' , [ 'r' => $r ] );
         return $this->layout;
     }
