@@ -18,6 +18,16 @@ use Validator;
 
 class ClassSessions extends ClassSessionEntity{
 
+    public function hasConflict( $start, $end , $teacher_id)
+    {
+        $count = static::where( 'teacher_id' , $teacher_id )
+            ->whereBetween( 'schedule_start_at' , [ $start , $end ] )
+            ->orWhereBetween( 'schedule_end_at' , [ $start , $end ] )
+            ->whereIn( 'class_status' , ['active' , 'for confirmation' ])
+            ->count();
+
+        return $count;
+    }
     public function getClassSession( $cid )
     {
         $cs =  ClassSessions::where( 'class_id' , $cid )
@@ -37,9 +47,17 @@ class ClassSessions extends ClassSessionEntity{
 
     public function byStudentId( $student_id , Request $r )
     {
+        $limit = $r->limit ? $r->limit : 10;
+
         $cs =  ClassSessions::where( 'student_id' , $student_id )
             ->from( 'class_sessions as cs' )
             ->leftjoin( 'users as t', 't.id', '=' , 'cs.teacher_id' );
+
+        if( $r->incoming_only ){
+            $now = date('Y-m-d H:i:s');
+            $cs->where( 'schedule_start_at',  '>' , $now );
+            $cs->limit( $limit );
+        }
 
         $this->total = $cs->count();
         $cs->orderBy( 'schedule_start_at', 'DESC' );
@@ -108,7 +126,7 @@ class ClassSessions extends ClassSessionEntity{
         $page       = $r->page ? $r->page : 1;
         $offset     = ($page-1) * $limit;
         $order_by   = $r->order_by ? $r->order_by : 'schedule_start_at';
-        $order_direction = $r->order_direction ? $r->order_direction :   'DESC';
+        $order_direction = $r->order_direction ? $r->order_direction :   'ASC';
 
         $tid = Text::recoverInt( $r->tid );
         $fields = [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid' ];
@@ -155,7 +173,7 @@ class ClassSessions extends ClassSessionEntity{
         return \Form::select( 'class_status' , $status ,  '' , [ 'class' => 'form-control' , 'id'=>'class_status' ] );
     }
 
-    public static function durationSelect()
+    public static function actualDurationSelect()
     {
         $duration = [ 0 => 'None' ];
         for( $i = 10 ; $i <= 60 ; $i = $i + 5 ){

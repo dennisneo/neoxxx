@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers;
 
@@ -136,6 +130,12 @@ class FrontController extends Controller{
 
     }
 
+    /**
+     * New teacher application
+     *
+     * @param Request $r
+     * @return mixed
+     */
     public function apply( Request $r )
     {
         $errors = null;

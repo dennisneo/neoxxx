@@ -114,12 +114,62 @@ class AjaxTeachersController extends AjaxBaseController{
 
     public function getSchedule( Request $r )
     {
+
         $schedules = ( new Teachers\TeacherSchedule )->getScheduleByTeacherId( $r->tid )->vuefySchedules();
         $classes = ( new ClassSessions() )->byTeacherId( $r );
 
+        $s_arr = [];
+        $s_objects = [];
+        foreach( $schedules as $s ){
+            $s_arr[ $s->sid ] = [ $s->start_timestamp , $s->end_timestamp ];
+
+            $o_classes = [];
+            foreach( $classes as $c ){
+                // arrange the classes in order
+
+                if( $c->start_timestamp >= $s->start_timestamp && $c->end_timestamp <= $s->end_timestamp ){
+                    // new start time
+                    $o_classes[] = $c;
+                }
+            }
+
+            // sort through
+            if( count( $o_classes ) ){
+
+                $latest_start_timestamp = $s->start_timestamp;
+
+                foreach( $o_classes  as $v ){
+                    if( $s->start_timestamp == $v->start_timestamp){
+                        $latest_start_timestamp = $v->end_timestamp;
+                        continue;
+                    }
+                    // need to break the schedule
+                    // create a new s object
+                    // second sched
+                    $new_sched1 = $s->replicate();
+                    $new_sched1->start_timestamp = $latest_start_timestamp;
+                    $new_sched1->end_timestamp = $v->start_timestamp;
+                    $latest_start_timestamp = $v->end_timestamp;
+                    $s_objects[] = $new_sched1;
+
+                }
+
+                if( $latest_start_timestamp < $s->end_timestamp ){
+                    $new_sched = $s->replicate();
+                    $new_sched->start_timestamp = $latest_start_timestamp;
+                    $s_objects[] = $new_sched;
+                }
+            }else{
+                $s_objects[] = $s;
+            }
+
+        }
+
+
+
         return [
             'success' =>true,
-            'schedules' => $schedules,
+            'schedules' => $s_objects,
             'classes' => $classes,
             'tid' => $r->tid
         ];

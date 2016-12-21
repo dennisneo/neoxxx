@@ -2,7 +2,8 @@
 var sVue = new Vue({
     el:'#sDiv',
     data:{
-        credits: 0
+        credits: 0,
+        sessions: []
     },
     methods:{
         showCalendar:function(){
@@ -46,6 +47,18 @@ var sVue = new Vue({
         })
         .error(function( data ){
                 toastr.error( 'Something went wrong' );
+        });
+
+        $.get( subdir+'/ajax/student/ics', {sid: $('#student_id').val()} )
+        .done(function( data ){
+            if(data.success){
+                sVue.$data.sessions = data.s;
+            }else{
+               toastr.error( data.message );
+            }
+        })
+        .error(function( data ){
+            toastr.error('Something went wrong');
         });
     }
 });

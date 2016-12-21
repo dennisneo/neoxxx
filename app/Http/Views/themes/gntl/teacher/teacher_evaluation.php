@@ -1,13 +1,8 @@
 <style>
 
-    table tr td{
-        padding: 4px;
-        vertical-align: top;
-        font-size: 1.2em;
-    }
 </style>
 
-<div id="tDiv" style="">
+<div id="eDiv" style="">
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class="row">
@@ -22,12 +17,24 @@
                         <th>Teaching Skills</th>
                         <th>Date</th>
                     </tr>
-                    <tr>
-
+                    <tr :class=" feedbacks.length ? 'hide' : '' ">
+                        <td colspan="6"> <?php echo trans('general.no_record_found') ?> </td>
+                    </tr>
+                    <tr :class=" feedbacks.length ? 'hide' : '' ">
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr v-for="f in feedbacks">
+                        <td>{{ f.student_short_name }}</td>
+                        <td><i v-for="r in f.satisfaction" class="fa fa-star" style="color:#ffAA44"></i></td>
+                        <td><i v-for="r in f.internet_quality" class="fa fa-star" style="color:#ffAA44"></i></td>
+                        <td><i v-for="r in f.pronunciation" class="fa fa-star" style="color:#ffAA44"></i></td>
+                        <td><i v-for="r in f.teaching_skills" class="fa fa-star" style="color:#ffAA44"></i></td>
+                        <td>{{ f.added_at }}</td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
+    <input type="hidden" name="teacher_id" id="teacher_id" value="<?php echo \App\Models\Users\UserEntity::me()->id ?>" />
 </div>
 

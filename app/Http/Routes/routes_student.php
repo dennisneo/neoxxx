@@ -10,6 +10,7 @@ Route::group( [ 'prefix' => 'student' , 'as'=> 'student' , 'middleware' =>'auth'
     Route::get( 'newsession', 'Student\StudentSessionsController@newSession' );
     Route::get( 'teachers', 'Student\StudentDashboardController@teachers' );
     Route::get( 'profile', 'Student\StudentDashboardController@profile' );
+    Route::get( 'faq', 'Student\StudentDashboardController@faq' );
     Route::get( 'schedule', 'Student\StudentScheduleController@index' );
     Route::get( 'placement_exam', 'Student\StudentPlacementExamController@index' );
     Route::get( 'learning_goals', 'Student\StudentLearningGoalsController@index' );

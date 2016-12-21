@@ -1,4 +1,4 @@
-<div id="ftDiv">
+ <div id="ftDiv">
     <div class="x_panel tile"  style="min-height:280px">
         <div class="x_title">
             <div class="pull-right">
@@ -37,28 +37,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title"><?php echo trans('general.availability') ?> </h4>
                 </div>
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <tr>
-                            <th></th>
-                            <?php foreach ( $next_seven_days as $v ) { ?>
-                                <th><?php echo $v ?></th>
-                            <?php } ?>
-                        </tr>
-                        <?php foreach ( $time_array as $v ) { ?>
-                            <tr>
-                                <td><?php echo $v ?></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        <?php } ?>
+                <div class="modal-body" id="calendar">
 
-                    </table>
                 </div>
                 <div class="modal-footer">
 
@@ -118,4 +98,55 @@
             </div>
         </div>
     </div>
+
+     <div id="bookingModal" class="modal fade">
+         <div class="modal-dialog">
+             <form id="bForm">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h4 class="modal-title"><?php echo trans('general.book_a_class') ?></h4>
+                 </div>
+                 <div class="modal-body">
+
+                     <div class="col-lg-6">
+                         <div class="form-group">
+                             <h4 id="class_date"></h4>
+                         </div>
+                         <div class="form-group">
+                             <label for="start"><?php echo trans('general.start_time') ?> </label>
+                             <select class="form-control" id="start_time" name="time">
+                                 <option value="" v-for="t in time_select" :value="t.dt">{{t.dt}}</option>
+                             </select>
+                             <?php //echo \App\Models\ClassSessions\ClassSessionEntity::durationSelect();  ?>
+                         </div>
+                         <div class="form-group">
+                             <label for="duration"><?php echo trans('general.duration') ?> </label>
+                             <?php echo \App\Models\ClassSessions\ClassSessionEntity::durationSelect();  ?>
+                         </div>
+                     </div>
+                     <div class="col-lg-6">
+                         <div class="col-lg-6">
+                            <img src="" :src="teacher.profile_photo_url" class="img-responsive" />
+                         </div>
+                         <div class="col-lg-6">
+                             <h4 id="teacher_name">
+                             </h4>
+                             <i v-for="r in r( teacher.rating )" class="fa fa-star" style="color:#ffAA44"></i>
+                         </div>
+                     </div>
+                     <div class="clearfix"></div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-primary" @click="confirmBooking()">Confirm</button>
+                 </div>
+             </div>
+                 <?php echo csrf_field() ?>
+                 <input type="hidden" name="teacher_id" id="teacher_id" value="" />
+                 <input type="hidden" name="student_id" id="student_id" value="<?php echo \App\Models\Users\UserEntity::me()->id ?>" />
+                 <input type="hidden" name="date" id="booking_date" value="" />
+                 
+             </form>
+         </div>
+     </div>        
 </div>

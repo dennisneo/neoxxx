@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Locations\Countries;
+use App\Models\ClassSessions\ClassSessions;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Placement\QuestionChoices;
 use App\Models\Placement\Questions;
@@ -19,6 +20,18 @@ class UtilsController extends Controller{
     public function __construct()
     {
 
+    }
+
+    public function viewEmailTemplate( $email_view )
+    {
+        view()->addLocation( app_path().'/Http/Views/');
+        switch( $email_view ){
+            case 'new_student':
+                $student = UserEntity::where( 'username' , 'student@neo.com')->first();
+                $params = unserialize( $student->params );
+                return view('emails.new_student' , [ 'student' => $student, 'params' => $params ]);
+            break;
+        }
     }
 
     public function alipay()
@@ -105,5 +118,14 @@ class UtilsController extends Controller{
         }
 
         return 'OKKK';
+    }
+
+    public function teacherSched()
+    {
+        $start = '2016-12-20 08:00:00';
+        $end = '2016-12-20 08:39:00';
+        $teacher_id = 40;
+        echo ( new ClassSessions)->hasConflict( $start, $end , $teacher_id );
+        exit;
     }
 }

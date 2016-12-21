@@ -16,6 +16,11 @@
                                     <th> Start Time </th>
                                     <th> Duration </th>
                                 </tr>
+                                <tr>
+                                    <td colspan="3" :class="classes.length ? 'hide' : '' ">
+                                        <?php echo trans( 'general.no_schedule_found' ); ?>
+                                    </td>
+                                </tr>
                                 <tr v-for="c in classes">
                                     <td></td>
                                     <td></td>
@@ -24,20 +29,28 @@
                             </table>
                         </div>
                     </div>
-                    <input type="hidden" name="tid" id="tid" value="<?php echo \App\Models\Users\UserEntity::me()->id ?>" />
+                    <input type="hidden" name="tid" id="tid" value="<?php echo $t->id ?>" />
                 </div>
                 <div class="col-lg-6">
                     <div class="x_panel tile" style="height: 320px">
                         <div class="x_header">
+                            <h4><b><?php echo trans('general.notifications') ?> </b></h4>
+                        </div>
+                        <div class="x_content">
+
+                        </div>
+                    </div>
+                    <!--
+                    <div class="x_panel tile" style="height: 320px">
+                        <div class="x_header">
                             <div class="pull-right">
-                                <!--<a href="javascript:"><i class="fa fa-edit"></i> Edit </a>-->
                                 <a href="<?php echo Url('teacher/profile') ?>" class="btn btn-success btn-sm">Profile Page </a>
                             </div>
                             <h4><b>My Profile</b></h4>
                         </div>
                         <div class="x_content">
                             <div class="col-lg-6">
-                                <img src="<?php echo Url('public/images/blank_face.png') ?>" class="img-responsive"/>
+                                <img src="<?php echo $t->profilePhotoUrl() ?>" class="img-responsive"/>
                                 <br />
 
                             </div>
@@ -47,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-
+                    -->
                 </div>
 
             </div>

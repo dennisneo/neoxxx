@@ -19,6 +19,20 @@ class ClassFeedback extends BaseModel{
 
     public $fillable    = [ ];
 
+    public function byTeacherId( $teacher_id )
+    {
+        $feedbacks = static::where( 'f.teacher_id' , $teacher_id )
+            ->from( 'feedback as f')
+            ->join( 'class_sessions as cs' , 'cs.class_id' , '=' , 'f.class_id'  )
+            ->join( 'users as u' , 'u.id' , '=' , 'cs.student_id'  )
+         ->limit( 20 )
+         ->orderBy( 'added_at' , 'DESC' );
+
+        $this->collection =  $feedbacks->get( ['f.*' , 'cs.student_id' , 'u.first_name' , 'u.last_name' ] );
+
+        return $this;
+    }
+
     public function store( Request $r )
     {
         /**
@@ -86,19 +100,9 @@ class ClassFeedback extends BaseModel{
 
     public function vuefy()
     {
-        $this->time = date( 'H:i a' , strtotime( $this->schedule_start_at ));
-        $this->day = date( 'M d, Y' , strtotime( $this->schedule_start_at ));
-        $this->class_status = ucwords( $this->class_status );
-        $this->ccid = Text::convertInt( $this->class_id );
-        // for teachers
-        if( isset( $this->t_fname )){
-            $this->teacher_short_name = ucwords( strtolower( $this->t_fname.' '.substr( $this->t_lname , 0 , 1 ).'.' ) );
-        }
-
         // for students
-        if( isset( $this->s_fname )) {
-            $this->student_short_name = ucwords(strtolower($this->s_fname . ' ' . substr($this->s_lname, 0, 1) . '.'));
-        }
+        $this->student_short_name = ucwords(strtolower( $this->first_name . ' ' . substr($this->last_name, 0, 1) . '.'));
+        $this->student_full_name = ucwords(strtolower( $this->last_name.', '.$this->first_name ) );
 
         return $this;
     }

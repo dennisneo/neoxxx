@@ -36,6 +36,23 @@ class AjaxStudentController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function getIncomingSchedules( Request $r )
+    {
+        $r->request->add(['incoming_only' => true ]);
+        $sessions = (new ClassSessions)->byStudentId( $r->sid , $r );
+        return [
+            'success' =>true,
+            's' => $sessions
+        ];
+    }
+
+    public function bookClass( Request $r )
+    {
+        return [
+            'success' =>true
+        ];
+    }
+
     public function getPlacementExam( Request $r )
     {
         $exam_sessions = ( new ExamSessions() )->getByStudentIdVuefy( $r );
@@ -162,10 +179,19 @@ class AjaxStudentController extends AjaxBaseController{
     {
         // do some checks for validity of the class session
         if( ! $s = ClassSessions::find( $r->cid ) ){
-            return [
-                'success' => false,
-                'message' => trans( 'general.invalid_class_session' )
-            ];
+            $session = $this->setupClassSession( $r );
+
+            if( $session['success'] ){
+                $s = $session['s'];
+            }else{
+                return [
+                    'success' => false,
+                    //'message' => trans( 'general.invalid_class_session' )
+                    'message' => $session['message']
+                ];
+            }
+
+
         }
 
         // check if availble credits is more than session credit

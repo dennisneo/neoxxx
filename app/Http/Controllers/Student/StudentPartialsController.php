@@ -26,6 +26,8 @@ class StudentPartialsController extends StudentBaseController{
         $time_array = DateTimeHelper::timeTrList();
 
         Html::instance()->addScript( '/public/app/student/partials/find_teachers.js'  );
+        Html::loadFullCalendar();
+
         return view( 'student.partials.find_teachers' ,
             [
                 'next_seven_days' => $next_seven_days,

@@ -37,9 +37,9 @@
     <div class="main_container">
         <div class="col-md-3 left_col" >
             <div class="left_col scroll-view" style="background-color:<?php echo isset( $background_color ) ? $background_color : '' ?>">
-                <div class="navbar nav_title" style="border: 0;padding:12px;height:90px">
+                <div class="navbar nav_title" style="border: 0;padding:12px;">
                     <a href="<?php echo Url('') ?>" class="site_title">
-                        <img src="<?php echo Url( 'public/images/neo-logo-light.png' ); ?>" style="height:42px" />
+                        <img src="<?php echo Url( 'public/images/neo-logo-light.png' ); ?>" style="height:42px" class="img-responsive"/>
                     </a>
                 </div>
 
@@ -69,22 +69,7 @@
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
                     <a href="<?php echo Url('logout') ?>"><i class="fa fa-power-off"></i> Logout</a>
-
-                    <!--
-                    <a data-toggle="tooltip" data-placement="top" title="Settings">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </a>
-
-                    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="Lock">
-                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="Logout">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                    </a>
-                    -->
+                    
                 </div>
                 <!-- /menu footer buttons -->
             </div>
@@ -103,8 +88,9 @@
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="<?php echo url('profile') ?>"> Profile</a></li>
-                        <li><a href="<?php echo url('faq') ?>"> <i class="fa fa-question-circle-o"></i> Help</a></li>
+                        <?php $user_type = \App\Models\Users\UserEntity::me()->user_type; ?>
+                        <li><a href="<?php echo url( $user_type.'/profile') ?>"> Profile</a></li>
+                        <!--<li><a href="<?php echo url('faq') ?>"> <i class="fa fa-question-circle-o"></i> Help</a></li>-->
                         <li><a href="<?php echo url('logout') ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>
                 </li>

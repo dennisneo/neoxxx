@@ -6,26 +6,35 @@ var sVue = new Vue({
         selected_teacher:{}
     },
     methods:{
-        teacherSelected:function( tid ){
+        teacherSelected:function( e ){
+
+            var tid =  $(e.target).attr( 'data-val');
+            $(e.target).html( '<i class="fa fa-refresh fa-spin"></i>');
+
             $.post( subdir+'/ajax/student/ts' , { cid: $('#cid').val() , tid:tid ,_token:$('#_token').val() })
             .done(function( data ){
                 if( data.success ){
                     sVue.$data.selected_teacher = data.teacher;
-                    $('#teacher_id').val( data.teacher.id )
+                    $('#teacher_id').val( data.teacher.id );
+                    $('#teachersListDiv').addClass( 'hide' );
+                    $('#teachers_name').ss( 'hide' );
                     toastr.success( 'Teacher selected' );
                 }else{
                    toastr.error( data.message );
                 }
+
+                $('.btn-select').html('Select')
             })
             .error(function( data ){
 
             });
         },
         saveSession:function(){
+
             $('.btn').prop('disabled', true );
             $('.save').html('<i class="fa fa-refresh fa-spin"></i>' );
 
-            if( ! $('#teacher_id').val() ){
+            if(  $('#teacher_id').val() == 0 ||  $('#teacher_id').val() == '' ){
 
                 $('.btn').prop('disabled', false );
                 $('.save').html( '<i class="fa fa-check"></i> Confirm' );
@@ -71,9 +80,10 @@ var sVue = new Vue({
     },
     ready:function(){
 
-        if( $('#teacher_id').val() ){
+        if( $('#teacher_id').val() > 0  ){
             return;
         }
+
         // load available teachers
         $.get( subdir+'/ajax/student/at' , { cid: $('#cid').val() } )
         .done(function( data ){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax\Teacher;
 use App\Events\CancelClassSessionEvent;
 use App\Events\NewClassSession;
 use App\Http\Controllers\Ajax\AjaxBaseController;
+use App\Models\ClassSessions\ClassFeedback;
 use App\Models\ClassSessions\ClassSessionEntity;
 use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
@@ -44,6 +45,16 @@ class AjaxTeacherController extends AjaxBaseController{
             'success' =>true,
             'teacher' => $teacher
         ];
+    }
+
+    public function getTeacherFeedbacks( Request $r )
+    {
+        $fb = new ClassFeedback();
+        return [
+            'success' =>true,
+            'feedbacks' => $fb->byTeacherId( $r->teacher_id )->vuefyThisCollection()
+        ];
+
     }
 
     public function getUpcomingClass( Request $r )

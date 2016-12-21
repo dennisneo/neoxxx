@@ -1,14 +1,14 @@
 
-var tVue = new Vue({
-    el:'#tDiv',
+var pVue = new Vue({
+    el:'#pDiv',
     data:{
-        salary_records:[]
+       records:[]
     },
     methods:{
 
     },
     ready:function(){
-        this.getClasses();
+1
     }
 });
 
@@ -17,3 +17,4 @@ $( document ).ready(
 
     }
 );
+y

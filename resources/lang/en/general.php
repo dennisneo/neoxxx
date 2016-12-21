@@ -25,6 +25,9 @@ return [
     'learning_goals' => 'Learning Goals',
     'new_class_assigned' => ' You got new class assignment ',
     'new_class_session' => ' New class session ',
+    'notifications' => 'Notifications',
+    'no_schedule_found' => 'No schedule found',
+    'no_record_found' => 'No record found',
     'preferred_start_time'=>'Preferred Start Time',
     'question' => 'Question',
     'schedule_me_a_class' => 'Schedule me a class',
@@ -32,9 +35,12 @@ return [
     'set_learning_goals' => 'Set Learning Goals',
     'start_exam' => 'Start Exam',
     'start_placement_exam' => 'Start Placement Exam',
+    'start_time' => 'Start Time',
     'teacher' => 'Teacher',
     'teacher_profile' => 'Teacher Profile',
+    'teacher_schedule_conflict' => 'Teacher was already booked on spicified schedule',
     'teachers' => 'Teachers',
+    'upcoming_class_schedule' => 'Upcoming class schedule',
     'username_password_incorrect' => 'Username or password is incorrect',
     'view_profile' => 'View profile'
 ];

@@ -43,7 +43,8 @@
                         <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="duration"><?php echo trans('general.duration') ?> </label>
-                                <?php echo \Form::select( 'duration' , [ 20 => '20 min' , 40 => '40 min' ,  60 => '1 hr' ],'' , [ 'class' => 'form-control' , 'id'=>'duration' ] ) ?>
+                                <?php echo \App\Models\ClassSessions\ClassSessionEntity::durationSelect();  ?>
+                                <?php //echo \Form::select( 'duration' , [ 20 => '20 min' , 40 => '40 min' ,  60 => '1 hr' ],'' , [ 'class' => 'form-control' , 'id'=>'duration' ] ) ?>
                             </div>
 
                             <div class="form-group col-lg-4">

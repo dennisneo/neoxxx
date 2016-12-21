@@ -14,6 +14,7 @@ use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
 use Helpers\Text;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AjaxFrontController extends AjaxBaseController{
 
@@ -42,6 +43,12 @@ class AjaxFrontController extends AjaxBaseController{
         ];
     }
 
+    /**
+     * New student registering
+     *
+     * @param Request $r
+     * @return array
+     */
     public function saveNewStudent( Request $r )
     {
 
@@ -49,23 +56,55 @@ class AjaxFrontController extends AjaxBaseController{
 
         $student = new StudentEntity();
 
-        if( ! $student->store( $r ) ){
+        \DB::beginTransaction();
+        try{
+            if( ! $student->store( $r ) ){
+                return [
+                    'success' => false,
+                    'message' => $student->displayErrors()
+                ];
+            }
+
+            $free_credits = Settings::getByKey( 'credits_free', 0 );
+
+            // add student some FREE credits
+            $student->addCredits( $free_credits );
+            $student->ccid = Text::convertInt( $student->id );
+
+            // send email to student
+            // we can use events later for this
+            $this->sendEmailToNewStudent( $student );
+
+        }catch ( \Exception $e ){
+            \DB::rollBack();
             return [
                 'success' => false,
-                'message' => $student->displayErrors()
+                'student' => $e->getMessage()
             ];
         }
 
-        $free_credits = Settings::getByKey('credits_free' , 0);
-        // add student some FREE credits
-        $student->addCredits( $free_credits );
-
-        $student->ccid = Text::convertInt( $student->id );
+        \DB::commit();
 
         return [
             'success' => true,
             'student' => $student
         ];
+    }
+
+    private function sendEmailToNewStudent( $student )
+    {
+
+        view()->addLocation( app_path().'/Http/Views/');
+        $params = unserialize( $student->params );
+
+        if( ! Mail::send('emails.new_student', ['student' => $student , 'params' => $params ], function ($m) use ( $student ) {
+            $m->from( 'accounts@nativeenglishonline.com' , env('COMPANY_NAME'));
+            $m->to( $student->email, $student->first_name.' '.$student->last_name )
+                ->subject( 'Welcome to '.env('COMPANY_NAME') );
+        }) ){
+            throw new \Exception(' Email sending failed ');
+        }
+
     }
 
 }

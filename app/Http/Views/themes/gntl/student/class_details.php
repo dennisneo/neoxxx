@@ -3,6 +3,15 @@
     <form id="sForm">
     <div class="col-lg-12">
 
+        <div class="alert alert-success" style="">
+
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+        </div>
+
         <div class="x_panel tile" style="">
             <div class="x_title">
                 <h2><?php echo trans('general.new_class_session') ?></h2>
@@ -38,14 +47,9 @@
 
     <div class="x_panel tile" style="">
         <div class="x_content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-            minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-            in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            
             <div>
                 <br />
-                <a href="<?php echo Url('student/dashboard') ?>" class="btn btn-lg btn-primary"> Dashboard </a>
+                <a href="<?php echo Url('student/dashboard') ?>" class="btn btn-lg btn-primary"> Back to Dashboard </a>
             </div>
         </div>
     </div>

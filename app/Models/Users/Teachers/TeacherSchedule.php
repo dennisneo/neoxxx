@@ -69,6 +69,7 @@ class TeacherSchedule extends BaseModel{
 
         $this->nw_start_timestamp = $this->start_timestamp + ( 7*24*60*60 ) ;
         $this->nw_end_timestamp   = $this->end_timestamp + ( 7*24*60*60 );
+        $this->bookable = true;
 
         return $this;
     }

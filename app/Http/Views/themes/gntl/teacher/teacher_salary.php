@@ -1,10 +1,5 @@
 <style>
 
-    table tr td{
-        padding: 4px;
-        vertical-align: top;
-        font-size: 1.2em;
-    }
 </style>
 
 <div id="tDiv" style="">
@@ -21,8 +16,18 @@
                         <th>Date</th>
                         <th></th>
                     </tr>
+                    <tr :class=" salary_records.length ? 'hide' : '' ">
+                        <td colspan="5"> <?php echo trans('general.no_record_found') ?> </td>
+                    </tr>
+                    <tr :class=" salary_records.length ? 'hide' : '' ">
+                        <td colspan="5"></td>
+                    </tr>
                     <tr>
-
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </table>
             </div>

@@ -12,6 +12,10 @@ Route::group( ['prefix' => 'ajax/finance', 'middleware'=>['auth.finance'], 'name
 });
 
 Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'Ajax\Student',  'as'=> 'ajax.student' ],  function(){
+    // get student incoming schedule
+    Route::get( 'ics',  'AjaxStudentController@getIncomingSchedules' );
+    // book class in teacher availability view
+    Route::post( 'bcta',  'AjaxStudentController@bookClass' );
     // get student placement exam
     Route::get('per',  'AjaxStudentController@getPlacementExam');
     // save student profile
@@ -54,6 +58,9 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     Route::post( 'bc',  'AjaxStudentCreditsController@buy' );
 });
 
+
+Route::get( 'ajax/admin/teacher/get_schedule',  'Ajax\Admin\AjaxTeachersController@getSchedule' );
+
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
     // get credits cost in settings
     Route::get( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
@@ -71,10 +78,12 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     Route::get( 'dashboard/latest_students',  'AjaxDashboardController@latestStudents' );
 
     Route::post( 'teacher/add_schedule',  'AjaxTeachersController@addSchedule' );
-    Route::get( 'teacher/get_schedule',  'AjaxTeachersController@getSchedule' );
+
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){
+        // get teacher feedbacks
+        Route::get( 'feedbacks',  'AjaxTeacherController@getTeacherFeedbacks' );
         //
         Route::post('saveSettings',  'AjaxTeacherController@saveSettings');
         // upcoming classes
@@ -145,6 +154,9 @@ Route::get( 'ajax/admin/pe/get', 'Ajax\Admin\AjaxPlacementExamController@getQues
 Route::post( 'ajax/admin/pe/sq', 'Ajax\Admin\AjaxPlacementExamController@saveQuestion' );
 
 Route::post( 'ajax/admin/settings/s', 'Ajax\Admin\AjaxSettingsController@saveSettings' );
+
+//get time select for teacher availability
+Route::get( 'ajax/util/ts', 'Ajax\AjaxUtilsController@timeSelect' );
 
 
 

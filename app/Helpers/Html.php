@@ -92,6 +92,11 @@ class Html extends HtmlFacade{
 		return implode( '' , $html );
 	}
 
+	public static function logoPath()
+	{
+		return url( '/public/images/neo-logo-light.png' );
+	}
+
 	public static function loadFlexslider()
 	{
 		static::instance()->addScript( '/themes/prime/js/jquery.flexslider-min.js' );

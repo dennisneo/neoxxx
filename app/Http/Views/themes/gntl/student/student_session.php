@@ -54,7 +54,7 @@
     </div>
 
     <?php if( ! $cs->teacher_id ){ ?>
-        <div class="row">
+        <div class="row" id="teachersListDiv">
             <div class="col-lg-12">
                 <div class="x_panel tile" style="">
                     <div class="x_title">
@@ -64,7 +64,7 @@
                                 <?php echo \Form::text( 'q', '' , [ 'placeholder' => 'Search', 'class' => 'form-control' , 'id'=>'q' ] ) ?>
                             </div>
                         </div>
-                        <h2><?php echo trans('general.choose_a_teacher') ?></h2>
+                        <h2><?php echo trans( 'general.choose_a_teacher' ) ?></h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -77,9 +77,9 @@
                                 <div>
                                     <b>{{t.short_name}}</b>
                                 </div>
-                                <div style="text-align:center;">
-                                    <a href="javascript:" class="btn btn-success btn-xs" v-on:click="teacherSelected(t.id)">Select</a>
-                                    <a href="javascript:" class="btn btn-default btn-xs"><?php echo trans('general.view_profile') ?> </a>
+                                <div style="">
+                                    <a href="javascript:" class="btn btn-success btn-sm btn-select" v-on:click="teacherSelected" :data-val="t.id">Select</a>
+                                    <a href="javascript:" class="btn btn-default btn-sm"><?php echo trans('general.view_profile') ?> </a>
                                 </div>
                             </div>
 

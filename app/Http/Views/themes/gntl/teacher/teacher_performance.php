@@ -1,9 +1,5 @@
 <style>
-    table tr td{
-        padding: 4px;
-        vertical-align: top;
-        font-size: 1.2em;
-    }
+
 </style>
 
 <div id="tDiv" style="">
@@ -19,6 +15,12 @@
                         <th>Type</th>
                         <th>Description</th>
                         <th>Appeal</th>
+                    </tr>
+                    <tr :class=" records.length ? 'hide' : '' ">
+                        <td colspan="6"> <?php echo trans('general.no_record_found') ?> </td>
+                    </tr>
+                    <tr :class=" records.length ? 'hide' : '' ">
+                        <td colspan="6"></td>
                     </tr>
                     <tr>
                         <td></td>

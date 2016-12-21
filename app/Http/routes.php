@@ -56,6 +56,7 @@ Route::any( 'student/application/success', 'FrontController@studentSuccess' );
 Route::any( 's/application/success', 'FrontController@studentSuccess' );
 Route::any( 's/confirm', 'FrontController@studentConfirm' );
 
+
 /***** Alipay specific notifications ********/
 Route::any( 'alipay/notice', 'AlipayFrontendController@notify' );
 Route::any( 'alipay/return', 'AlipayFrontendController@ret' );
@@ -68,6 +69,10 @@ if( Request::segment(1) == 'test' ){
 if( Request::segment(1) == 'utils' ){
     Route::get( 'utils/pq', 'UtilsController@populateQuestions' );
     Route::get( 'utils/alipay', 'UtilsController@alipay' );
+    // email template
+    Route::get( 'utils/et/{email_view}', 'UtilsController@viewEmailTemplate' );
+
+    Route::get( 'utils/t', 'UtilsController@teacherSched' );
     return;
 }
 

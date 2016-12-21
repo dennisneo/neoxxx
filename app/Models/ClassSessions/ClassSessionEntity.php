@@ -36,13 +36,23 @@ class ClassSessionEntity extends BaseModel{
 
         $this->fill( $r->all() );
         $this->schedule_start_at =  date( 'Y-m-d H:i:s' , strtotime( $r->date.' '.$r->time ) );
+        $this->schedule_end_at =  date( 'Y-m-d H:i:s' , strtotime( $r->date.' '.$r->time )+( ($r->duration*60)-1 ) );
 
         // check if session is in the future
         $twelve_hrs = time() + ( 60 * 60 * 12 );
         if( strtotime( $this->schedule_start_at ) < $twelve_hrs  ){
-            $this->errors[] = trans( 'errors.later_than_twelve_hours' );
+            $this->errors[] = trans( 'errors.later_than_twelve_hours' ).' '.$r->date;
             return false;
         }
+
+        // check if session doesnt collide with other sessions of the teacher
+        $has_conflict = ( new ClassSessions)->hasConflict( $this->schedule_start_at, $this->schedule_end_at , $this->teacher_id );
+        if( $has_conflict ){
+            $this->errors[] = trans( 'teacher_schedule_conflict' );
+            return false;
+        }
+
+        // check if session doesnt collide with other sessions of the student
 
         // get credits by duration
         $this->credits = Credits::getCreditsByDuration( $r->duration );
@@ -179,4 +189,8 @@ class ClassSessionEntity extends BaseModel{
         return false;
     }
 
+    public static function durationSelect( $default = 20 )
+    {
+        return \Form::select( 'duration' , [ 20 => '20 min' , 40 => '40 min' ,  60 => '1 hr' ], $default , [ 'class' => 'form-control' , 'id'=>'duration' ] );
+    }
 }
