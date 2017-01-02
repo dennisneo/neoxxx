@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
+
 namespace App\Http\Controllers\Ajax\Student;
 
 use App\Events\CancelClassSessionEvent;
@@ -383,9 +378,7 @@ class AjaxStudentController extends AjaxBaseController{
         \DB::beginTransaction();
 
         try{
-
             LearningGoalMap::purgeAndSave( $r );
-
         }catch( \Exception $e ){
             \DB::rollback();
             return [

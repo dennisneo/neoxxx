@@ -89,7 +89,9 @@
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <?php $user_type = \App\Models\Users\UserEntity::me()->user_type; ?>
-                        <li><a href="<?php echo url( $user_type.'/profile') ?>"> Profile</a></li>
+                        <?php if( $user_type != 'admin' ){ ?>
+                            <li><a href="<?php echo url( $user_type.'/profile') ?>"> Profile</a></li>
+                        <?php } ?>
                         <!--<li><a href="<?php echo url('faq') ?>"> <i class="fa fa-question-circle-o"></i> Help</a></li>-->
                         <li><a href="<?php echo url('logout') ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>

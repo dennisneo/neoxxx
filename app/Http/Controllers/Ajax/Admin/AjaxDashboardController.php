@@ -54,4 +54,24 @@ class AjaxDashboardController extends AjaxBaseController{
         ];
 
     }
+
+    public function chartData(  Request $r )
+    {
+        $twelve_days_ago = date( 'Y-m-d H:i:s' , mktime( 0,0,0, date('m') , date('d')-12 , date('Y') ) );
+        $dates = Students::where( 'created_at' , '>=' , $twelve_days_ago )
+            //->select( ["TO_DAYS( 'created_at' ) as d "," count() as cnt" ] )
+            ->select( \DB::raw( " TO_DAYS( created_at ) as d , count( id ) as cnt , DATE( created_at ) as date, DAY( created_at ) as day " ) )
+            ->where( 'user_type' , 'student' )
+            ->groupBy( 'd' )
+            ->get();
+
+        $d_arr = [];
+        foreach( $dates as $d ){
+            //$d_arr[ $d->day ] = $d;
+        }
+        return [
+            'success' =>true,
+            'dates' => $dates
+        ];
+    }
 }

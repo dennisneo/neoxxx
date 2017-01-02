@@ -18,9 +18,9 @@ class Questions extends BaseModel
 
     public function getQuestions( Request $r )
     {
-        $limit = $r->limit ? $r->limit : 20;
+        $this->limit = $r->limit ? $r->limit : 20;
         $page = $r->page ? $r->page : 1;
-        $offset = ( $page - 1 ) * $limit;
+        $offset = ( $page - 1 ) * $this->limit;
 
         $orderby = $r->orderby ?  $r->orderby : 'added_at';
         $order_direction = $r->order_direction ?  $r->order_direction : 'DESC';
@@ -28,7 +28,7 @@ class Questions extends BaseModel
         $qs  = static::orderby( $orderby , $order_direction );
         $this->total = $qs->count();
 
-        $qs->limit( $limit );
+        $qs->limit( $this->limit );
         $qs->offset( $offset );
 
         return $qs->get();

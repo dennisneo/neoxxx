@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers\Ajax\Admin;
 
@@ -79,10 +73,13 @@ class AjaxPlacementExamController extends AjaxBaseController{
             $questions_arr[] = $q;
         }
         ***/
+
         return [
             'success' => true,
             'questions' => $questions,
-            'choices' => $choices
+            'choices' => $choices,
+            'total' => $qs->getTotal(),
+            'page_count' => $qs->getPageCount( true )
         ];
     }
 

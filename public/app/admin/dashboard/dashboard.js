@@ -8,7 +8,7 @@ var dVue = new Vue({
 
     },
     ready:function(){
-        $.get(subdir+'/ajax/admin/dashboard/latest_applicants')
+        $.get( subdir+'/ajax/admin/dashboard/latest_applicants')
         .done(function( data ){
             if(data.success){
                 dVue.$data.applicants = data.applicants

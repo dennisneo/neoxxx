@@ -27,12 +27,22 @@ class BaseModel extends \Eloquent
         return $this->limit;
     }
 
-    public function getPageCount()
+    public function getPageCount( $return_array = false )
     {
         if( ! $this->total ){
             return 0;
         }
-        return ceil( $this->total / $this->limit   );
+        $count =  ceil( $this->total / $this->limit   );
+
+        if( $return_array ){
+            $_arr = [];
+            for( $i = 1 ; $i <= $count ; $i++ ){
+                $_arr[] = $i;
+            }
+            return $_arr;
+        }
+
+        return $count;
     }
 
     public function getCurrentPage()

@@ -1,9 +1,6 @@
 <style>
-
-    table tr td{
-        padding: 4px;
-        vertical-align: top;
-        font-size: 1.2em;
+    td.hl{
+        font-weight: bold;
     }
 </style>
 
@@ -28,9 +25,11 @@
                         </div>
                     </div>
                 </div>
-                    <input type="hidden" name="tid" id="tid" value="" />
+                    <input type="hidden" name="tid" id="tid" value="<?php echo isset( $teacher_id ) ? $teacher_id : 0 ?>" />
                     <input type="hidden" name="sid" id="sid" value="" />
+                    <input type="hidden" name="page" id="page" value="1" />
                 </form>
+                <div style="min-height:320px">
                 <table class="table table-striped">
                     <tr>
                         <th></th>
@@ -47,7 +46,7 @@
                     <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
                         <td colspan="6"></td>
                     </tr>
-                    <tr v-for="s in sessions">
+                    <tr v-for="s in sessions" v-cloak>
                         <td></td>
                         <td><a href="javascript:" v-on:click="">{{s.s_fname+' '+s.s_lname}}</a></td>
                         <td><a href="javascript:" v-on:click="">{{s.t_fname+' '+s.t_lname}}</a></td>
@@ -60,7 +59,7 @@
                                     <i class="fa fa-chevron-down"></i>
                                 </button>
                                 <ul class="dropdown-menu" style="padding:4px">
-                                    <li><a href="javascript:" v-on:click="openStudentInfoModal( s.ccid )"> <i class="fa fa-user"></i> Student Info </a></li>
+                                    <li><a href="javascript:" v-on:click="openStudentInfoModal( s.student_id )"> <i class="fa fa-user"></i> Student Info </a></li>
                                     <li><a href="javascript:" v-on:click="openClassRecord( s.class_id )"> <i class="fa fa-edit"></i> Class Record </a></li>
                                     <li><a href="javascript:" v-on:click="openNotificationModal( s.ccid )"> <i class="fa fa-comment"></i> Notify </a></li>
                                 </ul>
@@ -68,7 +67,15 @@
                         </td>
                     </tr>
                 </table>
-                <br /><br /><br />
+                </div>
+                <ul class="pagination" v-bind:class="page_count.length == 1 ? 'hide' : ''  ">
+                    <li v-bind:class=" current_page > 1 ? '' : 'hide' "><a href="javascript:"  v-on:click="goToPrev" data-page="">Previous</a></li>
+                    <li v-for="pc in page_count" v-bind:class="current_page == pc ? 'active': '' ">
+                        <a href="javascript:" v-on:click="goToPage" data-page="" v-bind:data-page="pc">{{pc}}</a>
+                    </li>
+                    <li v-bind:class=" current_page < page_count.length ? '' : 'hide' "><a href="javascript:" @click="goToNext" >Next</a></li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -177,44 +184,69 @@
                 <h4 class="modal-title">Student Info</h4>
             </div>
             <div class="modal-body">
-                <b>Personal and Contact Info</b>
-                <table class="table" style="margin-top: 24px">
-                    <tr>
-                        <td>Name:</td>
-                        <td></td>
-                        <td>Skype ID:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Gender:</td>
-                        <td></td>
-                        <td>QQ ID:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Age:</td>
-                        <td></td>
-                        <td>Email</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Location:</td>
-                        <td></td>
-                        <td>Mobile Phone:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Timezone:</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
+                <div>
+                    <b>Personal and Contact Info</b>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                    <table class="table" style="margin-top: 24px">
+                        <tr>
+                            <td>Name:</td>
+                            <td class="hl">{{ student.full_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td class="hl">{{ student.gender }}</td>
+                        </tr>
+                        <tr>
+                            <td>Age:</td>
+                            <td class="hl"></td>
+                        </tr>
+                        <tr>
+                            <td>Location:</td>
+                            <td class="hl">{{ student.location }}</td>
+                        </tr>
+                        <tr>
+                            <td> Timezone: </td>
+                            <td class="hl"> {{ student.timezone }} </td>
+                        </tr>
+                    </table>
+                </div>
+                    <div class="col-lg-6">
+                    <table class="table" style="margin-top: 24px">
+                        <tr>
+                            <td>Skype ID:</td>
+                            <td class="hl"> {{ student.skype }}</td>
+                        </tr>
+                        <tr>
+                            <td>QQ ID:</td>
+                            <td class="hl">{{ student.qq }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td class="hl">{{ student.email }}</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Phone:</td>
+                            <td class="hl"> {{ student.mobile }} </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="hl"></td>
+                        </tr>
+                    </table>
+                </div>
+                </div>
                 <b>Class Details</b>
                 <table class="table" style="margin-top: 24px">
                     <tr>
                         <td>Learning Purpose:</td>
-                        <td></td>
+                        <td class="">
+                            <ul>
+                                <li :class="learning_info.length ? 'hide' : '' "> No learning purpose found </li>
+                                <li v-for="l in learning_info">{{ l.goal }}</li>
+                            </ul>
+                        </td>
                     </tr>
                     <tr>
                         <td>Materials / Textbooks:</td>
@@ -222,13 +254,6 @@
                     </tr>
                     <tr>
                         <td>Message from Student:</td>
-                        <td></td>
-                    </tr>
-                </table>
-                <b>Class History</b>
-                <table class="table" style="margin-top: 24px">
-                    <tr>
-                        <td></td>
                         <td></td>
                     </tr>
                 </table>

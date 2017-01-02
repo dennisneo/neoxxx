@@ -4,10 +4,25 @@ var tsVue = new Vue({
 
     },
     methods:{
-        openNewSched:function() {
+        openNewSched:function( sid ) {
             // clean all fields
             $('#schedModal').modal();
             $('.dow').prop( 'checked' , false);
+
+            $('#studentInfoModal').modal();
+            $.get( subdir+'/ajax/admin/sinfo' , { sid:sid })
+            .done( function( data ){
+                if(data.success){
+                    tVue.$data.student = data.student;
+                    tVue.$data.learning_info = data.learning_info;
+                }else{
+                    toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
+
         },
 
         saveSched:function() {

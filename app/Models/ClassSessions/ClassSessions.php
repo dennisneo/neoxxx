@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/28/2016
- * Time: 10:31 AM
- */
 
 namespace App\Models\ClassSessions;
 
@@ -68,13 +62,11 @@ class ClassSessions extends ClassSessionEntity{
 
     public function getAll( Request $r )
     {
-        $limit = $r->limit ? $r->limit : 20;
+        $this->limit = $r->limit ? $r->limit  : 20;
         $page = $r->page ? $r->page : 1;
-        $offset = ($page-1) * $limit;
+        $offset = ( $page-1 ) * $this->limit;
         $order_by = $r->order_by ? $r->order_by : 'schedule_start_at';
         $order_direction = $r->order_direction ? $r->order_direction : 'DESC';
-
-        $this->limit = $r->limit ? $r->limit  :20;
 
         $tid = Text::recoverInt( $r->tid );
 
@@ -111,9 +103,10 @@ class ClassSessions extends ClassSessionEntity{
         $this->total = $cs->count();
 
         $cs->leftjoin( 'users as t', 't.id', '=' , 'cs.teacher_id' )
-            ->leftjoin( 'users as s', 's.id', '=' , 'cs.student_id' );
+        ->leftjoin( 'users as s', 's.id', '=' , 'cs.student_id' );
         $cs->orderby( $order_by , $order_direction );
-        $cs->limit( $this->limit );
+        $cs->limit( $this->limit )
+            ->offset( $offset );
 
         $schedules = $cs->get( $fields );
 

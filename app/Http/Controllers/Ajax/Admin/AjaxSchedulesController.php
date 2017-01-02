@@ -19,11 +19,14 @@ class AjaxSchedulesController extends AjaxBaseController{
 
     public function getSchedules( Request $r )
     {
-        $sessions =  ( new ClassSessions )->getAll( $r );
+        $cs = new ClassSessions;
+        $sessions =  $cs->getAll( $r );
 
         return [
             'success' => true,
-            'sessions' => $sessions
+            'sessions' => $sessions,
+            'total' => $cs->getTotal(),
+            'page_count' => $cs->getPageCount( true )
         ];
     }
 }

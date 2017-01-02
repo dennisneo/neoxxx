@@ -3,7 +3,12 @@ var tVue = new Vue({
     el:'#tDiv',
     data:{
         sessions:[],
-        session:{}
+        session:{},
+        student:{},
+        learning_info:[],
+        total: 0,
+        page_count: [1],
+        current_page : 1
     },
     methods:{
         showAudioDiv:function( src )
@@ -88,8 +93,20 @@ var tVue = new Vue({
         openNotificationModal:function(){
             $('#notificationModal').modal();
         },
-        openStudentInfoModal:function(){
+        openStudentInfoModal:function( sid ){
             $('#studentInfoModal').modal();
+            $.get( subdir+'/ajax/admin/sinfo' , { sid:sid })
+            .done( function( data ){
+                if(data.success){
+                    tVue.$data.student = data.student;
+                    tVue.$data.learning_info = data.learning_info;
+                }else{
+                   toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
         },
         sendNotification:function()
         {
@@ -102,6 +119,24 @@ var tVue = new Vue({
         search:function(){
             this.getClasses();
         },
+        goToPage:function( e )
+        {
+            this.$data.current_page =  $(e.target).attr('data-page');
+            $('#page').val( this.$data.current_page );
+            this.getClasses();
+        },
+        goToNext:function()
+        {
+            this.$data.current_page =  parseInt( this.$data.current_page ) + 1;
+            $('#page').val( this.$data.current_page );
+            this.getClasses();
+        },
+        goToPrev:function()
+        {
+            this.$data.current_page =  parseInt( this.$data.current_page ) - 1;
+            $('#page').val( this.$data.current_page );
+            this.getClasses();
+        },
         getClasses:function()
         {
             this.sessions =  [];
@@ -111,6 +146,8 @@ var tVue = new Vue({
                 .done(function( data ){
                     if(data.success){
                         tVue.$data.sessions =  data.sessions;
+                        tVue.$data.total =  data.total;
+                        tVue.$data.page_count =  data.page_count;
                         $('.loading').html( 'No record found' );
                     }else{
                         toastr.error( data.message );

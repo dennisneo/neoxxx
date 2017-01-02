@@ -15,13 +15,20 @@ class TeacherController extends TeacherBaseController{
     }
 
     /**
+     * @param Request $r
+     * @return mixed
      */
     public function schedule( Request $r )
     {
         Html::loadFileupload();
         Html::loadDatepicker();
-        $this->layout->content      =  view('teacher.teacher_schedule');
-        Html::instance()->addScript( 'public/app/teacher/teacher_schedule.js' );
+
+        //$this->layout->content      =  view('teacher.teacher_schedule');
+        //Html::instance()->addScript( 'public/app/teacher/teacher_schedule.js' );
+
+        $this->layout->content      =  view('admin.schedules.admin_schedules' , [ 'teacher_id' => UserEntity::me()->id ] );
+        Html::instance()->addScript( 'public/app/admin/schedules/admin_schedules.js' );
+
         return $this->layout;
     }
 

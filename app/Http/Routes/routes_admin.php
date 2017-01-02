@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 8/5/2016
- * Time: 8:03 AM
- */
 
 Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,function(){
 

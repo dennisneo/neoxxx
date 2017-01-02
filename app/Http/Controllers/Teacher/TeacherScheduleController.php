@@ -16,9 +16,13 @@ class TeacherScheduleController extends TeacherBaseController{
     {
         Html::loadFileupload();
         Html::loadDatepicker();
-        $this->layout->content  =  view('teacher.teacher_schedule');
-        Html::instance()->addScript( 'public/app/teacher/teacher_schedule.js' );
+        //$this->layout->content  =  view('teacher.teacher_schedule');
+        //Html::instance()->addScript( 'public/app/teacher/teacher_schedule.js' );
+
+        $this->layout->content      =  view('admin.schedules.admin_schedules');
+        Html::instance()->addScript( 'public/app/admin/schedules/admin_schedules.js' );
         return $this->layout;
+
     }
 
 

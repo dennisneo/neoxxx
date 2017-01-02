@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Ajax\Admin;
 
 use App\Http\Controllers\Ajax\AjaxBaseController;
+use App\Models\LearningGoals\LearningGoalMap;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Messaging\Notes;
 use App\Models\Users\Applicant;
+use App\Models\Users\StudentEntity;
 use App\Models\Users\Students;
 use App\Models\Users\Teachers;
 use App\Models\Users\UserEntity;
+use Helpers\Text;
 use Illuminate\Http\Request;
 
 class AjaxStudentsController extends AjaxBaseController{
@@ -16,6 +19,34 @@ class AjaxStudentsController extends AjaxBaseController{
     public function __construct( Request $r )
     {
         parent::__construct( $r );
+    }
+
+    /**
+     * Called when admin view student personal and learning info
+     *
+     * @param Request $r
+     * @return array
+     */
+    public function getStudentInfo( Request $r )
+    {
+
+         $sid  = $r->sid;
+         if( ! $student = StudentEntity::find( $sid ) ){
+            return [
+                'success' => false,
+                'message' => 'Student not found'
+            ];
+         }
+
+         // also get student learning info
+        $learning_info = LearningGoalMap::getLearningGoalsByStudentId( $sid );
+
+         return [
+             'success' =>true,
+             'student' => $student->vuefyStudent(),
+             'learning_info' => $learning_info,
+             'sid' => $r->sid
+         ];
     }
 
     public function saveNote( Request $r )

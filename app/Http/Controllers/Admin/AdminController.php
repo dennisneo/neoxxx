@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers\Admin;
 
@@ -22,7 +16,9 @@ class AdminController extends AdminBaseController{
     {
 
         $this->layout->content = view('admin.dashboard.dashboard');
+        Html::loadChart();
         Html::instance()->addScript( 'public/app/admin/dashboard/dashboard.js' );
+        Html::instance()->addScript( 'public/app/admin/dashboard/dashboard_chart.js' );
         return $this->layout;
 
     }

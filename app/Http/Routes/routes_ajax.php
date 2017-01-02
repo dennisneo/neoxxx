@@ -62,6 +62,10 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
 Route::get( 'ajax/admin/teacher/get_schedule',  'Ajax\Admin\AjaxTeachersController@getSchedule' );
 
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
+
+    // student chart data
+    Route::get( 'dashboard/scd',  'AjaxDashboardController@chartData' );
+
     // get credits cost in settings
     Route::get( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
     Route::post( 'credits_cost/save',  'AjaxSettingsController@saveCreditsCost' );
@@ -69,8 +73,6 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     Route::get( 'credits_cost/get',  'AjaxSettingsController@getCreditCost' );
     // save applicant requirements
     Route::post( 'a/srq',  'AjaxApplicantsController@saveRequirements' );
-    // get schedules
-    Route::get( 'gsched',  'AjaxSchedulesController@getSchedules' );
     // save student note
     Route::post( 'sn',  'AjaxStudentsController@saveNote');
     Route::post( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
@@ -148,6 +150,11 @@ Route::post( 'ajax/admin/lg/d', 'Ajax\Admin\AjaxLearningGoalController@deleteLea
 // get all learning goals
 Route::get( 'ajax/admin/lg/get', 'Ajax\Admin\AjaxLearningGoalController@getLearningGoals' );
 Route::get( 'ajax/admin/a/get', 'Ajax\Admin\AjaxApplicantsController@getApplicants' );
+
+// get schedules
+Route::get( 'ajax/admin/gsched',  'Ajax\Admin\AjaxSchedulesController@getSchedules' );
+
+Route::get( 'ajax/admin/sinfo',  'Ajax\Admin\AjaxStudentsController@getStudentInfo' );
 
 // get all placement exam questionaires
 Route::get( 'ajax/admin/pe/get', 'Ajax\Admin\AjaxPlacementExamController@getQuestions' );
