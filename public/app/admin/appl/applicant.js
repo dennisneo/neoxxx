@@ -2,7 +2,8 @@
 var aVue = new Vue({
     el:'#aDiv',
     data:{
-        applicant:[]
+        applicant:[],
+        notes: []
     },
     methods:{
         updateStatus:function(){
@@ -43,19 +44,67 @@ var aVue = new Vue({
             .error(function( data ){
 
             });
+        },
+        saveNote:function()
+        {
+            $('.btn').prop('disabled', true );
+            $.post(subdir+'/ajax/note/save' , $('#nForm').serialize())
+            .done(function( data ){
+                if(data.success){
+                    toastr.success( 'Note successfully saved' );
+                    aVue.$data.notes.push( data.note );
+                    $('#note').val('');
+                }else{
+                   toastr.error( data.message );
+                }
+                $('.btn').prop('disabled', false );
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+                $('.btn').prop('disabled', false );
+            });
         }
     },
     ready:function(){
+        $('#note').val('');
+        $.get( subdir+'/ajax/notes/get' , {aid:$('#note_to').val()} )
+        .done(function( data ){
+            if(data.success){
+                aVue.$data.notes = data.notes;
+            }else{
+               toastr.error( data.message );
+            }
+        })
+        .error(function( data ){
+            toastr.error('Something went wrong');
+        });
 
+        $.get( subdir+'/ajax/req/get' , { aid: $('#applicant_id').val() })
+        .done(function( data ){
+            if( data.success ){
+                $( '#valid_credentials').prop( 'checked' , parseInt( data.req.valid_credentials ) );
+                $( '#fast_internet').prop( 'checked' , parseInt( data.req.fast_internet ) );
+                $( '#comfortable_home_office').prop( 'checked' , parseInt( data.req.comfortable_home_office ) );
+                $( '#audio_recording').prop( 'checked' , parseInt( data.req.audio_recording ) );
+                $( '#appropriate_schedule').prop( 'checked' , parseInt( data.req.appropriate_schedule ) );
+            }else{
+               toastr.error( data.message );
+            }
+        })
+        .error(function( data ){
+            toastr.error('Something went wrong');
+        });
     }
 });
 
 $(document).ready(function(){
+    /**
     $('.req').bootstrapToggle({
         on: ' <i class="fa fa-check"></i>',
         off: ' X ',
         size: 'mini'
     });
+     ***/
 });
 
 $('.tab').click(function(){

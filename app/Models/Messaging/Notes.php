@@ -13,7 +13,7 @@ class Notes extends BaseModel{
     protected $primaryKey   = 'note_id';
     public $timestamps = false;
 
-    public $fillable    = [ ];
+    public $fillable    = [ 'note_id' , 'note' , 'posted_by' , 'note_to'  ];
     public $notes = [];
 
     public function scopeByUserId( $query , $note_to, Request $r )
@@ -34,12 +34,47 @@ class Notes extends BaseModel{
         return $this;
     }
 
+    public function store( Request $r )
+    {
+        if( $r->note_id ){
+            $this->exists = true;
+        }
+
+        $this->fill( $r->all() );
+        $this->posted_at = date( 'Y-m-d H:i:s');
+
+        $this->save();
+
+        return $this;
+    }
+
+    public function poster()
+    {
+        return $this->hasOne('App\Models\Users\UserEntity' , 'posted_by' );
+    }
+
+    /**
+     * Get posted_by details coming from raw model
+     *
+     * @return static
+     */
+    public function retrieveRelationships()
+    {
+        $f = static::where( 'note_id', $this->note_id )
+            ->from( 'notes as n'  )
+            ->join( 'users as u' , 'u.id' ,'=' ,'posted_by')
+            ->first( [ 'n.*' , 'u.first_name' , 'u.last_name', 'profile_photo_url' ] );
+
+        return $f;
+    }
+
     public function vuefy()
     {
         $this->from = $this->first_name.' '.$this->last_name;
         $this->posted_at_human = Carbon::createFromTimestamp( strtotime( $this->posted_at ) )->diffForHumans();
         $subdir = env( 'SUBDIR' ) ? '/'.env( 'SUBDIR' ):'';
         $this->profile_photo_url = $this->profile_photo_url ? $this->profile_photo_url : $subdir.'/public/images/blank_face.png';
+        $this->timestamp = strtotime( $this->posted_at );
         return $this;
     }
 

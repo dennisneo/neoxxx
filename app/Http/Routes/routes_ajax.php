@@ -162,6 +162,11 @@ Route::post( 'ajax/admin/pe/sq', 'Ajax\Admin\AjaxPlacementExamController@saveQue
 
 Route::post( 'ajax/admin/settings/s', 'Ajax\Admin\AjaxSettingsController@saveSettings' );
 
+Route::post( 'ajax/note/save', 'Ajax\AjaxCommonController@saveNote' );
+Route::get( 'ajax/notes/get', 'Ajax\AjaxCommonController@getNotes' );
+
+Route::get( 'ajax/req/get', 'Ajax\AjaxCommonController@getApplicantRequirements' );
+
 //get time select for teacher availability
 Route::get( 'ajax/util/ts', 'Ajax\AjaxUtilsController@timeSelect' );
 

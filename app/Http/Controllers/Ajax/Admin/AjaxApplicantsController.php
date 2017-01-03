@@ -1,21 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers\Ajax\Admin;
 
 use App\Http\Controllers\Ajax\AjaxBaseController;
-use App\Models\LearningGoals\LearningGoals;
-use App\Models\Placement\QuestionChoices;
-use App\Models\Placement\Questions;
 use App\Models\Users\Applicants;
 use App\Models\Users\UserEntity;
 use App\Models\Utilities\Modifications;
-use Helpers\Text;
+
 use Illuminate\Http\Request;
 
 class AjaxApplicantsController extends AjaxBaseController{
@@ -27,8 +18,13 @@ class AjaxApplicantsController extends AjaxBaseController{
 
     public function saveRequirements( Request $r )
     {
+        // check is applicant has data in applicant_requirement table
+        $req = Applicants\ApplicantRequirements::record( $r->applicant_id );
+        $req->store( $r );
+
         return [
-            'success' =>true
+            'success' =>true,
+            'req' => $req
         ];
     }
 

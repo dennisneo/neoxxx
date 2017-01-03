@@ -11,7 +11,6 @@ class AjaxUtilsController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
-
     public function timeSelect( Request $r )
     {
         $s = strtotime( $r->s );

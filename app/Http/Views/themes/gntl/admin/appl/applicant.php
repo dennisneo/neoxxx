@@ -1,6 +1,7 @@
-
+<!--
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+-->
 <style>
     .bless{
         border: none;
@@ -9,7 +10,6 @@
 <div id="aDiv">
 <div class="x_panel tile" style="">
     <div class="x_content">
-
         <div class=row" style="padding:24px 18px 18px 18px;">
         <br /><br />
         <div class="pull-right">
@@ -77,34 +77,35 @@
                     </div>
                     <div>
                         <form id="rForm">
+                        <input type="hidden" name="applicant_id" id="applicant_id" value="<?php echo $a->id ?>" />
                         <ul class="list-group">
                             <li class="list-group-item" >
                                 <div class="pull-right" >
-                                    <input type="checkbox" class="req" name="req[]" value="cred">
+                                    <input type="checkbox" class="req" id="valid_credentials" name="valid_credentials" value="1">
                                 </div>
                                 Valid Credentials
                             </li>
                             <li class="list-group-item">
                                 <div class="pull-right" >
-                                    <input type="checkbox" class="req" name="req[]" value="internet connection">
+                                    <input type="checkbox" class="req" id="fast_internet" name="fast_internet" value="1">
                                 </div>
                                 Reliable and Fast Internet Connection
                             </li>
                             <li class="list-group-item">
                                 <div class="pull-right" >
-                                    <input type="checkbox" class="req" name="req[]" value="home_office">
+                                    <input type="checkbox" class="req" id="comfortable_home_office" name="comfortable_home_office" value="1">
                                 </div>
                                 Comfortable Home Office
                             </li>
                             <li class="list-group-item">
                                 <div class="pull-right" >
-                                    <input type="checkbox" class="req" name="req[]" value="audio">
+                                    <input type="checkbox" class="req" name="audio_recording" id="audio_recording" value="1">
                                 </div>
                                 Audio Recording
                             </li>
                             <li class="list-group-item">
                                 <div class="pull-right" >
-                                    <input type="checkbox" class="req" name="schedule">
+                                    <input type="checkbox" class="req" name="appropriate_schedule" id="appropriate_schedule" value="1">
                                 </div>
                                 Appropriate Schedule
                             </li>
@@ -118,12 +119,27 @@
                 </div >
 
                 <div id="tab2" class="tabDiv hide">
+                    <form id="nForm">
                     <div class="form-group">
-                        <label for="note">Note</label>
-                        <?php echo \Form::textarea( 'note' , '' , [ 'class' => 'form-control' , 'id'=>'note' ] ) ?>
+                        <label for="note">Write a note</label>
+                        <?php echo \Form::textarea( 'note' , '' , [ 'class' => 'form-control' , 'id'=>'note' , 'style' =>'height:72px' ] ) ?>
                     </div>
                     <div>
-                        <button class="btn btn-primary"> Save Note </button>
+                        <a href="javascript:" class="btn btn-primary" @click="saveNote"> Save Note </a>
+                    </div>
+                        <?php echo csrf_field() ?>
+                        <input type="hidden" name="note_to" id="note_to" value="<?php echo $a->id ?>" />
+                        <input type="hidden" name="note_id" id="note_id" value="" />
+                    </form>
+
+                    <div>
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="n in notes | orderBy 'timestamp' -1 ">
+                                <b>{{n.from}} -</b>  {{n.posted_at_human}}
+                                <br />
+                                {{ n.note }}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -160,8 +176,6 @@
             </form>
         </div>
     </div>
-
-
 </div>
 
 
