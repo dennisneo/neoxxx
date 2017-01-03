@@ -6,6 +6,7 @@ namespace App\Models\Performance;
 use App\Models\BaseModel;
 use App\Models\Messaging\Notifications;
 use App\Models\Users\UserEntity;
+use Helpers\Text;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -54,11 +55,11 @@ class TeacherPerformance extends BaseModel{
 
     public function getAll( Request $r )
     {
-        $limit  = $r->limit ? $r->limit : 20;
+        $limit  = $r->limit ? $r->limit : 50;
         $page   = $r->page ? $r->page : 1;
         $offset = ($page-1) * $limit;
         $order_by           = $r->order_by ? $r->order_by : 'occurred_at';
-        $order_direction    = $r->order_direction ? $r->order_direction : 'ASC';
+        $order_direction    = $r->order_direction ? $r->order_direction : 'DESC';
 
         $records    = static::from( 'performance_record as pr' )
          ->join( 'users as t' , 'pr.teacher_id', '=' , 't.id' );
@@ -98,7 +99,9 @@ class TeacherPerformance extends BaseModel{
             $this->teacher_name = $this->last_name.', '.$this->first_name;
         }
 
+        $this->description = Text::limit_words( $this->description , 12 );
         $this->occurred_at = date( 'M d, Y' , strtotime( $this->occurred_at ));
+        $this->recorded_at = date( 'M d, Y' , strtotime( $this->recorded_at ));
         return $this;
     }
 

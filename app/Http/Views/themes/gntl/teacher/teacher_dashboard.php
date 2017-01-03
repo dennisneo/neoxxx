@@ -10,23 +10,12 @@
                             <h4><b>Upcoming Schedule</b></h4>
                         </div>
                         <div class="x_content">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th> Student </th>
-                                    <th> Start Time </th>
-                                    <th> Duration </th>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" :class="classes.length ? 'hide' : '' ">
-                                        <?php echo trans( 'general.no_schedule_found' ); ?>
-                                    </td>
-                                </tr>
-                                <tr v-for="c in classes">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </table>
+                            <ul class="list-group">
+                                <li class="list-group-item" @class="notifications.length ? 'hide' : '' ">  <?php echo trans( 'general.no_schedule_found' ); ?></li>
+                                <li class="list-group-item" v-for="n in classes">
+                                </li>
+                            </ul>
+
                         </div>
                     </div>
                     <input type="hidden" name="tid" id="tid" value="<?php echo $t->id ?>" />
@@ -37,7 +26,12 @@
                             <h4><b><?php echo trans('general.notifications') ?> </b></h4>
                         </div>
                         <div class="x_content">
+                            <ul class="list-group">
+                                <li class="list-group-item" @class="notifications.length ? 'hide' : '' "> No notification found</li>
+                                <li class="list-group-item" v-for="n in notifications | orderBy 'timestamp' -1 ">
 
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <!--
@@ -75,7 +69,7 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <p>Body</p>
+                    <p></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -64,7 +64,7 @@ class TeacherController extends TeacherBaseController{
 
     public function performance( Request $r )
     {
-        $this->layout->content  =  view('teacher.teacher_performance');
+        $this->layout->content  =  view('teacher.teacher_performance' , [ 'teacher' => $r->user() ] );
         Html::instance()->addScript( 'public/app/teacher/teacher_performance.js' );
         return $this->layout;
     }

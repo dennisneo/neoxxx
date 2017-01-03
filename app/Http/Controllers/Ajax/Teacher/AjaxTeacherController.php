@@ -29,6 +29,7 @@ class AjaxTeacherController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+
     public function saveSettings( Request $r )
     {
         $teacher = ( new TeacherPivot)->getByTeacherId( $r->teacher_id );
@@ -278,11 +279,13 @@ class AjaxTeacherController extends AjaxBaseController{
 
     public function getPerformanceRecord( Request $r )
     {
-        $records = ( new TeacherPerformance )->getAll( $r );
+        $records = new TeacherPerformance;
 
         return [
-            'success' => true,
-            'records' => $records
+            'success'   => true,
+            'records'   => $records->getAll( $r ),
+            'total'     => $records->getTotal(),
+            'page_count' => $records->getPageCount( true )
         ];
 
     }

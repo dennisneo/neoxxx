@@ -2,7 +2,8 @@
 var tVue  =  new Vue({
     el:'#tDiv',
     data:{
-        classes: []
+        classes: [],
+        notifications: []
     },
     methods:{
         editProfile:function(){

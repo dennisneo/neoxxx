@@ -58,9 +58,6 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     Route::post( 'bc',  'AjaxStudentCreditsController@buy' );
 });
 
-
-Route::get( 'ajax/admin/teacher/get_schedule',  'Ajax\Admin\AjaxTeachersController@getSchedule' );
-
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
 
     // student chart data
@@ -127,8 +124,9 @@ Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>
 
 });
 
-Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
+Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher',  'as'=> 'ajax.teachers' ],  function(){
     Route::post( 'save',  'AjaxTeachersController@saveTeacher' );
+    Route::get( 'performance',  'AjaxTeacherController@getPerformanceRecord' );
 });
 
 Route::group( [  'prefix' => 'ajax/students', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin', 'as'=> 'ajax.students' ],  function(){
@@ -166,6 +164,8 @@ Route::post( 'ajax/note/save', 'Ajax\AjaxCommonController@saveNote' );
 Route::get( 'ajax/notes/get', 'Ajax\AjaxCommonController@getNotes' );
 
 Route::get( 'ajax/req/get', 'Ajax\AjaxCommonController@getApplicantRequirements' );
+
+Route::get( 'ajax/admin/teacher/get_schedule',  'Ajax\Admin\AjaxTeachersController@getSchedule' );
 
 //get time select for teacher availability
 Route::get( 'ajax/util/ts', 'Ajax\AjaxUtilsController@timeSelect' );
