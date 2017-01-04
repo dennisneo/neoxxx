@@ -68,6 +68,8 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     Route::post( 'credits_cost/save',  'AjaxSettingsController@saveCreditsCost' );
     Route::post( 'credits_cost/delete',  'AjaxSettingsController@deleteCreditsCost' );
     Route::get( 'credits_cost/get',  'AjaxSettingsController@getCreditCost' );
+    Route::post( 'custom_messages/save',  'AjaxSettingsController@saveCustomMessages' );
+
     // save applicant requirements
     Route::post( 'a/srq',  'AjaxApplicantsController@saveRequirements' );
     // save student note
@@ -135,7 +137,6 @@ Route::group( [  'prefix' => 'ajax/students', 'middleware'=>'auth', 'namespace'=
 });
 
 Route::get( 'ajax/student/settings/credits_cost',  'Ajax\Admin\AjaxSettingsController@getCreditCostAll' );
-
 Route::post( 'ajax/application/s', 'Ajax\AjaxFrontController@saveApplication' );
 
 // update applicant status

@@ -29,10 +29,10 @@ class AdminSettingsController extends AdminBaseController{
             $settings[ $s->skey ] = $s->value;
         }
 
-        $settings = json_decode( json_encode( $settings ) );
+        $json_settings = json_decode( json_encode( $settings ) );
 
-        $this->layout->content = view('admin.settings.settings_index')
-        ->with( 'settings' , $settings);
+        $this->layout->content = view('admin.settings.settings_index' ,
+            [ 'settings' =>  $ss , 'json_settings' => $json_settings ] );
 
         Html::instance()->addScript( 'public/app/admin/settings/settings_index.js' );
         Html::loadToastr();

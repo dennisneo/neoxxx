@@ -81,13 +81,5 @@
             </div>
         </div>
     </div>
-    <div class="x_panel tile" style="">
-        <div class="x_content">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3>Daily Registration Chart</h3>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>

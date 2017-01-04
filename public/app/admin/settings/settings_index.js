@@ -89,7 +89,20 @@ var sVue = new Vue({
                 toastr.error('Something went wrong');
             });
         },
-
+        saveMessage:function()
+        {
+            $.post(subdir+'/ajax/admin/custom_messages/save' , $('#mForm').serialize())
+            .done(function( data ){
+                if(data.success){
+                   toastr.success( 'Custom messages successfully saved' );
+                }else{
+                   toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
+        },
         deleteCreditCost:function( ccid )
         {
             if( !confirm('Are you sure you want to delete this credit/cost ? ') ){

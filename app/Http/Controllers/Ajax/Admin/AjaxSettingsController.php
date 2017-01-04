@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers\Ajax\Admin;
 
@@ -21,6 +15,16 @@ class AjaxSettingsController extends AjaxBaseController{
     public function __construct( Request $r )
     {
         parent::__construct( $r );
+    }
+
+    public function saveCustomMessages( Request $r )
+    {
+        $settings = new Settings();
+        $settings->updateCustomMessages( $r );
+
+        return [
+            'success' =>  true
+        ];
     }
 
     public function getCreditCost( Request $r )

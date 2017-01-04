@@ -36,9 +36,34 @@
                 </ul>
             </div>
 		</div>
-
 	</div>
-
+</form>
+<form id="mForm">
+    <?php echo csrf_field() ?>
+    <div class="x_panel panel-white">
+        <div class="x_content">
+            <h4><b>Custom Messages</b></h4>
+            <hr />
+            <div class="row padr">
+                <?php foreach ( $settings as $s ) { ?>
+                    <?php if( substr( $s->skey , 0 , 7 ) == 'message' ){ ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <?php echo  $s->customMessageText(); ?>
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea class="col-lg-12" name="<?php echo $s->skey ?>" style="min-height: 120px"><?php echo $s->value ?></textarea>
+                            </div>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+            </div>
+            <div class="row">
+                <a href="javascript:" class="btn btn-success save_message" @click="saveMessage"> Save </a>
+            </div>
+        </div>
+    </div>
+</form>
     <div class="x_panel panel-white">
         <div class="x_content">
             <h4><b>Time Schedule</b></h4>
@@ -59,7 +84,8 @@
             <a href="javascript:" class="btn btn-success save" v-on:click="save"> Save </a>
         </div>
     </div>
-</form>
+
+
 
     <div id="ccModal" class="modal fade">
         <div class="modal-dialog">

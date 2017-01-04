@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class='col-sm-6'>
                             <div id="div-date">
-                                <input type="text" class="form-control" id="date1" data-format="YYYY-MM-DD" data-template="MMM D YYYY" name="birthday" value="">
+                                <input type="text" class="form-control" style="width:120px" id="date1" data-format="YYYY-MM-DD" data-template="MMM D YYYY" name="birthday" value="">
                             </div>
                         </div>
 

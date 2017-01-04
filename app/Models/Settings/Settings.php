@@ -25,7 +25,18 @@ class Settings extends Model
 
     public function getTotal()
     {
-     return $this->total;
+        return $this->total;
+    }
+
+    public static function getObjectByKey( $key )
+    {
+        $setting =  static::where( 'skey' , $key )
+            ->first();
+        if( ! $setting ){
+            return false;
+        }
+
+        return $setting;
     }
 
     public static function getByKey( $key , $default = 0 )
@@ -54,6 +65,26 @@ class Settings extends Model
         $s->save();
 
         return $s;
+    }
+
+    public function customMessageText()
+    {
+        $str = str_replace( 'message_', '',$this->skey );
+        $str = str_replace( '_', ' ',$str );
+        return ucwords( $str );
+    }
+
+    public function updateCustomMessages( Request $r )
+    {
+        $inputs = $r->all();
+        foreach( $inputs as $k => $v ){
+            if( substr( $k , 0, 8 ) == 'message_' ){
+                if( $setting = Settings::getObjectByKey( $k ) ){
+                    $setting->value = $v;
+                    $setting->save();
+                }
+            }
+        }
     }
 
     public function getErrors()
