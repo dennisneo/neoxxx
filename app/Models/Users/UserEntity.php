@@ -201,6 +201,10 @@ class UserEntity extends BaseModel{
         return $user;
     }
 
+
+    public function fullname(){
+        return ucfirst( strtolower($this->first_name.' '.$this->last_name) );
+    }
     /**
      * @return UserEntity
      */

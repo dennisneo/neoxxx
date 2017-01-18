@@ -34,6 +34,7 @@ if( Request::segment(1) == 'finance' ){
     return;
 }
 
+
 if( Request::segment(1) == 'ajax' ){
     // check if called through ajax
     Route::group( [ 'middleware'=>'ajax' ], function(){

@@ -1,7 +1,7 @@
 <div class="x_panel tile"  style="min-height:120px">
     <div class="x_content" style="font-size: 1.2em">
 
-        <p>Hi <?php echo $student->fullname() ?>, j</p>
+        <p>Hi <?php echo \App\Models\Users\UserEntity::me()->fullname();  ?>, </p>
         <p>Welcome to Company Name,</p>
         <br />
         <p>

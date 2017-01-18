@@ -22,6 +22,7 @@ class AdminBaseController extends Controller{
         Html::loadToastr();
     }
 
+
     private function checkUser()
     {
         if( \Auth::check() ){

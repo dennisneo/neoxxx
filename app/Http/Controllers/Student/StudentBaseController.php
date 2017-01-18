@@ -12,10 +12,14 @@ class StudentBaseController extends Controller{
     {
         parent::__construct();
         // check user if  student
-        $this->checkUser();
+        //$this->checkUser();
         $this->loadDefaultAssets();
     }
 
+    /**
+     * Deprecated. Moved to Middleware
+     *
+     */
     private function checkUser()
     {
         if( \Auth::check() ){

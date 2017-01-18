@@ -27,6 +27,12 @@ class CreditCost extends BaseModel{
     {
         $_input_charset = "utf-8";
         $sign_type = "MD5";
+
+        /**
+         * Alipay dev credentials found here
+         * https://github.com/bitmash/alipay-api-php
+         */
+
         $notify_url = env('ALIPAY_NOTIFY_URL');//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
         $return_url = env('ALIPAY_RETURN_URL');
 

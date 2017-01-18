@@ -1,7 +1,7 @@
 <?php
 
 
-Route::group( [ 'prefix' => 'student' , 'as'=> 'student' , 'middleware' =>'auth' ] ,function(){
+Route::group( [ 'prefix' => 'student' , 'as'=> 'student' , 'middleware' =>['auth.student'] ] ,function(){
 
     // getting started
     Route::get( 'gs', 'Student\StudentDashboardController@gettingStarted' );
