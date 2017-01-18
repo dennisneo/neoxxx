@@ -15,10 +15,10 @@
                         <th></th>
                     </tr>
                     <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
-                        <td colspan="5"><span class="loading"><i class="fa fa-spin fa-refresh"></i></span></td>
+                        <td colspan="7"><span class="loading"><i class="fa fa-spin fa-refresh"></i></span></td>
                     </tr>
                     <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
-                        <td colspan="5"></td>
+                        <td colspan="7"></td>
                     </tr>
                     <tr v-for="s in sessions">
                         <td></td>
