@@ -40,8 +40,16 @@ class AjaxStudentExamController extends AjaxBaseController{
 
     public function getQuestions( Request $r )
     {
+        // check is Student already took the exam
+        if( ( new ExamSessions)->isDone( $r->student_id ) ){
+            return [
+                'success' =>false,
+                'message' => 'You have already taken the placement exam. If you need to take another, please send a request to admin '
+            ];
+        }
         // check for unfinished sessions
         if( ! $session = ExamSessions::getOngoingByStudentid( $r->student_id ) ){
+
             // create session if no unfinished session is found
             $session = new ExamSessions();
 

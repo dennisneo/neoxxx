@@ -63,6 +63,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
+                    <!--
                     <div class="x_panel tile" style="">
                         <div class="x_content">
                             <div style="height: 214px;margin-bottom:24px ">
@@ -82,6 +83,7 @@
 
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
         </div>

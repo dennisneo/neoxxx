@@ -61,6 +61,7 @@ class ClassSessions extends ClassSessionEntity{
         $schedules = $cs->get( [ 'cs.*' , 't.first_name as t_fname' , 't.last_name as t_lname' , 't.id as tid', ] );
 
         return $this->vuefyCollection( $schedules );
+
     }
 
     public function getAll( Request $r )
@@ -172,13 +173,18 @@ class ClassSessions extends ClassSessionEntity{
 
     public function vuefy()
     {
-
         $timezone =  request()->user()->timezone ? request()->user()->timezone : 'Asia/Singapore';
         $time_offset = DateTimeHelper::timeOffsetFromAsiaManila( $timezone );
+        //$adjusted_time  = strtotime( $this->schedule_start_at ) + $time_offset ;
 
-        $adjusted_time  = strtotime( $this->schedule_start_at ) + $time_offset ;
+        $adjusted_time = DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone );
+
         $this->adjusted_start_at    = date( 'Y-m-d H:i:s' , $adjusted_time );
         $this->offset = $time_offset;
+        $this->teacher_short_name = $this->t_fname.' '.substr( $this->t_lname , 0 , 1 ).'.';
+        $this->cid = Text::convertInt( $this->class_id );
+        $this->day = date( 'M d, Y D' ,  DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone ) );
+        $this->time = date( 'H:i:s a' ,  DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone ) );
 
         return $this;
     }

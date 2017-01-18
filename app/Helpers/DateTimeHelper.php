@@ -15,8 +15,8 @@ class DateTimeHelper {
 	 */
 	public static function serverTimeToTimezone( $time , $timezone )
 	{
-		$c_time = '';
-
+		$c_time = $time;
+		// do the conversion here !!!
 		return $c_time;
 	}
 
@@ -28,11 +28,11 @@ class DateTimeHelper {
 
 	public static function timeOffsetFromAsiaManila( $timezone )
 	{
-		$dateTimeZoneManila = new \DateTimeZone( "Asia/Singapore");
-		$dateTimeZoneUser = new \DateTimeZone( $timezone );
+		$dateTimeZoneManila 	= new \DateTimeZone( "Asia/Singapore");
+		$dateTimeZoneUser 		= new \DateTimeZone( $timezone );
 
-		$dateTimeManila = new \DateTime("now", $dateTimeZoneManila );
-		$dateTimeUser = new \DateTime("now", $dateTimeZoneUser );
+		$dateTimeManila 		= new \DateTime("now", $dateTimeZoneManila );
+		$dateTimeUser 			= new \DateTime("now", $dateTimeZoneUser );
 
 		$offset = - ( $dateTimeManila->getOffset() - $dateTimeUser->getOffset() );
 

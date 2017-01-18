@@ -25,11 +25,12 @@ var peVue = new Vue({
                    peVue.$data.choices = data.question.choices;
                    peVue.$data.session = data.session;
                 }else{
-                   toastr.error( data.message );
+                   toastr.error( data.message, '' ,{timeOut: 20000} );
+                   $('#questionaireModal').modal( 'toggle' );
                 }
             })
             .error(function( data ){
-
+                    toastr.error( data.message );
             });
         },
 
@@ -125,6 +126,6 @@ var peVue = new Vue({
         }
     },
     ready:function(){
-
+        $('.btn').prop('disabled', false );
     }
 })

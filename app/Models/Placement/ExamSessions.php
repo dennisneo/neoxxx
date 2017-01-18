@@ -17,6 +17,15 @@ class ExamSessions extends BaseModel
 
     public $fillable = [];
 
+    public function isDone( $student_id )
+    {
+        $count = static::where( 'student_id' , $student_id  )
+            ->where( 'status' , 'Done')
+            ->count();
+
+        return $count ? true : false;
+    }
+
     public function getByStudentIdVuefy( Request $r )
     {
         $this->collection = $this->getByStudentIdRaw( $r );
@@ -177,6 +186,7 @@ class ExamSessions extends BaseModel
     public static function getOngoingByStudentid( $student_id )
     {
         return static::where( 'status', 'on going' )
+            ->where( 'student_id' , $student_id )
             ->first();
     }
 
