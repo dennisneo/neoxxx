@@ -209,7 +209,13 @@ class AjaxTeacherController extends AjaxBaseController{
 
     public function getTeacherSchedule( Request $r )
     {
-        $sessions = ( new ClassSessions )->byTeacherId( $r );
+        $user = UserEntity::find( $r->teacher_id );
+        $user_timezone = $user->timezone ? $user->timezone : 'Asia/Singapore';
+
+        $cs = new ClassSessions;
+        $cs->setUserTimezone( $user_timezone );
+
+        $sessions = $cs->byTeacherId( $r );
 
         return [
             'success' => true,

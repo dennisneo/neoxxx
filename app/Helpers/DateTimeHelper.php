@@ -2,7 +2,42 @@
 
 namespace Helpers;
 
+
 class DateTimeHelper {
+
+	/**
+	 * Converts server time to the time of the user base on his timezone
+	 *
+	 * @param $time
+	 * @param $timezone
+	 * @return DateTime
+	 *
+	 */
+	public static function serverTimeToTimezone( $time , $timezone )
+	{
+		$c_time = '';
+
+		return $c_time;
+	}
+
+
+	public static function timezoneToServerTime( $time )
+	{
+
+	}
+
+	public static function timeOffsetFromAsiaManila( $timezone )
+	{
+		$dateTimeZoneManila = new \DateTimeZone( "Asia/Singapore");
+		$dateTimeZoneUser = new \DateTimeZone( $timezone );
+
+		$dateTimeManila = new \DateTime("now", $dateTimeZoneManila );
+		$dateTimeUser = new \DateTime("now", $dateTimeZoneUser );
+
+		$offset = - ( $dateTimeManila->getOffset() - $dateTimeUser->getOffset() );
+
+		return $offset;
+	}
 
 	public static function timeDropdown()
 	{
@@ -26,21 +61,22 @@ class DateTimeHelper {
 
 	public static function timeTrList()
 	{
-		$mins = [ 0, 20, 40 ];
-		$hr = [ 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 ];
+		$mins = [0, 20, 40];
+		$hr = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
 		$tr_arr = [];
-		foreach( $hr as  $v ){
+		foreach ($hr as $v) {
 			$ampm = $v < 12 ? 'am' : 'pm';
-			$v = $v > 12 ? ( $v -12 ) : $v;
-			$tr_arr[] = $v.':00 '.$ampm;
+			$v = $v > 12 ? ($v - 12) : $v;
+			$tr_arr[] = $v . ':00 ' . $ampm;
 		}
 
 		return $tr_arr;
 	}
 
 	/**
-	 * used in showing a 7 day range for teacher availability
+	 * Shows a 7 day range for teacher availability
+	 *
 	 * @param string $timezone
 	 * @return array
 	 */

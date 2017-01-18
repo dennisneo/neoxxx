@@ -8,6 +8,7 @@ use App\Models\LearningGoals\LearningGoals;
 use App\Models\Users\Applicant;
 use App\Models\Users\Students;
 use App\Models\Users\Teachers;
+use App\Models\Users\UserEntity;
 use Illuminate\Http\Request;
 
 class AjaxSchedulesController extends AjaxBaseController{
@@ -19,6 +20,22 @@ class AjaxSchedulesController extends AjaxBaseController{
 
     public function getSchedules( Request $r )
     {
+
+        if( $r->tid ){
+            $user = UserEntity::find( $r->tid );
+        }else{
+            $user = UserEntity::find( $r->sid );
+        }
+
+        /**
+        if( ! $user ){
+            return [
+                'success' =>false,
+                'message' => 'User not found'
+            ];
+        }
+        ***/
+
         $cs = new ClassSessions;
         $sessions =  $cs->getAll( $r );
 

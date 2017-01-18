@@ -6,6 +6,7 @@ var tsVue = new Vue({
     methods:{
         openNewSched:function( sid ) {
             // clean all fields
+
             $('#schedModal').modal();
             $('.dow').prop( 'checked' , false);
 
@@ -16,7 +17,7 @@ var tsVue = new Vue({
                     tVue.$data.student = data.student;
                     tVue.$data.learning_info = data.learning_info;
                 }else{
-                    toastr.error( data.message );
+                    //toastr.error( data.message );
                 }
             })
             .error(function( data ){

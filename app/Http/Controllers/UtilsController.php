@@ -22,6 +22,21 @@ class UtilsController extends Controller{
 
     }
 
+    public function timeoffset()
+    {
+        $timezone = "Asia/Seoul";
+
+        $dateTimeZoneManila = new \DateTimeZone( "Asia/Singapore");
+        $dateTimeZoneUser = new \DateTimeZone( $timezone );
+
+        //dd( $dateTimeZoneUser );
+        $dateTimeManila = new \DateTime("now", $dateTimeZoneManila );
+        $dateTimeUser = new \DateTime("now", $dateTimeZoneUser );
+        $offset = $dateTimeManila->getOffset() - $dateTimeUser->getOffset();
+
+        return $offset;
+    }
+
     public function viewEmailTemplate( $email_view )
     {
         view()->addLocation( app_path().'/Http/Views/');

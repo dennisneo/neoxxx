@@ -67,12 +67,14 @@ if( Request::segment(1) == 'test' ){
 }
 
 if( Request::segment(1) == 'utils' ){
+
     Route::get( 'utils/pq', 'UtilsController@populateQuestions' );
     Route::get( 'utils/alipay', 'UtilsController@alipay' );
     // email template
     Route::get( 'utils/et/{email_view}', 'UtilsController@viewEmailTemplate' );
 
     Route::get( 'utils/t', 'UtilsController@teacherSched' );
+    Route::get( 'utils/to', 'UtilsController@timeoffset' );
     return;
 }
 

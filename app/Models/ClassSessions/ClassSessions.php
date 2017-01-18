@@ -5,12 +5,15 @@ namespace App\Models\ClassSessions;
 use App\Models\BaseModel;
 use App\Models\Financials\Credits;
 use App\Models\Users\UserEntity;
+use Helpers\DateTimeHelper;
 use Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
 
 class ClassSessions extends ClassSessionEntity{
+
+    protected $user_time_offset = 0;
 
     public function hasConflict( $start, $end , $teacher_id)
     {
@@ -164,6 +167,20 @@ class ClassSessions extends ClassSessionEntity{
         ];
 
         return \Form::select( 'class_status' , $status ,  '' , [ 'class' => 'form-control' , 'id'=>'class_status' ] );
+    }
+
+
+    public function vuefy()
+    {
+
+        $timezone =  request()->user()->timezone ? request()->user()->timezone : 'Asia/Singapore';
+        $time_offset = DateTimeHelper::timeOffsetFromAsiaManila( $timezone );
+
+        $adjusted_time  = strtotime( $this->schedule_start_at ) + $time_offset ;
+        $this->adjusted_start_at    = date( 'Y-m-d H:i:s' , $adjusted_time );
+        $this->offset = $time_offset;
+
+        return $this;
     }
 
     public static function actualDurationSelect()
