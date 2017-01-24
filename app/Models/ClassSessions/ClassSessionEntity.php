@@ -10,6 +10,8 @@ namespace App\Models\ClassSessions;
 
 use App\Models\BaseModel;
 use App\Models\Financials\Credits;
+use App\Models\Settings\Settings;
+use App\Models\Users\TeacherEntity;
 use App\Models\Users\UserEntity;
 use Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +26,29 @@ class ClassSessionEntity extends BaseModel{
 
     public $fillable    = [ 'class_id' , 'student_id', 'teacher_id' , 'duration', 'class_status' , 'actual_duration',
         'comments' , 'performance_notes' ];
+
+    public function cancel()
+    {
+        $hrs_allowed_to_cancel = Settings::getByKey( 'hours_allowed_to_cancel' , 0  );
+
+        // check current time to schedule time
+        $diff = ( strtotime( $this->schedule_start_at ) - time() ) / 3600;
+
+        if( $diff < $hrs_allowed_to_cancel){
+            $this->errors[] = ' Unable to cancel. Cancellation must be done '.$hrs_allowed_to_cancel.' before class time';
+            return false;
+        }
+        // check if user can cancel a class
+        $this->class_status = 'cancelled';
+        $this->save();
+
+        return $this;
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne( TeacherEntity::class , 'id' , 'teacher_id' );
+    }
 
     public function store( Request $r )
     {
@@ -115,15 +140,23 @@ class ClassSessionEntity extends BaseModel{
         return $cs->first( $fields );
     }
 
-    public function vuefy()
-    {
 
+    public function vuefy( $options = [] )
+    {
         $this->start_timestamp = strtotime($this->schedule_start_at);
         $this->end_timestamp = $this->start_timestamp + ( $this->duration*60 ) ;
-        $this->time = date( 'H:i a' , strtotime( $this->schedule_start_at ));
-        $this->day = date( 'M d, Y' , strtotime( $this->schedule_start_at ));
+        $this->time     = date( 'H:i a' , strtotime( $this->schedule_start_at ));
+        $this->day      = date( 'M d, Y' , strtotime( $this->schedule_start_at ));
         $this->class_status = ucwords( $this->class_status );
-        $this->cid = Text::convertInt( $this->class_id );
+        $this->cid      = Text::convertInt( $this->class_id );
+
+        if( isset( $options['with_teacher'] ) && $options['with_teacher'] == true ){
+            $this->teacher_short_name = '';
+            // use to call the teacher name on injected models
+            if( $teacher = $this->teacher ){
+                $this->teacher_short_name = ucwords( strtolower( $teacher->first_name.' '.substr( $teacher->last_name , 0 , 1 ).'.' ) );
+            }
+        }
         // for teachers
         if( isset( $this->t_fname )){
             $this->teacher_short_name = ucwords( strtolower( $this->t_fname.' '.substr( $this->t_lname , 0 , 1 ).'.' ) );

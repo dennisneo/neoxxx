@@ -56,6 +56,13 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     Route::post( 'pe/sa',  'AjaxStudentExamController@submitAnswer' );
     // buy credits
     Route::post( 'bc',  'AjaxStudentCreditsController@buy' );
+    // cancel class
+    Route::get( 'cc/{class}',  'AjaxStudentController@cancelClass' );
+    // check if student did confirm email
+    Route::get( 'ce',  'AjaxStudentController@isEmailConfirmed' );
+    // send confirmation email
+    Route::get( 'sce',  'AjaxStudentController@sendConfirmationEmail' );
+    Route::get( 'gms',  'AjaxStudentController@getMySchedule' );
 });
 
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){

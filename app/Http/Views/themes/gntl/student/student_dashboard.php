@@ -1,5 +1,14 @@
 <div id="sDiv">
-
+    <?php if( ! $r->user()->confirmed ){ ?>
+    <div class="alert alert-danger" style="margin-top: 64px ">
+        <b>
+        You have not validated your account yet. Please check your email for the confirmation link.
+        In case you want to resend the confirmation email <a href="javascript:" @click="sendConfirmationEmail" style="color:yellow"> click here </a>
+        </b>
+    </div>
+    <?php } ?>
+<div class="row">
+</div>
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="x_panel tile"  style="height:180px">
@@ -25,7 +34,7 @@
                 <div class="row">
                     <h2> You got <b>{{credits}}</b> credits in your wallet</h2>
                     <div class="col-lg-6 col-lg-offset-3">
-                        <a href="<?php echo url('student/credits/buy') ?>" class="btn btn-warning btn-lg"> Add More Credits </a>
+                        <a href="<?php echo url('student/credits/buy') ?>" class="btn btn-warning btn-lg"> <i class="fa fa-plus"></i> Add More Credits </a>
                     </div>
                 </div>
             </div>
@@ -34,43 +43,12 @@
 
 </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel tile"  style="">
-                <div class="x_title">
-                    <h3><b><?php echo trans('general.upcoming_class_schedule') ?></b></h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <table class="table table-striped">
-                        <tr>
-                            <th></th>
-                            <th>Session ID</th>
-                            <th>Teacher</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
-                            <td colspan="4"> No incoming schedule found </td>
-                        </tr>
-                        <tr v-bind:class="sessions.length > 0 ? 'hide' : '' " >
-                            <td colspan="4"></td>
-                        </tr>
-                        <tr v-for="s in sessions">
-                            <td></td>
-                            <td>{{s.cid}}</td>
-                            <td>{{s.teacher_short_name}}</td>
-                            <td>{{s.day}}</td>
-                            <td>{{s.time}}</td>
-                            <td>{{s.class_status}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
+
+
+<?php echo \App\Http\Controllers\Student\StudentPartialsController::classSchedulePartial( $r ) ?>
+
 
 <?php echo \App\Http\Controllers\Student\StudentPartialsController::findTeachersPartial( $r ) ?>
 

@@ -12,6 +12,7 @@ use App\Models\LearningGoals\LearningGoalMap;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Messaging\Notes;
 use App\Models\Placement\ExamSessions;
+use App\Models\Settings\Settings;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\Students\StudentCredits;
@@ -23,12 +24,92 @@ use Helpers\DateTimeHelper;
 use Helpers\Text;
 use Illuminate\Http\Request;
 use Event;
+use Illuminate\Support\Facades\Session;
 
 class AjaxStudentController extends AjaxBaseController{
 
     public function __construct( Request $r )
     {
         parent::__construct( $r );
+    }
+
+    public function getMySchedule( Request $r )
+    {
+        $cs = new ClassSessions;
+        $r->request->add(['incoming_only' => true , 'class_status' => [ 'completed' , 'active'] ]);
+        $class_sessions = $cs->byStudentId( $r->user()->id , $r );
+
+        return [
+            'success' =>true,
+            'sessions' => $class_sessions
+        ];
+    }
+
+    public function sendConfirmationEmail( Request $r )
+    {
+        $student = UserEntity::me();
+        if( $student->confirmed ){
+            return [
+                'success' =>false,
+                'message' => 'You had previously confirmed your email already'
+            ];
+        }
+
+        $student->resendConfirmationEmail();
+
+        return [
+            'success' =>true
+        ];
+    }
+
+    public function isEmailConfirmed( Request $r )
+    {
+
+        if( ! $r->user()->id ){
+            return [
+                'success' =>true,
+                'confirmed' => false
+            ];
+        }
+
+        if( ! $r->user()->confirmed ){
+            return [
+                'success' =>true,
+                'confirmed' => false
+            ];
+        }
+
+        return [
+            'success' =>true,
+            'confirmed' => true
+        ];
+    }
+
+    /**
+     * @param ClassSessions $class
+     * @param Request $r
+     * @return array
+     */
+    public function cancelClass( ClassSessions $class, Request $r )
+    {
+        if( $r->user()->id != $class->student_id ){
+            return [
+                'success' =>false,
+                'message' => 'You are not allowed to cancel this class session'
+            ];
+        }
+
+        if( ! $class->cancel() ){
+             return [
+                 'success' =>false,
+                 'message' => $class->displayErrors()
+             ];
+        }
+
+        return [
+            'success' =>true,
+            'class' => $class->vuefy(['with_teacher'=> true ])
+        ];
     }
 
     public function getIncomingSchedules( Request $r )
@@ -145,6 +226,7 @@ class AjaxStudentController extends AjaxBaseController{
      */
     public function setupClassSession( Request $r )
     {
+
         $s = new ClassSessions();
 
         $r->request->add(['class_status'=>'for confirmation']);

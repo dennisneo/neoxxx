@@ -14,10 +14,11 @@ var sVue = new Vue({
             $.post( subdir+'/ajax/student/ts' , { cid: $('#cid').val() , tid:tid ,_token:$('#_token').val() })
             .done(function( data ){
                 if( data.success ){
+
                     sVue.$data.selected_teacher = data.teacher;
                     $('#teacher_id').val( data.teacher.id );
                     $('#teachersListDiv').addClass( 'hide' );
-                    $('#teachers_name').ss( 'hide' );
+                    $('#teacher_name').html( data.teacher.short_name );
                     toastr.success( 'Teacher selected' );
                 }else{
                    toastr.error( data.message );

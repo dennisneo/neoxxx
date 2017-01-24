@@ -23,6 +23,7 @@ return [
     'invalid_credentials' => 'Invalid Credentials',
     'invalid_teacher_id' => 'Invalid Teacher ID',
     'learning_goals' => 'Learning Goals',
+    'my_class_schedule' => 'My Class Schedule',
     'new_class_assigned' => ' You got new class assignment ',
     'new_class_session' => ' New class session ',
     'notifications' => 'Notifications',

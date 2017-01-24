@@ -18,6 +18,24 @@ class StudentPartialsController extends StudentBaseController{
         parent::__construct();
     }
 
+    public static function classSchedulePartial( Request $r )
+    {
+
+        $next_seven_days = DateTimeHelper::nextSevenDays( $r->user()->timezone );
+        $time_array = DateTimeHelper::timeTrList();
+
+        Html::instance()->addScript( '/public/app/student/partials/class_schedule.js'  );
+        Html::loadFullCalendar();
+
+        return view( 'student.partials.student_schedule' ,
+            [
+                'next_seven_days' => $next_seven_days,
+                'time_array' => $time_array
+            ]
+        );
+
+    }
+
     public static function findTeachersPartial( Request $r )
     {
         $me = UserEntity::me();

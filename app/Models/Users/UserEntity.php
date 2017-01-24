@@ -219,5 +219,20 @@ class UserEntity extends BaseModel{
         return $this->user_type == 'admin' ? true : false;
     }
 
+    public  function resendConfirmationEmail()
+    {
+        view()->addLocation( base_path().'/app/Http/Views/emails' );
+
+        // check first if email is valid
+        $user = $this;
+
+        \Mail::send('confirm_account', ['user' => $user ],
+            function ($m) use ( $user ) {
+                $m->from( env( 'APP_EMAIL_SENDER' ), trans('general.confirm_account') );
+                $m->to( $user->email, $user->displayName() )
+                    ->subject( trans( 'general.confirmation_subject' ) );
+            });
+    }
+
 
 }

@@ -72,4 +72,6 @@ class StudentEntity extends UserEntity{
         $this->vuefyUser();
         return $this;
     }
+
+
 }

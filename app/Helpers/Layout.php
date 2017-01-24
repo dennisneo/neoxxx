@@ -130,7 +130,7 @@ class Layout extends HtmlFacade{
 
 	public static function loadBlockUI()
 	{
-		//static::instance()->addScript( '/themes/v1/plugins/blockUI/jquery.blockUI.js' );
+		static::instance()->addScript( '/public/plugins/blockui/blockui.js' );
 	}
 
 	public static function loadJQueryUI()

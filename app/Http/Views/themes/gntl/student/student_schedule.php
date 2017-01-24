@@ -2,6 +2,9 @@
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class="row">
+                <div class="pull-right">
+                    <button class="btn btn-default"> <i class="fa fa-calendar"></i> Calendar </button>
+                </div>
                 <h3><b>Class Schedules</b></h3>
                 <br />
                 <table class="table table-striped">

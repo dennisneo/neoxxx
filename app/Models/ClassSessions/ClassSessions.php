@@ -2,14 +2,8 @@
 
 namespace App\Models\ClassSessions;
 
-use App\Models\BaseModel;
-use App\Models\Financials\Credits;
-use App\Models\Users\UserEntity;
-use Helpers\DateTimeHelper;
 use Helpers\Text;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Validator;
 
 class ClassSessions extends ClassSessionEntity{
 
@@ -44,7 +38,7 @@ class ClassSessions extends ClassSessionEntity{
 
     public function byStudentId( $student_id , Request $r )
     {
-        $limit = $r->limit ? $r->limit : 10;
+        $limit = $r->limit ? $r->limit : 20;
 
         $cs =  ClassSessions::where( 'student_id' , $student_id )
             ->from( 'class_sessions as cs' )
@@ -53,11 +47,25 @@ class ClassSessions extends ClassSessionEntity{
         if( $r->incoming_only ){
             $now = date('Y-m-d H:i:s');
             $cs->where( 'schedule_start_at',  '>' , $now );
-            $cs->limit( $limit );
         }
 
+        if( $r->class_status ){
+
+            $class_status_arr = $r->class_status;
+
+            if( is_string( $r->class_status )){
+                $class_status_arr = explode(',' , $r->class_status);
+            }
+
+            $cs->whereIn( 'class_status',  $class_status_arr );
+        }
+
+
         $this->total = $cs->count();
+
         $cs->orderBy( 'schedule_start_at', 'DESC' );
+        $cs->limit( $limit );
+
         $schedules = $cs->get( [ 'cs.*' , 't.first_name as t_fname' , 't.last_name as t_lname' , 't.id as tid', ] );
 
         return $this->vuefyCollection( $schedules );
@@ -170,9 +178,10 @@ class ClassSessions extends ClassSessionEntity{
         return \Form::select( 'class_status' , $status ,  '' , [ 'class' => 'form-control' , 'id'=>'class_status' ] );
     }
 
-
+    /**
     public function vuefy()
     {
+
         $timezone =  request()->user()->timezone ? request()->user()->timezone : 'Asia/Singapore';
         $time_offset = DateTimeHelper::timeOffsetFromAsiaManila( $timezone );
         //$adjusted_time  = strtotime( $this->schedule_start_at ) + $time_offset ;
@@ -180,14 +189,15 @@ class ClassSessions extends ClassSessionEntity{
         $adjusted_time = DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone );
 
         $this->adjusted_start_at    = date( 'Y-m-d H:i:s' , $adjusted_time );
-        $this->offset = $time_offset;
+        $this->offset   = $time_offset;
         $this->teacher_short_name = $this->t_fname.' '.substr( $this->t_lname , 0 , 1 ).'.';
-        $this->cid = Text::convertInt( $this->class_id );
-        $this->day = date( 'M d, Y D' ,  DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone ) );
-        $this->time = date( 'H:i:s a' ,  DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone ) );
+        $this->cid      = Text::convertInt( $this->class_id );
+        $this->day      = date( 'M d, Y D' ,  DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone ) );
+        $this->time     = date( 'H:i:s a' ,  DateTimeHelper::serverTimeToTimezone( strtotime( $this->schedule_start_at ) , $timezone ) );
 
         return $this;
     }
+    ***/
 
     public static function actualDurationSelect()
     {

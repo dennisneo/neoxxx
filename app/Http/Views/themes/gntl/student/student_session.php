@@ -37,7 +37,7 @@
                         <td><?php echo $cs->duration ?> mins </td>
                         <td><?php echo $cs->credits ?></td>
                         <td>
-                            <span id="teacher_name"><?php echo $cs->teacher_short_name ?></span>
+                            <div id="teacher_name"><?php echo $cs->teacher_short_name ?></div>
                         </td>
                         <td></td>
                     </tr>

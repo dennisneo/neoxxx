@@ -7,6 +7,7 @@ use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
 use App\Models\Users\UserEntity;
 use Helpers\Html;
+use Helpers\Layout;
 use Illuminate\Http\Request;
 
 class StudentDashboardController extends StudentBaseController{
@@ -72,9 +73,9 @@ class StudentDashboardController extends StudentBaseController{
 
     private function indexAssets()
     {
-
         Html::loadDatepicker();
         Html::loadToastr();
+        Layout::loadBlockUI();
         Html::instance()->addScript( '/public/app/student/student_dashboard.js' );
     }
 
