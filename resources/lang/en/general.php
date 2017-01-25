@@ -8,6 +8,7 @@ return [
     'cancel' => 'Cancel',
     'choose_a_teacher' => 'Choose a Teacher',
     'choose_your_learning_goals' => 'Choose Your Learning Goals',
+    'class_schedule' => 'Class Schedule',
     'confirm' => 'Confirm',
     'confirm_account' => ' Thank you statements and instructions to next process will be written here ',
     'confirmation_subject' => ' Please confirm your account ',

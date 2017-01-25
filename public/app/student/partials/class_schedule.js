@@ -1,7 +1,9 @@
 var csVue = new Vue({
     el:'#csDiv',
     data:{
-        sessions:[]
+        sessions:[],
+        upcoming_sessions:[],
+        upcoming_session:{}
     },
     methods:{
         cancelClass( row )
@@ -57,22 +59,24 @@ var csVue = new Vue({
         },
         loadCalendarEvents:function(){
 
+            var vm = this;
             $('#sched_calendar').fullCalendar( 'removeEvents');
 
             $.get(subdir+'/ajax/student/gms')
                 .done(function( data ){
                     if( data.success ){
+                        vm.upcoming_sessions = [];
                         for( i = 0 ; i < data.sessions.length ; i++ ){
                             s = data.sessions[i];
 
                             start_timestamp = parseInt( s.start_timestamp ) * 1000;
                             end_timestamp   = parseInt( s.end_timestamp ) * 1000;
 
-                            event = { id: s.sid , title:'  ',editable : false,  bookable:true,
+                            event = { id: s.class_id , title: ' ', editable : false,  bookable:true,
                                 start:  new Date( start_timestamp ).toISOString() , end: new Date( end_timestamp ).toISOString() };
 
                             $('#sched_calendar').fullCalendar( 'renderEvent', event, true);
-
+                            vm.upcoming_sessions.push( s );
                         }
 
                     }else{
@@ -111,7 +115,18 @@ $(document).ready(function(){
         defaultView: 'agendaWeek',
         editable: true,
         minTime:"06:00:00",
-        events: []
+        events: [],
+        eventClick: function( calEvent, jsEvent, view) {
+            $('#eventModal').modal();
 
+            for( i=0; i < csVue.upcoming_sessions.length; i++ ){
+                d = csVue.upcoming_sessions[i];
+                if( d.class_id == calEvent.id ){
+                    csVue.upcoming_session = d;
+                }
+            }
+
+
+        }
     });
 });

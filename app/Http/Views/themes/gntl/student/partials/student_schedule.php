@@ -1,3 +1,8 @@
+<style>
+    .fc-event{
+        cursor: pointer;
+    }
+</style>
 <div id="csDiv" class="row">
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel tile"  style="">
@@ -52,6 +57,36 @@
                 </div>
                 <div class="modal-body" id="sched_calendar">
 
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="eventModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><?php echo trans('general.class_schedule') ?> </h4>
+                </div>
+                <div class="modal-body">
+
+                <table class="table table-striped">
+                    <tr>
+                        <td>Date:</td>
+                        <td><b>{{upcoming_session.day}} {{upcoming_session.time}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Duration:</td>
+                        <td><b>{{upcoming_session.duration}} minutes</b></td>
+                    </tr>
+                    <tr>
+                        <td>Teacher:</td>
+                        <td><b>{{upcoming_session.teacher_short_name}}</b></td>
+                    </tr>
+                </table>
                 </div>
                 <div class="modal-footer">
 
