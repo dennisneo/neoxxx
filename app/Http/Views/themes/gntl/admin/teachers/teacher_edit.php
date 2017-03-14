@@ -82,14 +82,21 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-lg-6">
-                        <h3>Salary Rate per Hour</h3>
+                        <h3>Teacher Type</h3>
                         <hr />
                         <div class="form-group col-lg-3" >
-                            <label for="rate">Rate ( in USD )</label>
-                            <?php echo \Form::text( 'rate' , '' , [ 'class' => 'form-control' , 'id'=>'rate' ] ) ?>
+                            <?php
+                                echo \App\Models\Users\TeacherEntity::typeSelection( $p->type );
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Salary Rate</h3>
+                        <hr />
+                        <div class="form-group col-lg-3" >
+                            $ <?php echo \Form::text( 'rate_per_hr' , $u->rate_per_hr , [ 'class' => 'form-control' , 'id'=>'city' ] ) ?>
                         </div>
                     </div>
                 </div>

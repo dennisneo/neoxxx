@@ -14,7 +14,7 @@ class Payments extends BaseModel{
     protected $primaryKey   = 'payment_id';
     public $timestamps = false;
 
-    public $fillable    = [];
+    public $fillable    = [ 'cost_id', 'credits' ];
 
     public function getAll( Request $r )
     {
@@ -37,24 +37,52 @@ class Payments extends BaseModel{
         return $this;
     }
 
-    public function execute( Request $r )
+    /**
+     * Alipay payment
+     *
+     * @param Request $r
+     * @return $this|bool
+     */
+    public function store( Request $r )
     {
-        // transact wepay here
-        $transaction_code = 'we_pay_code';
+        $validator = \Validator::make( $r->all() , [
+            // validation rules here
+        ] );
 
-        $this->user_id = $r->user_id;
-        $this->amount =  $r->amount;
-        $this->credits =  $r->credits;
-        $this->cost_id =  $r->cost_id;
+        if( $validator->fails() ){
+            $this->errors = $validator->errors()->all();
+            return false;
+        }
+
+        $this->fill( $r->all() );
+        $pk = $this->primaryKey;
+
+        // payments data are never editable
+
+        $this->user_id      =   $r->user_id;
+        $this->amount       =   $r->total_fee;
         $this->paid_at = date('Y-m-d H:i:s');
-        $this->transaction_code = $transaction_code;
 
-        $params['package'] = $r->cost_id;
-        $this->params = serialize( $params );
+        $this->transaction_code = $r->trade_no;
+        $package = CreditCost::find( $r->cost_id );
+
+        if( $package ){
+            $params['package'] = $package->all();
+        }
+
+
+        $this->params = json_encode( $params );
 
         $this->save();
 
-        return true;
+        $this->save();
+
+        return $this;
+    }
+
+    public function execute( Request $r  )
+    {
+        return $this->store( $r );
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\BaseModel;
+use Illuminate\Http\Request;
 
 class TeacherPivot extends BaseModel{
 
@@ -10,6 +11,8 @@ class TeacherPivot extends BaseModel{
     public $primaryKey  = 'map_id';
 
     public $timestamps = false;
+
+    protected  $fillable = [ 'rating', 'about', 'voice_url', 'type' ];
 
     public static function getByTeacherId( $teacher_id , $create_new = true )
     {
@@ -29,6 +32,37 @@ class TeacherPivot extends BaseModel{
 
          return $teacher;
     }
+
+    public static function byUserId( $user_id )
+    {
+        return static::where( 'user_id' , $user_id )->first();
+    }
+
+    public function store( Request $r )
+    {
+        $validator = \Validator::make( $r->all() , [
+            // validation rules here
+        ] );
+
+        if( $validator->fails() ){
+            $this->errors = $validator->errors()->all();
+            return false;
+        }
+
+        $this->fill( $r->all() );
+        $pk = $this->primaryKey;
+
+        if( $r->$pk  ){
+            $this->exists = true;
+        }else{
+
+        }
+
+        $this->save();
+
+        return $this;
+    }
+
 
 
 }

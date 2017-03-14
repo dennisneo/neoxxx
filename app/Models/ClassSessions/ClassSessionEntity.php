@@ -11,6 +11,7 @@ namespace App\Models\ClassSessions;
 use App\Models\BaseModel;
 use App\Models\Financials\Credits;
 use App\Models\Settings\Settings;
+use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\UserEntity;
 use Helpers\Text;
@@ -48,6 +49,11 @@ class ClassSessionEntity extends BaseModel{
     public function teacher()
     {
         return $this->hasOne( TeacherEntity::class , 'id' , 'teacher_id' );
+    }
+
+    public function student()
+    {
+        return $this->hasOne( StudentEntity::class , 'id' , 'student_id' );
     }
 
     public function store( Request $r )

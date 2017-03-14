@@ -53,13 +53,13 @@ class Layout extends HtmlFacade{
 	public function renderScript( $path ){
 		$subdir = env('SUBDIR') ? '/'.env('SUBDIR'): '';
 		$path = substr( $path , 0 , 1 ) == '/' ? $path : '/'.$path;
-		return '<script src="'.$subdir.$path.'"></script>'."\r";
+		return '<script src="'.$subdir.$path.'"></script>'."\r\n";
 	}
 
 	public function renderStyle( $path ){
 		$subdir = env('SUBDIR') ? '/'.env('SUBDIR'): '';
 		$path = substr( $path , 0 , 1 ) == '/' ? $path : '/'.$path;
-		return '<link rel="stylesheet" href="'.$subdir.$path.'">'."\r";
+		return '<link rel="stylesheet" href="'.$subdir.$path.'">'."\r\n";
 	}
 
 	public function renderPageScripts(){

@@ -33,8 +33,8 @@ class CreditCost extends BaseModel{
          * https://github.com/bitmash/alipay-api-php
          */
 
-        $notify_url = env('ALIPAY_NOTIFY_URL');//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
-        $return_url = env('ALIPAY_RETURN_URL');
+        $notify_url = env('ALIPAY_NOTIFY_URL').'/'.$this->cost_id;//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
+        $return_url = env('ALIPAY_RETURN_URL').'/'.$this->cost_id;
 
         if( env('ALIPAY_LIVE') ){
             $partner        = env( 'ALIPAY_ID' );//fill with the partnerID which we already offered you (required fields)

@@ -1,11 +1,10 @@
 <style>
     .padr{
         padding:8px
-    }
+    },
+
 </style>
 <div id="sDiv">
-<form id="sForm">
-    <?php echo csrf_field(); ?>
     <div class=row" style="padding:24px 18px 18px 18px;">
         <br /><br />
         <div class="pull-right">
@@ -13,79 +12,26 @@
         </div>
         <h3>Settings</h3>
     </div>
-
-    <div class="x_panel panel-white">
-		<div class="x_content">
-            <div class="pull-right">
-                <button class="btn btn-success btn-sm" v-on:click="openCreditCost"> Add Credit Cost</button>
-            </div>
-            <h4><b>Credits</b></h4>
-            <hr />
-            <div class="row padr">
-                <ul class="list-group">
-                    <li class="list-group-item row" v-for="cc in credits_cost | orderBy 'credits' ">
-                        <div class="pull-right">
-                            <a href="javascript:" v-on:click="editCreditCost(cc.cost_id)"><i class="fa fa-edit"></i></a>
-                            <a href="javascript:" v-on:click="deleteCreditCost(cc.cost_id)"><i class="fa fa-trash"></i></a>
-                        </div>
-                        <div class="col-lg-3"> Credit {{cc.credits}} </div>
-                        <div class="col-lg-3"> <b>${{cc.cost}} </b> </div>
-                        <div class="col-lg-4"> {{cc.desc}} </div>
-
-                    </li>
-                </ul>
-            </div>
-		</div>
-	</div>
-</form>
-<form id="mForm">
-    <?php echo csrf_field() ?>
-    <div class="x_panel panel-white">
-        <div class="x_content">
-            <h4><b>Custom Messages</b></h4>
-            <hr />
-            <div class="row padr">
-                <?php foreach ( $settings as $s ) { ?>
-                    <?php if( substr( $s->skey , 0 , 7 ) == 'message' ){ ?>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <?php echo  $s->customMessageText(); ?>
-                            </div>
-                            <div class="col-lg-12">
-                                <textarea class="col-lg-12" name="<?php echo $s->skey ?>" style="min-height: 120px"><?php echo $s->value ?></textarea>
-                            </div>
-                        </div>
-                    <?php } ?>
-                <?php } ?>
-            </div>
-            <div class="row">
-                <a href="javascript:" class="btn btn-success save_message" @click="saveMessage"> Save </a>
-            </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#credits">Credits</a></li>
+        <li><a data-toggle="tab" href="#messages">Custom Messages</a></li>
+        <li><a data-toggle="tab" href="#rates">Salary Rates</a></li>
+        <li><a data-toggle="tab" href="#schedules">Schedules</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="credits" class="tab-pane fade in active">
+            <?php echo view('admin.settings.settings_credits'); ?>
+        </div>
+        <div id="messages" class="tab-pane fade">
+            <?php echo view('admin.settings.settings_messages' , compact('settings')); ?>
+        </div>
+        <div id="rates" class="tab-pane fade">
+            <?php echo view('admin.settings.settings_rates' , compact('settings')); ?>
+        </div>
+        <div id="schedules" class="tab-pane fade">
+            <?php echo view('admin.settings.settings_schedules'); ?>
         </div>
     </div>
-</form>
-    <div class="x_panel panel-white">
-        <div class="x_content">
-            <h4><b>Time Schedule</b></h4>
-            <hr />
-            <div class="row padr">
-                <div class="col-lg-3"> Minimun time to register a class</div>
-                <div class="col-lg-9">
-                    <div class="col-lg-4">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="x_panel panel-white">
-        <div class="x_content">
-            <a href="javascript:" class="btn btn-success save" v-on:click="save"> Save </a>
-        </div>
-    </div>
-
-
 
     <div id="ccModal" class="modal fade">
         <div class="modal-dialog">

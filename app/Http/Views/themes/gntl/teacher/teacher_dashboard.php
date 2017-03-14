@@ -10,15 +10,23 @@
                             <h4><b>Upcoming Schedule</b></h4>
                         </div>
                         <div class="x_content">
+                            <!--
                             <ul class="list-group">
                                 <li class="list-group-item" @class="notifications.length ? 'hide' : '' ">  <?php echo trans( 'general.no_schedule_found' ); ?></li>
                                 <li class="list-group-item" v-for="n in classes">
                                 </li>
                             </ul>
+                            -->
+                            <table class="table table-striped">
+                                <tr v-for="n in classes" style="cursor: pointer" @click="openClassRecord( n.class_id )">
+                                    <td>{{n.day}} {{n.time}}</td>
+                                    <td>{{n.student_short_name}}</td>
+                                </tr>
+                            </table>
 
                         </div>
                     </div>
-                    <input type="hidden" name="tid" id="tid" value="<?php echo $t->id ?>" />
+                    <input type="hidden" name="tid" id="tid" value="<?php echo \Helpers\Text::convertInt( $t->id ) ?>" />
                 </div>
                 <div class="col-lg-6">
                     <div class="x_panel tile" style="height: 320px">

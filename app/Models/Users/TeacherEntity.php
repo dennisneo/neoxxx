@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class TeacherEntity extends UserEntity{
 
+    private static $types = [
+        'native' => 'Native',
+        'filipino'=>'Filipino',
+        'local' => 'Local'
+    ];
+
+    public static function typeSelection( $default = 'filipino' )
+    {
+        return \Form::select( 'type',  static::$types , $default,  [ 'class' => 'form-control' ] );
+    }
+
     public function getByUserId( $user_id )
     {
         $teacher = static::where( 'id' , $user_id )

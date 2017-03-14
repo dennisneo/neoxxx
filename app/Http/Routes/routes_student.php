@@ -21,6 +21,7 @@ Route::group( [ 'prefix' => 'student' , 'as'=> 'student' , 'middleware' =>['auth
     Route::get( 't/{id}', 'Student\StudentDashboardController@teacher' );
     Route::get( 'sdetails', 'Student\StudentSessionsController@classSessionDetails' );
     Route::get( 'credits/buy', 'Student\StudentDashboardController@buyCredits' );
+    Route::get( 'credits/success/{credit_cost}', 'Student\StudentDashboardController@successBuyCredits' );
 
 });
 

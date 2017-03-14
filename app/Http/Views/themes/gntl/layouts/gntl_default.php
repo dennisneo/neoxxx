@@ -16,7 +16,7 @@
     <?php echo \Helpers\Html::instance()->renderStyle( '/public/css/addon.css' ); ?>
     <?php echo \Helpers\Html::instance()->renderPageStyles() ?>
     <!--- start of JS ------->
-    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/vue/vue.1.0.26.min.js' ); ?>
+    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/vue/vue.1.0.28.js' ); ?>
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
     <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/bootstrap/bootstrap.min.js' ); ?>
     <?php echo \Helpers\Html::instance()->renderScript( '/public/app/js/en.js' ); ?>

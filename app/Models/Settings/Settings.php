@@ -54,7 +54,7 @@ class Settings extends Model
     {
         // check if settings is already in db
         // insert one if not
-        $s = static::getByKey( $setting );
+        $s = static::getObjectByKey( $setting );
 
         if( ! $s ){
             $s = new static;

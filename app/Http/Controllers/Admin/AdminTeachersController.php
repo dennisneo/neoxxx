@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Teacher\TeacherBaseController;
 use App\Models\Users\TeacherEntity;
+use App\Models\Users\TeacherPivot;
 use Helpers\Html;
 use Illuminate\Http\Request;
 
@@ -39,15 +40,16 @@ class AdminTeachersController extends AdminBaseController{
 
     public function editTeacherProfile( $id , Request $r )
     {
-
         $u = TeacherEntity::find( $id );
-        $this->layout->content = view('admin.teachers.teacher_edit', [ 'u' => $u ]);
+        $p = TeacherPivot::byUserId( $id );
+
+        $this->layout->content = view('admin.teachers.teacher_edit', compact( 'u' , 'p') );
+
         Html::instance()->addScript( 'public/app/admin/teachers/teacher_edit.js' );
         Html::instance()->addScript( '/public/plugins/validation/jqBootstrapValidation.js' );
         Html::loadDateCombo();
         return $this->layout;
     }
-
 
     public function performanceRecords()
     {

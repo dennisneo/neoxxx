@@ -71,10 +71,18 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     Route::get( 'dashboard/scd',  'AjaxDashboardController@chartData' );
 
     // get credits cost in settings
-    Route::get( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
+    Route::get( 'settings/all',  function(){
+        $settings  = App\Models\Settings\Settings::all();
+        return [
+            'success' =>true,
+            'settings' => $settings
+        ];
+    } );
+    Route::post( 'settings/saverates',  'AjaxSettingsController@saveRates' );
+    Route::get ( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
     Route::post( 'credits_cost/save',  'AjaxSettingsController@saveCreditsCost' );
     Route::post( 'credits_cost/delete',  'AjaxSettingsController@deleteCreditsCost' );
-    Route::get( 'credits_cost/get',  'AjaxSettingsController@getCreditCost' );
+    Route::get ( 'credits_cost/get',  'AjaxSettingsController@getCreditCost' );
     Route::post( 'custom_messages/save',  'AjaxSettingsController@saveCustomMessages' );
 
     // save applicant requirements
@@ -98,6 +106,8 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         Route::get( 'upcoming',  'AjaxTeacherController@getUpcomingClass' );
         // get class record
         Route::get( 'gcr',  'AjaxTeacherController@getClassRecord' );
+        // get salary records
+        Route::get( 'gsr',  'AjaxTeacherController@getSalaryRecords' );
         //get teacher schedule
         Route::any( 'gts',  'AjaxTeacherController@getTeacherSchedule' );
         //update class record
@@ -121,6 +131,8 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         //upload voice
         Route::post( 'dv',  'AjaxTeacherController@deleteVoice' );
 
+        Route::post( 'save',  'AjaxTeacherController@saveProfile' );
+
     });
 
 Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>'Ajax\Admin',  'as'=> 'ajax.teachers' ],  function(){
@@ -134,7 +146,7 @@ Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher',  'as'=> 'ajax.teachers' ],  function(){
-    Route::post( 'save',  'AjaxTeachersController@saveTeacher' );
+
     Route::get( 'performance',  'AjaxTeacherController@getPerformanceRecord' );
 });
 

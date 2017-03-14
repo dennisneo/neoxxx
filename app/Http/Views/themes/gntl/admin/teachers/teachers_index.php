@@ -15,31 +15,29 @@
             </div>
             <div class="row">
                 <table class="table table-striped">
+                    <thead>
                     <tr>
                         <th style="width: 48px"></th>
                         <th> Name </th>
-                        <th> Rate </th>
-                        <th> Status </th>
+                        <th> Type </th>
+                        <th> Since </th>
                         <th></th>
                     </tr>
+                    </thead>
                     <tr class="loading" v-bind:class=" teachers.length > 0 ? 'hide' : 'show' ">
                         <td colspan="5">
                             <i class="fa fa-refresh fa-spin"></i> Loading...
                         </td>
                     </tr>
-                    <tr class="loading" v-bind:class=" teachers.length > 0 ? 'hide' : 'show' ">
-                        <td colspan="5">
-
-                        </td>
-                    </tr>
+                    <tbody>
                     <tr v-for="t in teachers | filterBy q ">
                         <td><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
                         <td style="">
                             <b>{{ t.full_name }}</b><br />
                             {{ t.location }}
                         </td>
-                        <td> $ {{ t.rate_per_hr ?  t.rate_per_hr : 0 }} </td>
-                        <td> {{ t.status }} </td>
+                        <td> {{ t.type }} </td>
+                        <td> {{ t.created_at }} </td>
                         <td>
                             <div class="btn-group">
                                 <div class="dropdown pull-right" >
@@ -58,6 +56,8 @@
                             </div>
                         </td>
                     </tr>
+
+                    </tbody>
                 </table>
             </div>
         </div>

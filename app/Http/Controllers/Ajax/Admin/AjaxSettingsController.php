@@ -17,6 +17,21 @@ class AjaxSettingsController extends AjaxBaseController{
         parent::__construct( $r );
     }
 
+    public function saveRates( Request $r )
+    {
+        Settings::store( 'rate_local_from', $r->rate_local_from );
+        Settings::store( 'rate_local_to', $r->rate_local_to );
+        Settings::store( 'rate_native_from', $r->rate_native_from );
+        Settings::store( 'rate_native_to', $r->rate_native_to );
+        Settings::store( 'rate_filipino_from', $r->rate_filipino_from );
+        Settings::store( 'rate_filipino_to', $r->rate_filipino_to );
+
+        return [
+            'success' =>true,
+
+        ];
+    }
+
     public function saveCustomMessages( Request $r )
     {
         $settings = new Settings();
@@ -45,7 +60,6 @@ class AjaxSettingsController extends AjaxBaseController{
 
     public function saveCreditsCost( Request $r )
     {
-
         if( ! is_numeric($r->cost )){
             return [
                 'success' =>false,
@@ -73,6 +87,7 @@ class AjaxSettingsController extends AjaxBaseController{
             'success' =>true,
             'credits_cost' => $cc
         ];
+
     }
 
     public function deleteCreditsCost( Request $r )

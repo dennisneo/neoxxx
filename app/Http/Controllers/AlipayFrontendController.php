@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Locations\Countries;
+use App\Models\Financials\CreditCost;
+use App\Models\Financials\Payments;
 use App\Models\Notices\AlipayNotices;
 use App\Models\Users\Applicant;
 use App\Models\Users\Applicants;
@@ -20,22 +22,32 @@ class AlipayFrontendController extends Controller{
 
     }
 
-
-    public function notify()
+    public function notify( $cost_id , Request $r  )
     {
-        $notice  = print_r( $_REQUEST , true );
+        $notice  = json_encode( $r->all());
 
         $n = new AlipayNotices();
         $n->added_at = date('Y-m-d H:i:s');
         $n->notice = $notice;
         $n->save();
 
-        $n->added_at = date('Y-m-d H:i:s');
-        return 'notify test';
+        $r->request->add(['cost_id' => $cost_id ]);
+        $payment= new Payments();
+        $payment->store( $r );
+
+        redirect( 'student/credits/success/'.$cost_id );
     }
 
-    public function ret()
+    public function ret( Request $r )
     {
+        /**
+        $notice  = json_encode( $r->all() );
+
+        $n = new AlipayNotices();
+        $n->added_at = date('Y-m-d H:i:s');
+        $n->notice = $notice;
+        $n->save();
+        **/
         return 'Landing page after alipay payment';
     }
 }

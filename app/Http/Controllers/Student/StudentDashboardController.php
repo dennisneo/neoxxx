@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\Financials\CreditCost;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\Teachers;
@@ -46,6 +47,12 @@ class StudentDashboardController extends StudentBaseController{
         $this->layout->content = view( 'student.buy_credits' );
         Html::instance()->addScript( '/public/app/student/buy_credits.js' );
 
+        return $this->layout;
+    }
+
+    public function successBuyCredits( CreditCost $credit_cost )
+    {
+        $this->layout->content = view( 'student.success_buy_credits' , ['c' => $credit_cost ] );
         return $this->layout;
     }
 

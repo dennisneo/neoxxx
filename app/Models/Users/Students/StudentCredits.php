@@ -27,13 +27,12 @@ class StudentCredits extends BaseModel{
         }
 
         $payment = new Payments();
+
         if( $payment->execute( $r ) ){
             //\DB::beginTransaction();
             $this->credits = $this->credits + $r->credits;
             $this->save();
         }
-
-
 
         return $this;
     }

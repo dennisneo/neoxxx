@@ -6,8 +6,13 @@ var tVue  =  new Vue({
         notifications: []
     },
     methods:{
-        editProfile:function(){
+        editProfile:function()
+        {
             $('#profileModal').modal();
+        },
+        openClassRecord:function( class_id )
+        {
+            location.href=subdir+'/teacher/class/'+class_id;
         }
     },
     ready:function(){

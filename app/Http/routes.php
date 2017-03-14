@@ -60,11 +60,16 @@ Route::any( 's/confirm', 'FrontController@studentConfirm' );
 
 /***** Alipay specific notifications ********/
 Route::any( 'alipay/notice', 'AlipayFrontendController@notify' );
+Route::any( 'alipay/notice/{package}', 'AlipayFrontendController@notify' );
 Route::any( 'alipay/return', 'AlipayFrontendController@ret' );
 
 if( Request::segment(1) == 'test' ){
     Route::get( 'test/mail', 'TestController@testMail' );
     return;
+}
+
+if( Request::segment(1) == 'cron' ){
+    Route::get( 'cron/compute_salary', 'CronController@computeSalary' );
 }
 
 if( Request::segment(1) == 'utils' ){

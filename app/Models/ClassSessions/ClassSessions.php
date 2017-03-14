@@ -19,6 +19,33 @@ class ClassSessions extends ClassSessionEntity{
 
         return $count;
     }
+
+
+    public function teacherWeekSalary( $start , $end )
+    {
+        $cs =  ClassSessions::where( 'class_status' , 'done' )
+            ->whereBetween( 'schedule_start_at', [ $start , $end ] )
+            ->where( 't.last_salary_computation' , '<', $end  )
+            ->from( 'class_sessions as cs' )
+            ->join( 'teachers as t' , 't.user_id' , '=', 'cs.teacher_id' )
+            ->join( 'users as u' , 'u.id' ,  '=', 'cs.teacher_id' )
+            ->groupBy( 'teacher_id' )
+            ->get( [ 'cs.*', 'u.first_name' , 'u.last_name', 't.type'  , \DB::raw( 'SUM( duration ) as total_duration' )  ] );
+
+
+        return $cs;
+    }
+
+    public static function computeIncome( $minutes , $rate )
+    {
+
+    }
+
+    /**
+     * @param $cid
+     * @return static collection
+     */
+
     public function getClassSession( $cid )
     {
         $cs =  ClassSessions::where( 'class_id' , $cid )
@@ -133,7 +160,9 @@ class ClassSessions extends ClassSessionEntity{
         $order_by   = $r->order_by ? $r->order_by : 'schedule_start_at';
         $order_direction = $r->order_direction ? $r->order_direction :   'ASC';
 
-        $tid = Text::recoverInt( $r->tid );
+        //$tid = Text::recoverInt( $r->tid );
+
+        $tid = $r->tid;
         $fields = [ 'cs.*' , 's.first_name as s_fname' , 's.last_name as s_lname' , 's.id as sid' ];
 
         $cs =  ClassSessions::where( 'teacher_id' , $tid )
@@ -154,28 +183,32 @@ class ClassSessions extends ClassSessionEntity{
             $cs->where( 'schedule_start_at' , '<=' , $date_to );
 
         }elseif( $r->date_from ){
-
+            $date_from = date( 'Y-m-d' , strtotime( $r->date_from ) );
+            $cs->where( 'schedule_start_at' , '>=' , $date_from );
         }
 
         $this->total = $cs->count();
         $cs->orderby( $order_by , $order_direction );
         $cs->limit( $limit );
 
+        $this->sql = $cs->toSql();
+
         $schedules = $cs->get( $fields );
 
         return $this->vuefyCollection( $schedules );
     }
 
-    public static function statusSelect()
+    public static function statusSelect( $default = 0)
     {
+
         $status =[
-            'active' => 'Active',
-            'done' => 'Done',
-            'absent' => 'Absent',
-            'cancelled' => 'Cancelled'
+            'Active' => 'Active',
+            'Done' => 'Done',
+            'Absent' => 'Absent',
+            'Cancelled' => 'Cancelled'
         ];
 
-        return \Form::select( 'class_status' , $status ,  '' , [ 'class' => 'form-control' , 'id'=>'class_status' ] );
+        return \Form::select( 'class_status' , $status ,  $default , [ 'class' => 'form-control' , 'id'=>'class_status' ] );
     }
 
     /**

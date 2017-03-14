@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Models\ClassSessions\ClassSessionEntity;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\UserEntity;
 use Helpers\Html;
@@ -14,6 +15,14 @@ class TeacherController extends TeacherBaseController{
         parent::__construct();
     }
 
+    public function classSession( ClassSessionEntity $class )
+    {
+        Html::loadFileupload();
+        $class  = $class->vuefy();
+        $this->layout->content  =  view('teacher.teacher_class' , compact( 'class' ));
+        Html::instance()->addScript( 'public/app/teacher/teacher_class.js' );
+        return $this->layout;
+    }
     /**
      * @param Request $r
      * @return mixed
@@ -57,7 +66,8 @@ class TeacherController extends TeacherBaseController{
      */
     public function salary( Request $r )
     {
-        $this->layout->content  =  view('teacher.teacher_salary');
+        $teacher = UserEntity::me();
+        $this->layout->content  =  view('teacher.teacher_salary' , compact( 'teacher' ));
         Html::instance()->addScript( 'public/app/teacher/teacher_salary.js' );
         return $this->layout;
     }

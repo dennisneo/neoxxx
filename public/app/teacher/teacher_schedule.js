@@ -104,13 +104,15 @@ var tVue = new Vue({
         },
         getClasses:function()
         {
+            var vm = this;
             this.sessions =  [];
+
             $('.loading').html( '<i class="fa fa-refresh fa-spin"></i>' );
 
             $.get( subdir+'/ajax/teacher/gts' , $('#searchForm').serialize())
                 .done(function( data ){
-                    if(data.success){
-                        tVue.$data.sessions =  data.sessions;
+                    if( data.success ){
+                        vm.sessions =  data.sessions;
                         $('.loading').html( 'No record found' );
                     }else{
                         toastr.error( data.message );
@@ -136,6 +138,7 @@ $( document ).ready(
             },
             done: function (e, data) {
                 $('.bar').css('width', '0%');
+
                 if( data.result.success){
                     toastr.success('Audio file successfully uploaded');
                     tVue.showAudioDiv( data.result.session.audio_file );

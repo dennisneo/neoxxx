@@ -9,6 +9,7 @@ use App\Models\ClassSessions\ClassFeedback;
 use App\Models\ClassSessions\ClassSessionEntity;
 use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
+use App\Models\Financials\SalaryDetails;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Performance\TeacherPerformance;
 use App\Models\Users\Applicant;
@@ -58,9 +59,26 @@ class AjaxTeacherController extends AjaxBaseController{
 
     }
 
+    public function getSalaryRecords( Request $r )
+    {
+        $rec = SalaryDetails::where( 'teacher_id' , $r->teacher_id )
+            ->get();
+
+        return [
+            'success' =>true,
+            'records' => $rec
+        ];
+    }
+
     public function getUpcomingClass( Request $r )
     {
-        $r->request->add( ['tid'=>UserEntity::me()->id]);
+        $r->request->add(
+            [
+                'tid' => UserEntity::me()->id ,
+                'date_from' => date('Y-m-d H:i:s')
+            ]
+        );
+
         $cs = new ClassSessions;
         $classes = $cs->byTeacherId( $r );
 
@@ -201,6 +219,14 @@ class AjaxTeacherController extends AjaxBaseController{
                 'message' => $teacher->displayErrors()
             ];
         }
+
+        if( ! $tp = TeacherPivot::byUserId( $teacher->id ) ){
+            $tp = new TeacherPivot();
+            $tp->user_id    = $teacher->id;
+            $tp->rating     = 0;
+        }
+
+        $tp->store( $r );
 
         return [
             'success' =>true

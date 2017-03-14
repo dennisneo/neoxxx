@@ -13,7 +13,7 @@ class BaseModel extends \Eloquent
     protected $limit     = 20;
     protected $errors    = [];
     protected $collection    = [];
-
+    protected $sql;
 
     public $error_code;
 
@@ -95,4 +95,10 @@ class BaseModel extends \Eloquent
     {
         return $this;
     }
+
+    public function getSql()
+    {
+        return $this->sql;
+    }
+
 }
