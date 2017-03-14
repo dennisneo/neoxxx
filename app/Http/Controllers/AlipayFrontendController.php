@@ -31,23 +31,15 @@ class AlipayFrontendController extends Controller{
         $n->notice = $notice;
         $n->save();
 
-        $r->request->add(['cost_id' => $cost_id ]);
+        $r->request->add( ['cost_id' => $cost_id ] );
         $payment= new Payments();
         $payment->store( $r );
 
-        redirect( 'student/credits/success/'.$cost_id );
+
     }
 
-    public function ret( Request $r )
+    public function ret( $cost_id , Request $r )
     {
-        /**
-        $notice  = json_encode( $r->all() );
-
-        $n = new AlipayNotices();
-        $n->added_at = date('Y-m-d H:i:s');
-        $n->notice = $notice;
-        $n->save();
-        **/
-        return 'Landing page after alipay payment';
+        redirect( 'student/credits/success/'.$cost_id );
     }
 }
