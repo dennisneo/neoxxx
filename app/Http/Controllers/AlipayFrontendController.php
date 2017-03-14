@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Locations\Countries;
 use App\Models\Financials\CreditCost;
+use App\Models\Financials\PaymentKeys;
 use App\Models\Financials\Payments;
 use App\Models\Notices\AlipayNotices;
 use App\Models\Users\Applicant;
@@ -22,9 +23,16 @@ class AlipayFrontendController extends Controller{
 
     }
 
-    public function notify( $cost_id , Request $r  )
+    public function notify( $cost_id , $user_id, $skey , Request $r  )
     {
-        $notice  = json_encode( $r->all());
+        // check if skey is found
+        // prevent duplicate entry
+        if( ! $key = PaymentKeys::check( $user_id , $skey ) ){
+              // do not add payment
+             // return;
+        }
+
+        $notice  = json_encode( $r->all() );
 
         $n = new AlipayNotices();
         $n->added_at = date('Y-m-d H:i:s');
@@ -32,14 +40,16 @@ class AlipayFrontendController extends Controller{
         $n->save();
 
         $r->request->add( ['cost_id' => $cost_id ] );
+
         $payment= new Payments();
         $payment->store( $r );
 
+        $key->delete();
 
     }
 
     public function ret( $cost_id , Request $r )
     {
-        redirect( 'student/credits/success/'.$cost_id );
+        return redirect( 'student/credits/success/'.$cost_id );
     }
 }

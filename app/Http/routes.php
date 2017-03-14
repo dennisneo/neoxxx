@@ -60,7 +60,7 @@ Route::any( 's/confirm', 'FrontController@studentConfirm' );
 
 /***** Alipay specific notifications ********/
 Route::any( 'alipay/notice', 'AlipayFrontendController@notify' );
-Route::any( 'alipay/notice/{package}', 'AlipayFrontendController@notify' );
+Route::any( 'alipay/notify/{cost_id}/{user_id}/{skey}', 'AlipayFrontendController@notify' );
 Route::any( 'alipay/return/{cost_id}', 'AlipayFrontendController@ret' );
 
 if( Request::segment(1) == 'test' ){

@@ -3,7 +3,9 @@
 namespace App\Models\Financials;
 
 use App\Models\BaseModel;
+use App\Models\Users\UserEntity;
 use Helpers\Alipay;
+use Helpers\Text;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -25,15 +27,21 @@ class CreditCost extends BaseModel{
 
     public function vuefy()
     {
+
         $_input_charset = "utf-8";
-        $sign_type = "MD5";
+        $sign_type  = "MD5";
+
+        $user_id    = Text::convertInt( UserEntity::me()->id );
+        // create payment key
+
+        $key = ( new PaymentKeys )->generate( $user_id );
 
         /**
          * Alipay dev credentials found here
          * https://github.com/bitmash/alipay-api-php
          */
 
-        $notify_url = env('ALIPAY_NOTIFY_URL').'/'.$this->cost_id;//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
+        $notify_url = env('ALIPAY_NOTIFY_URL').'/'.$this->cost_id.'/'.$user_id.'/'.$key->skey;//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
         $return_url = env('ALIPAY_RETURN_URL').'/'.$this->cost_id;
 
         if( env('ALIPAY_LIVE') ){

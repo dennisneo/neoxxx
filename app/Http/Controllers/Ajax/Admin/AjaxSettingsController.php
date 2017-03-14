@@ -109,7 +109,7 @@ class AjaxSettingsController extends AjaxBaseController{
 
     public function getCreditCostAll( Request $r )
     {
-        $credits_cost = (new CreditCost)->getAll()->vuefyThisCollection();
+        $credits_cost = ( new CreditCost )->getAll()->vuefyThisCollection();
 
         return [
             'success' =>true,
