@@ -36,6 +36,8 @@ class AlipayFrontendController extends Controller{
         $user_id = Text::recoverInt( $user_id );
         $notice  = json_encode( $r->all() );
 
+        $credit_cost = CreditCost::find( $cost_id );
+
         $n = new AlipayNotices();
         $n->added_at = date('Y-m-d H:i:s');
         $n->notice = $notice;
@@ -45,7 +47,8 @@ class AlipayFrontendController extends Controller{
             \Log::error( $e->getMessage() );
         }
 
-        $r->request->add( ['cost_id' => $cost_id ] );
+        $r->request->add( [ 'cost_id' => $cost_id , 'credits' => $credit_cost->credits ] );
+        $r->merge([ 'user_id'=> $user_id]);
 
         // add credit to user id
         try{

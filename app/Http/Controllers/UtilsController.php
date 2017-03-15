@@ -92,7 +92,7 @@ class UtilsController extends Controller{
 
     }
 
-    public function pwd()
+    public function pwd( Request $r )
     {
         /**
         $user  = UserEntity::find( 20 );
@@ -101,7 +101,6 @@ class UtilsController extends Controller{
          **/
         $pwd = 'arfarf';
         dd( \Hash::make( $pwd ) );
-
     }
 
     public function populateQuestions()
