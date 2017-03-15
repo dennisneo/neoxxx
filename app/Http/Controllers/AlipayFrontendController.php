@@ -10,6 +10,7 @@ use App\Models\Notices\AlipayNotices;
 use App\Models\Users\Applicant;
 use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
+use App\Models\Users\Students\StudentCredits;
 use App\Models\Users\User;
 use App\Models\Users\UserEntity;
 use Helpers\Html;
@@ -32,6 +33,7 @@ class AlipayFrontendController extends Controller{
              // return;
         }
 
+        $user_id = Text::recoverInt( $user_id );
         $notice  = json_encode( $r->all() );
 
         $n = new AlipayNotices();
@@ -41,8 +43,13 @@ class AlipayFrontendController extends Controller{
 
         $r->request->add( ['cost_id' => $cost_id ] );
 
-        $payment= new Payments();
-        $payment->store( $r );
+
+        //$payment= new Payments();
+        //$payment->store( $r );
+
+        // add credit to user id
+
+        StudentCredits::getCreditsByStudentId( $user_id , true )->add( $r );
 
         //$key->delete();
 
