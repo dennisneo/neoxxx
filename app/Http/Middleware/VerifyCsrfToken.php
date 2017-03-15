@@ -12,6 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'alipay/notify/{cost_id}/{user_id}/{skey}'
+        'alipay/*'
     ];
 }

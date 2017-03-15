@@ -47,10 +47,6 @@ class AlipayFrontendController extends Controller{
 
         $r->request->add( ['cost_id' => $cost_id ] );
 
-
-        //$payment= new Payments();
-        //$payment->store( $r );
-
         // add credit to user id
         try{
             StudentCredits::getCreditsByStudentId( $user_id , true )->add( $r );
