@@ -39,7 +39,11 @@ class AlipayFrontendController extends Controller{
         $n = new AlipayNotices();
         $n->added_at = date('Y-m-d H:i:s');
         $n->notice = $notice;
-        $n->save();
+        try {
+            $n->save();
+        }catch( \Exception $e ){
+            \Log::error( $e->getMessage() );
+        }
 
         $r->request->add( ['cost_id' => $cost_id ] );
 
@@ -48,8 +52,12 @@ class AlipayFrontendController extends Controller{
         //$payment->store( $r );
 
         // add credit to user id
+        try{
+            StudentCredits::getCreditsByStudentId( $user_id , true )->add( $r );
+        }catch ( \Exception $e ){
+            \Log::error( $e->getMessage() );
+        }
 
-        StudentCredits::getCreditsByStudentId( $user_id , true )->add( $r );
 
         //$key->delete();
 
