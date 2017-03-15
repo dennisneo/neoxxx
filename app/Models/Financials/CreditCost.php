@@ -61,10 +61,11 @@ class CreditCost extends BaseModel{
             "notify_url" =>$notify_url,
             "_input_charset" => $_input_charset,
             "subject" => "NEO English Learning", //subject is the name of the product, you'd better change it
-            "body" =>"Test 1234",  //body is the description of the product , you'd beeter change it
+            "body" =>" Online English Tutorial ",  //body is the description of the product , you'd beeter change it
             "out_trade_no" => time(),
             "total_fee" => $this->cost, //the price of products
-            "currency"=>"USD", // change it as the currency which you used on your website
+            "currency"=>"USD", // change it as the currency which you used on your website,
+            "uid" => $user_id
         );
 
         // only alipay for now

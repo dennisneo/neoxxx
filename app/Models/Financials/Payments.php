@@ -70,12 +70,9 @@ class Payments extends BaseModel{
             $params['package'] = $package->all();
         }
 
-
         $this->params = json_encode( $params );
-
         $this->save();
 
-        $this->save();
 
         return $this;
     }

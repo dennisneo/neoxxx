@@ -44,7 +44,7 @@ class AlipayFrontendController extends Controller{
         $payment= new Payments();
         $payment->store( $r );
 
-        $key->delete();
+        //$key->delete();
 
     }
 
