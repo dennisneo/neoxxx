@@ -30,8 +30,12 @@ class Layout extends HtmlFacade{
 	 * add single page scripts
 	 * @param string $script_path
 	 */
-	public function addScript( $script_path ){
-		$this->scripts[] = 	$script_path;
+	public function addScript( $script_path , $key = null ){
+		if( $key ){
+			$this->scripts[ $key ] = 	$script_path;
+		}else{
+			$this->scripts[] = 	$script_path;
+		}
 	}
 	
 	/**
@@ -113,6 +117,11 @@ class Layout extends HtmlFacade{
 	{
 		static::instance()->addScript( '/public/plugins/datecombo/moment.js' );
 		static::instance()->addScript( '/public/plugins/datecombo/combodate.js' );
+	}
+
+	public static function loadVue( $version = '' )
+	{
+
 	}
 
 	public static function loadToastr()

@@ -28,6 +28,9 @@ Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,
     /************ Teachers section *****************/
     Route::get( 'students', 'Admin\AdminStudentsController@index' );
 
+    Route::get( 'payment_history', 'Admin\AdminFinancialsController@payment_history' );
+
+
     Route::get( 'settings', 'Admin\AdminSettingsController@index' );
 });
 

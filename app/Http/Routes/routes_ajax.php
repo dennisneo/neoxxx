@@ -95,6 +95,8 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
 
     Route::post( 'teacher/add_schedule',  'AjaxTeachersController@addSchedule' );
 
+    Route::get( 'gph',  'AjaxFinancialsController@paymentHistory' );
+
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){

@@ -7,19 +7,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Native English Online </title>
-
-    <?php echo \Helpers\Html::instance()->renderStyle( '/public/plugins/bootstrap/bootstrap.min.css' ); ?>
+    <?php $layout = \Helpers\Layout::instance() ?>
+    <?php echo $layout->renderStyle( '/public/plugins/bootstrap/bootstrap.min.css' ); ?>
     <!-- Font Awesome -->
-    <?php echo \Helpers\Html::instance()->renderStyle( '/public/plugins/fa/font-awesome.min.css' ); ?>
+    <?php echo $layout->renderStyle( '/public/plugins/fa/font-awesome.min.css' ); ?>
     <!-- Custom Theme Style -->
-    <?php echo \Helpers\Html::instance()->renderStyle( '/public/themes/gntl/css/custom.min.css' ); ?>
-    <?php echo \Helpers\Html::instance()->renderStyle( '/public/css/addon.css' ); ?>
-    <?php echo \Helpers\Html::instance()->renderPageStyles() ?>
+    <?php echo $layout->renderStyle( '/public/themes/gntl/css/custom.min.css' ); ?>
+    <?php echo $layout->renderStyle( '/public/css/addon.css' ); ?>
+    <?php echo $layout->renderPageStyles() ?>
     <!--- start of JS ------->
-    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/vue/vue.1.0.28.js' ); ?>
-    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
-    <?php echo \Helpers\Html::instance()->renderScript( '/public/plugins/bootstrap/bootstrap.min.js' ); ?>
-    <?php echo \Helpers\Html::instance()->renderScript( '/public/app/js/en.js' ); ?>
+    <?php
+
+        echo $layout->renderScript( '/public/plugins/vue/vue.1.0.28.js' );
+    ?>
+    <?php echo $layout->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
+    <?php echo $layout->renderScript( '/public/plugins/bootstrap/bootstrap.min.js' ); ?>
+    <?php echo $layout->renderScript( '/public/app/js/en.js' ); ?>
 
     <!--
     <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
@@ -129,7 +132,7 @@
 <!-- Custom Theme Scripts -->
 <!--<script src="../build/js/custom.min.js"></script>-->
 
-<?php echo \Helpers\Html::instance()->renderPageScripts(); ?>
+<?php echo \Helpers\Layout::instance()->renderPageScripts(); ?>
 
 </body>
 <script>
