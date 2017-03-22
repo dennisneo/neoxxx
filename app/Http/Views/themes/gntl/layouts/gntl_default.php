@@ -31,6 +31,9 @@
     <style>
         h2,h3,h4{
             color:black
+        },
+        [v-cloak]{
+            display:none;
         }
     </style>
 </head>

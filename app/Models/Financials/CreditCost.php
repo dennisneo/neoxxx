@@ -45,8 +45,10 @@ class CreditCost extends BaseModel{
         $return_url = env('ALIPAY_RETURN_URL').'/'.$this->cost_id;
 
         if( env('ALIPAY_LIVE') ){
-            $partner        = env( 'ALIPAY_ID' );//fill with the partnerID which we already offered you (required fields)
-            $security_code  = env( 'ALIPAY_SECURITY_ID' );//fill with the security key which we already offered you (required fields)
+            //$partner        = env( 'ALIPAY_ID' );//fill with the partnerID which we already offered you (required fields)
+            //$security_code  = env( 'ALIPAY_SECURITY_ID' );//fill with the security key which we already offered you (required fields)
+            $partner        = "2088221504228374";
+            $security_code  = "1xk9dv7tzng3c9b7cvyd3lhuoksis9o3";
             $transport= "https";
         }else{
             $partner        = "2088101122136241";//fill with the partnerID which we already offered you (required fields)

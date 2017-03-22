@@ -1,4 +1,4 @@
-<div id="pDiv" style="">
+<div id="pDiv" style="" v-cloak>
     <div class="x_panel tile" style="">
         <div class="x_header">
             <form id="pForm">
