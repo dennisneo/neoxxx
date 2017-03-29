@@ -27,6 +27,11 @@ class PaymentKeys extends BaseModel{
 
     }
 
+    /**
+     * Create a payment key
+     * @param $user_id
+     * @return static
+     */
     public function generate( $user_id )
     {
         // @TODO garbage collection 20%

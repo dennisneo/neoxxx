@@ -11,7 +11,7 @@ use App\Models\Users\Applicant;
 use App\Models\Users\User;
 use App\Models\Users\UserEntity;
 use Faker\Factory;
-use Helpers\Alipay;
+use Helpers\Alipay\Alipay;
 use Helpers\Html;
 use Illuminate\Http\Request;
 
@@ -49,27 +49,43 @@ class UtilsController extends Controller{
         }
     }
 
+    private function uuid()
+    {
+        $data = openssl_random_pseudo_bytes(16);
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0010
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
+
+    public function alipayBitmash()
+    {
+        $sale_id        = uniqid();
+        $amount         = 1.25;
+        $description    = "A pair of shoes";
+        $uuid = $this->uuid();
+        // Associate the sale id with uuid in your database for a look up once Alipay
+        // pings your notify_url
+        $return_url = "http://localhost/alipay/tests/return.php?sale_id=$sale_id";
+        $notify_url = "http://localhost/alipay/tests/notify.php?id=$uuid";
+
+        $alipay = new Alipay();
+        // Generates a one-time URL to redirect the Buyer to
+        $approve = $alipay->createPayment( $sale_id, $amount, "USD", $description, $return_url, $notify_url);
+        dd( $approve );
+        echo "<a href='$approve'>Test Transaction Link</a>";
+    }
+
     public function alipay()
     {
-        if( env('ALIPAY_LIVE') ){
-            echo 'OKK';
-        }else{
-            echo 'FALSE';
-        }
-        dd( 'test' );
-        /**
-        $pay         = new Alipay();
-        $payment_url = $pay->createPayment( 'Native English Online', 25 , 'USD', 'NEO Payment' );
 
-         return $payment_url;
-        ***/
-
-        $partner = "2088101122136241";//fill with the partnerID which we already offered you (required fields)
-        $security_code = "760bdzec6y9goq7ctyx96ezkz78287de";//fill with the security key which we already offered you (required fields)
+        //$partner = "2088101122136241";//fill with the partnerID which we already offered you (required fields)
+        //$security_code = "760bdzec6y9goq7ctyx96ezkz78287de";//fill with the security key which we already offered you (required fields)
+        $partner        = "2088221504228374";
+        $security_code  = "1xk9dv7tzng3c9b7cvyd3lhuoksis9o3";
         $_input_charset = "utf-8";
         $sign_type = "MD5";
         $transport= "http";
-        $notify_url = env('ALIPAY_NOTIFY_URL');//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
+        $notify_url = env('ALIPAY_NOTIFY_URL'); //first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
         $return_url = env('ALIPAY_RETURN_URL');
 
         $parameter = array(
@@ -81,14 +97,14 @@ class UtilsController extends Controller{
             "subject" => "NEO English Learning", //subject is the name of the product, you'd better change it
             "body" =>"Test 1234",  //body is the description of the product , you'd beeter change it
             "out_trade_no" => time() ,
-            "total_fee" => "10", //the price of products
+            "total_fee" => "1", //the price of products
             "currency"=>"USD", // change it as the currency which you used on your website
         );
 
         $alipay = new Alipay\AlipayService( $parameter,$security_code,$sign_type);
 
-        $link   =   $alipay->create_url();
-        echo "<br/> <a href= $link  target= \"_blank\">submit</a>";
+        echo $link   =   $alipay->create_url();
+        //echo "<br/> <a href= $link  target= \"_blank\">submit</a>";
 
     }
 

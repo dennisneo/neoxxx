@@ -1,6 +1,6 @@
 <?php
 
-namespace Helpers;
+namespace Helpers\Alipay;
 
 /**
  * @author bitmash
@@ -15,28 +15,28 @@ class Alipay {
     /**
      * For testing purposes
      */
-    const ENVIRONMENT = "development";
+    const ENVIRONMENT = "production";
 
     /**
      * The application Partner ID
      *
      * @var string $_partner_id
      */
-    private $_partner_id = "";
+    private $_partner_id = "2088221504228374";
 
     /**
      * The application Private Key
      *
      * @var string $_key
      */
-    private $_key = "";
+    private $_key = "1xk9dv7tzng3c9b7cvyd3lhuoksis9o3";
 
     /**
      * The Alipay API endpoint
      *
      * @var string $_endpoint
      */
-    private $_endpoint = "";
+    private $_endpoint = "https://mapi.alipay.com/gateway.do";
 
     /**
      * Instantiates connection vars
@@ -45,18 +45,19 @@ class Alipay {
      */
     public function __construct()
     {
-        if (self::ENVIRONMENT == "development")
+        if( env('ALIPAY_LIVE') )
+        {
+            $this->_partner_id = "2088221504228374"; // replace with your production partner ID
+            $this->_key = "1xk9dv7tzng3c9b7cvyd3lhuoksis9o3"; // replace with your production private key
+            $this->_endpoint = "https://mapi.alipay.com/gateway.do";
+        }
+        else
         {
             $this->_partner_id = "2088101122136241";
             $this->_key = "760bdzec6y9goq7ctyx96ezkz78287de";
             $this->_endpoint = "https://openapi.alipaydev.com/gateway.do";
         }
-        else
-        {
-            $this->_partner_id = ""; // replace with your production partner ID
-            $this->_key = ""; // replace with your production private key
-            $this->_endpoint = "https://mapi.alipay.com/gateway.do";
-        }
+
     }
 
     /**
@@ -81,11 +82,8 @@ class Alipay {
      * @param boolean $is_mobile Whether or not the user is on a mobile device
      * @return string
      **/
-    public function createPayment($sale_id = "", $amount = 0, $currency = "USD", $description = "", $is_mobile = false)
+    public function createPayment($sale_id = "", $amount = 0, $currency = "USD", $description = "", $return_url = "", $notify_url = "", $is_mobile = false)
     {
-        $return_url = env( 'ALIPAY_RETURN_URL' );
-        $notify_url = env( 'ALIPAY_NOTIFY_URL' );
-
         $data = [
             'body' => $description,
             'service' => $is_mobile ? 'create_forex_trade_wap' : 'create_forex_trade',
@@ -185,7 +183,7 @@ class Alipay {
 
         if ($error)
         {
-            throw new Exception($error);
+            throw new \Exception($error);
         }
 
         return $response;
@@ -229,4 +227,3 @@ class Alipay {
         return md5(substr($query, 0, -1) . $this->_key);
     }
 }
-

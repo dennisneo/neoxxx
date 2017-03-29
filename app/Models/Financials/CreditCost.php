@@ -4,7 +4,7 @@ namespace App\Models\Financials;
 
 use App\Models\BaseModel;
 use App\Models\Users\UserEntity;
-use Helpers\Alipay;
+use Helpers\Alipay\Alipay;
 use Helpers\Text;
 use Illuminate\Http\Request;
 use Validator;
@@ -27,7 +27,46 @@ class CreditCost extends BaseModel{
 
     public function vuefy()
     {
+        $_input_charset = "utf-8";
+        $sign_type  = "MD5";
 
+        $user_id    = Text::convertInt( UserEntity::me()->id );
+        // create payment key
+
+        $key = ( new PaymentKeys )->generate( $user_id );
+
+        $sale_id = uniqid();
+        $amount         =  $this->cost;
+        $description    =  "Online English Tutorial Credits";
+        $uuid = $this->uuid();
+
+        /**
+         * Alipay dev credentials found here
+         * https://github.com/bitmash/alipay-api-php
+         */
+
+        $notify_url = env('ALIPAY_NOTIFY_URL').'/'.$this->cost_id.'/'.$user_id.'/'.$key->skey;//first you should change this url. if you want to know the function of the notify_url, you should read the alipay overseas order receiving interface file which we already offered you
+        $return_url = env('ALIPAY_RETURN_URL').'/'.$this->cost_id;
+
+        if( env('ALIPAY_LIVE') ){
+            $partner        = env( 'ALIPAY_ID' );
+            $security_code  = env( 'ALIPAY_SECURITY_ID' );
+            $transport= "https";
+        }else {
+            $partner        = "2088101122136241";//fill with the partnerID which we already offered you (required fields)
+            $security_code  = "760bdzec6y9goq7ctyx96ezkz78287de";//fill with the security key which we already offered you (required fields)
+            $transport      = "http";
+        }
+
+
+        $alipay = new Alipay();
+        // Generates a one-time URL to redirect the Buyer to
+        $this->payment_url  = $alipay->createPayment( $sale_id, $amount, "USD", $description, $return_url, $notify_url );
+        return $this;
+    }
+
+    public function vuefy_old()
+    {
         $_input_charset = "utf-8";
         $sign_type  = "MD5";
 
@@ -77,4 +116,11 @@ class CreditCost extends BaseModel{
     }
 
 
+    private function uuid()
+    {
+        $data = openssl_random_pseudo_bytes(16);
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0010
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
 }

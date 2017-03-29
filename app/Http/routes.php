@@ -75,7 +75,7 @@ if( Request::segment(1) == 'cron' ){
 if( Request::segment(1) == 'utils' ){
 
     Route::get( 'utils/pq', 'UtilsController@populateQuestions' );
-    Route::get( 'utils/alipay', 'UtilsController@alipay' );
+    Route::get( 'utils/alipay', 'UtilsController@alipayBitmash' );
     // email template
     Route::get( 'utils/et/{email_view}', 'UtilsController@viewEmailTemplate' );
 

@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Ajax\Admin;
 
 use App\Http\Controllers\Ajax\AjaxBaseController;
 use App\Models\Financials\CreditCost;
-use App\Models\LearningGoals\LearningGoals;
-use App\Models\Placement\QuestionChoices;
-use App\Models\Placement\Questions;
 use App\Models\Settings\Settings;
 use Illuminate\Http\Request;
 
