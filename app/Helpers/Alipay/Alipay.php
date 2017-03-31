@@ -89,7 +89,7 @@ class Alipay {
             'service' => $is_mobile ? 'create_forex_trade_wap' : 'create_forex_trade',
             'out_trade_no' => $sale_id,
             'currency' => $currency,
-            'rmb_fee' => $amount,
+            'total_fee' => $amount,
             'subject' => $description,
             'return_url' => $return_url,
             'notify_url' => $notify_url,
