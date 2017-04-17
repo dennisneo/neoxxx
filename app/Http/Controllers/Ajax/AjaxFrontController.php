@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/27/2016
- * Time: 10:20 AM
- */
 
 namespace App\Http\Controllers\Ajax;
 
@@ -55,6 +49,19 @@ class AjaxFrontController extends AjaxBaseController{
         $r->request->add(['user_type' => 'student']);
 
         $student = new StudentEntity();
+        // validate captcha
+        $recaptcha_response = \Request::get('g-recaptcha-response');
+
+        if( ! $r->is_validated ){
+            $recaptcha_validate = $this->validateRecaptcha( $recaptcha_response );
+            if( ! $recaptcha_validate->success ){
+                return [
+                    'success' => false,
+                    'message' => 'Recaptcha validation failed',
+                    'recaptcha_validation' => 'fail'
+                ];
+            }
+        }
 
         \DB::beginTransaction();
         try{
@@ -105,6 +112,29 @@ class AjaxFrontController extends AjaxBaseController{
             throw new \Exception(' Email sending failed ');
         }
 
+    }
+
+    private function validateRecaptcha( $recaptcha_response )
+    {
+        // set post fields
+        $post = [
+            'secret'     => env( 'RECAPTCHA_SECRET'),
+            'response'   => $recaptcha_response,
+            'remoteip'   => $_SERVER['REMOTE_ADDR'],
+        ];
+
+        $ch = curl_init( 'https://www.google.com/recaptcha/api/siteverify' );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+
+        // execute!
+        $response = curl_exec($ch);
+
+        // close the connection, release resources used
+        curl_close( $ch );
+        $response = json_decode($response);
+
+        return $response;
     }
 
 }

@@ -14,6 +14,10 @@ var sVue = new Vue({
                        window.location.href=subdir+'/s/application/success?ccid='+data.student.ccid
                     }else{
                        toastr.error( data.message );
+                        if( data.recaptcha_validation != 'fail'){
+                            $('#is_validated').val( 1 );
+                        }
+
                     }
                     $('.btn').prop('disabled', false );
                     $('#submit').html(' Submit ');

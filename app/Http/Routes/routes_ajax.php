@@ -3,7 +3,7 @@
     /*************** Ajax Routes **************/
 
 Route::group( [  'prefix' => 'ajax/front' ],  function(){
-    // save new student
+    // save new student coming from frontend
     Route::post( 'sns',  'Ajax\AjaxFrontController@saveNewStudent');
 });
 

@@ -1,3 +1,4 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <div id="sDiv">
     <h4>Student Registration Form</h4>
     <i>* Required fields</i>
@@ -94,20 +95,24 @@
                 <input type="radio" name="level" value="4" /> Very Good &nbsp;&nbsp;
             </div>
         </div>
-
+        <div class="col-lg-12">
+            <div class="g-recaptcha" data-sitekey="<?php echo env( 'RECAPTCHA_KEY' ); ?>"></div>
+        </div>
         <div class="col-lg-12">
             <hr />
             <div class="form-group">
                <a href="javascript:" class="btn btn-success" id="submit" v-on:click="submit()"> <b>Submit</b> </a>
-               <input type="hidden" name="_token" value="<?php echo \Session::token() ?>">
             </div>
         </div>
+
     </div>
+        <input type="hidden" name="is_validated" id="is_validated" value="0" />
         <?php echo csrf_field() ?>
     </form>
-
 </div>
 
 <div class="col-lg-12" style="height:200px">
 
 </div>
+
+
