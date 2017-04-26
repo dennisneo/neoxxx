@@ -18,7 +18,7 @@ class AjaxApplicantsController extends AjaxBaseController{
 
     public function saveRequirements( Request $r )
     {
-        // check is applicant has data in applicant_requirement table
+        // check if applicant has data in applicant_requirement table
         $req = Applicants\ApplicantRequirements::record( $r->applicant_id );
         $req->store( $r );
 
@@ -49,6 +49,9 @@ class AjaxApplicantsController extends AjaxBaseController{
                 $user->user_type = 'teacher';
                 $user->status = 'level 1';
                 $user->save();
+                // send email containing access details to new teacher
+
+
             break;
             case 'archive':
                 $user->status = 'archived';
@@ -56,7 +59,7 @@ class AjaxApplicantsController extends AjaxBaseController{
             break;
 
         }
-
+        /**
         Modifications::add(
             [
                 'attribute' => 'status',
@@ -66,7 +69,7 @@ class AjaxApplicantsController extends AjaxBaseController{
                 'new_value' => $user->status,
             ]
         );
-
+        **/
         Modifications::add(
             [
                 'attribute' => 'user_type',
@@ -83,5 +86,21 @@ class AjaxApplicantsController extends AjaxBaseController{
         ];
     }
 
+    /**
+     * email sent when the applicant was promoted to teacher
+     */
+    private function sendApplicantEmail( UserEntity $user )
+    {
 
+        view()->addLocation( __DIR__.'/../Views/emails' );
+
+        \Mail::send( 'confirm_account', ['user' => $user],
+            function ($m) use ($user) {
+                $m->from( env( 'APP_EMAIL_SENDER' ), trans('general.confirm_account') );
+                $m->to( $user->email, $user->displayName() )
+                    ->subject( trans( 'general.confirmation_subject' ) );
+            }
+        );
+
+    }
 }

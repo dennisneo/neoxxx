@@ -12,7 +12,7 @@ use App\Models\Financials\Credits;
 use App\Models\Financials\SalaryDetails;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Performance\TeacherPerformance;
-use App\Models\Users\Applicant;
+use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
 use App\Models\Users\TeacherEntity;
 use App\Models\Users\TeacherPivot;
@@ -230,6 +230,46 @@ class AjaxTeacherController extends AjaxBaseController{
 
         return [
             'success' =>true
+        ];
+    }
+
+    /**
+     * Get all needed data when loading up
+     * the teacher dashboard
+     * @param Request $r
+     */
+    public function getInit( Request $r )
+    {
+        $weekday = [ 'Mon' => 1 , 'Tue'=> 2, 'Wed'=> 3 , 'Thu'=> 4,
+            'Fri'=> 5 , 'Sat'=> 6 , 'Sun'=> 7 ];
+
+        $teacher_id = Text::recoverInt( $r->tid );
+        $user = UserEntity::find( $teacher_id );
+        $wh = ( new Teachers\TeacherSchedule )->getScheduleByTeacherId( $r->tid )->vuefySchedules();
+
+        $w_array = [];
+        foreach( $wh as $w ){
+            $week_idx = $weekday[$w->weekday];
+            $w_array[ $week_idx ][] = $w;
+        }
+
+        ksort( $w_array );
+
+        $r->merge(['tid' => $teacher_id]);
+        $r->request->add(
+            [
+                'date_from' => date('Y-m-d H:i:s')
+            ]
+        );
+
+        $cs = new ClassSessions;
+        $classes = $cs->byTeacherId( $r );
+
+        return [
+            'success' =>true,
+            'wh' => $w_array,
+            'classes' => $classes,
+            'tid' => $r->tid
         ];
     }
 

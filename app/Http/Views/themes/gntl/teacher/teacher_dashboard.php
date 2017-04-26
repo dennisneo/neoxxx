@@ -1,4 +1,4 @@
-<div id="tDiv" style="">
+<div id="tDiv" style="" class="v-cloak">
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class="row">
@@ -21,6 +21,9 @@
                                 <tr v-for="n in classes" style="cursor: pointer" @click="openClassRecord( n.class_id )">
                                     <td>{{n.day}} {{n.time}}</td>
                                     <td>{{n.student_short_name}}</td>
+                                </tr>
+                                <tr v-show="!classes.length">
+                                    <td> No upcoming class</td>
                                 </tr>
                             </table>
 
@@ -64,11 +67,56 @@
                     </div>
                     -->
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="x_panel tile" style="height: 320px">
+                        <div class="x_header">
+                            <div class="pull-right">
+                                <button class="btn btn-primary" @click="openRequest"> Request Schedule Change</button>
+                            </div>
+                            <h4><b>Class Hours</b></h4>
+                        </div>
+                        <div class="x_content">
+                            <table class="table table-striped">
+                                <tr v-for="h in wh">
+                                    <td>
+                                        {{h[0].weekday}}
+                                    </td>
+                                    <td>
+                                        <div v-for="hh in h">
+                                            {{ hh.readable_start_time }} - {{ hh.readable_end_time }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
 
+
+    <div id="requestModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Message to Admin</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <textarea name="message" style="width:100%;height:120px"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="profileModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">

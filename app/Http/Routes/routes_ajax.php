@@ -110,6 +110,8 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         Route::get( 'gcr',  'AjaxTeacherController@getClassRecord' );
         // get salary records
         Route::get( 'gsr',  'AjaxTeacherController@getSalaryRecords' );
+        //initialize teacher dashboard
+        Route::get( 'init',  'AjaxTeacherController@getInit' );
         //get teacher schedule
         Route::any( 'gts',  'AjaxTeacherController@getTeacherSchedule' );
         //update class record

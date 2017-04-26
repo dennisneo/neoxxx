@@ -15,6 +15,10 @@ class StudentSessionsController extends StudentBaseController{
         parent::__construct();
     }
 
+    /**
+     * @param Request $r
+     * @return static
+     */
     public function newSession( Request $r )
     {
         $cid = Text::recoverInt( $r->cid );
@@ -30,7 +34,9 @@ class StudentSessionsController extends StudentBaseController{
 
         $this->layout->content = view( 'student.student_session' )
         ->with( 'cs' , $class_session );
+
         return $this->layout;
+
     }
 
     /**

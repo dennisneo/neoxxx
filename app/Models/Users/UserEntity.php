@@ -74,6 +74,8 @@ class UserEntity extends BaseModel{
             $this->status       = 'new';
             $this->created_at   = date( 'Y-m-d H:i:s');
 
+            $this->timezone =  $r->timezone ? $r->timezone : 'Asia/Singapore';
+
         }
 
         $this->params = serialize( $params );

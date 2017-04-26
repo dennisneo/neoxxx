@@ -8,9 +8,9 @@ class DateTimeHelper {
 	/**
 	 * Converts server time to the time of the user base on his timezone
 	 *
-	 * @param $time
+	 * @param $time integer
 	 * @param $timezone
-	 * @return DateTime
+	 * @return integer
 	 *
 	 */
 	public static function serverTimeToTimezone( $time , $timezone )
@@ -20,7 +20,10 @@ class DateTimeHelper {
 		return $c_time;
 	}
 
-
+	/**
+	 * converts the time of user adjusted to his timezone to server time
+	 * @param $time
+	 */
 	public static function timezoneToServerTime( $time )
 	{
 
@@ -120,6 +123,21 @@ class DateTimeHelper {
 		}
 
 		return ( $hr*60 ) +  $min;
+
+	}
+
+	public static function intToMinutes( $int )
+	{
+		$hr  =  floor( $int / 60 );
+		if( $hr > 12 ){
+			$hr = $hr - 12;
+		}
+
+		$min = $int % 60;
+
+		$ampm = floor( $int / 60 ) > 11 ? 'pm' : 'am';
+
+		return $hr.':'.sprintf("%02d",  $min ).' '.$ampm;
 
 	}
 

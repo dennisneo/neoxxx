@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Ajax;
 
 
 use App\Models\Settings\Settings;
+use App\Models\Users\Admins;
 use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
+use App\Models\Users\UserEntity;
 use Helpers\Text;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -21,7 +23,15 @@ class AjaxFrontController extends AjaxBaseController{
     {
         $r->request->add( [ 'user_type' => 'applicant' ] );
         $applicant = new Applicants();
-        if( ! $a = $applicant->store( $r ) ){
+        if( $a = $applicant->store( $r ) ){
+            // send email to admins for new accounts
+            $admins = ( new Admins )->getAll();
+
+            foreach( $admins as $admin ){
+                $this->notifyAdminNewApplicant( $applicant , $admin );
+            }
+
+        }else{
             return [
                 'success' => false,
                 'message' => $applicant->getErrors()
@@ -29,7 +39,8 @@ class AjaxFrontController extends AjaxBaseController{
         }
 
         // do notify admins here
-        $e = collect( str_split( $a->password))->every( 5 );
+        //$e = collect( str_split( $a->password))->every( 5 );
+        $e = '';
         return [
             'success' => true,
             'uid' => Text::convertInt( $a->id ),
@@ -135,6 +146,19 @@ class AjaxFrontController extends AjaxBaseController{
         $response = json_decode($response);
 
         return $response;
+    }
+
+    private function notifyAdminNewApplicant( UserEntity $user , UserEntity $admin )
+    {
+        view()->addLocation( __DIR__.'/../../Views/emails' );
+
+        // check first if email is valid
+        \Mail::send( 'new_applicant', [ 'user' => $user ],
+            function ($m) use ($user , $admin) {
+                $m->from( env( 'APP_EMAIL_SENDER' ),  'System Message' );
+                $m->to( $admin->email , $admin->displayName() )
+                    ->subject( 'New Applicant' );
+            });
     }
 
 }

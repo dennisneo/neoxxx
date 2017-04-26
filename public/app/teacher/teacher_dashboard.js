@@ -3,7 +3,8 @@ var tVue  =  new Vue({
     el:'#tDiv',
     data:{
         classes: [],
-        notifications: []
+        notifications: [],
+        wh:[] // work hours
     },
     methods:{
         editProfile:function()
@@ -13,22 +14,28 @@ var tVue  =  new Vue({
         openClassRecord:function( class_id )
         {
             location.href=subdir+'/teacher/class/'+class_id;
+        },
+        init(){
+            $.get( subdir+'/ajax/teacher/init' , { tid: $('#tid').val() } )
+            .done(function( data ){
+                if(data.success){
+                    tVue.$data.classes = data.classes;
+                    tVue.$data.wh = data.wh;
+                }else{
+                    toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
+        },
+        openRequest(){
+           $('#requestModal').modal();
         }
     },
-    ready:function(){
-
-        $.get( subdir+'/ajax/teacher/upcoming' , { tid: $('#tid').val() } )
-        .done(function( data ){
-            if(data.success){
-                tVue.$data.classes = data.classes
-            }else{
-               toastr.error( data.message );
-            }
-        })
-        .error(function( data ){
-            toastr.error('Something went wrong');
-        });
-
+    ready:function()
+    {
+        this.init();
     }
 });
 

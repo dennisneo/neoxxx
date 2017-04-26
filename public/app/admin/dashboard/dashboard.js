@@ -5,7 +5,9 @@ var dVue = new Vue({
         students:[]
     },
     methods:{
-
+        openApplicant( id ){
+            location.href= subdir+'/admin/applicant/'+id;
+        }
     },
     ready:function(){
         $.get( subdir+'/ajax/admin/dashboard/latest_applicants')

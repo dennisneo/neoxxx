@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Locations\Countries;
+use App\Models\Users\Admins;
 use App\Models\Users\Applicant;
 use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
@@ -185,4 +186,6 @@ class FrontController extends Controller{
                 ->subject( trans( 'general.confirmation_subject' ) );
         });
     }
+
+
 }

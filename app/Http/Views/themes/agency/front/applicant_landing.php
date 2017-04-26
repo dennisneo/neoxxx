@@ -1,3 +1,4 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <h4>Teacher Application Form</h4>
 <i>* Required fields</i>
 
@@ -93,6 +94,9 @@
             <input type="checkbox" name="certificates[]" value="" /> TESOL &nbsp;&nbsp;
             <input type="checkbox" name="certificates[]" value="" /> TKT &nbsp;&nbsp;
         </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="g-recaptcha" data-sitekey="<?php echo env( 'RECAPTCHA_KEY' ); ?>"></div>
     </div>
 
     <div class="col-lg-12">

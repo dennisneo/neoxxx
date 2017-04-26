@@ -23,7 +23,7 @@
                             <th>Date Applied</th>
                         </tr>
                         <tr v-for="a in applicants">
-                            <td>{{a.last_name}}, {{a.first_name}}</td>
+                            <td><a href="javascript:" @click="openApplicant(a.id)">{{a.last_name}}, {{a.first_name}}</a></td>
                             <td>{{a.created_at}}</td>
                         </tr>
                     </table>

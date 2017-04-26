@@ -90,7 +90,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src="" alt=""> <?php echo \App\Models\Users\UserEntity::me()->displayName( 'short' ) ?>
+                        <img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" alt=""> <?php echo \App\Models\Users\UserEntity::me()->displayName( 'short' ) ?>
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -141,9 +141,11 @@
 <script>
     $('#menu_toggle').on('click', function() {
         if ($('body').hasClass('nav-md')) {
+            $('.site_title').hide();
             $('#sidebar-menu').find('li.active ul').hide();
             $('#sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');
         } else {
+            $('.site_title').show();
             $('#sidebar-menu').find('li.active-sm ul').show();
             $('#sidebar-menu').find('li.active-sm').addClass('active').removeClass('active-sm');
         }

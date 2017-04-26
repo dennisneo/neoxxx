@@ -4,6 +4,7 @@ namespace App\Models\Users\Teachers;
 
 use App\Models\BaseModel;
 use Carbon\Carbon;
+use Helpers\DateTimeHelper;
 use Helpers\Text;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -61,15 +62,21 @@ class TeacherSchedule extends BaseModel{
 
     public function vuefy()
     {
-
-        $next_week_day  =   intval( strtotime('next '.$this->weekday ) );
+        $weekday = [ 'Mon' => 1 , 'Tue'=> 2, 'Wed'=> 3 , 'Thu'=> 4,
+            'Fri'=> 5 , 'Sat'=> 6 , 'Sun'=> 7 ];
+        $next_week_day  =   intval( strtotime( 'next '.$this->weekday ) );
 
         $this->start_timestamp = ( $next_week_day + ( $this->from_time * 60 ) );
         $this->end_timestamp = ( $next_week_day + ( $this->to_time * 60 ) );
 
         $this->nw_start_timestamp = $this->start_timestamp + ( 7*24*60*60 ) ;
         $this->nw_end_timestamp   = $this->end_timestamp + ( 7*24*60*60 );
-        $this->bookable = true;
+        $this->bookable           = true;
+
+        $this->readable_start_time = DateTimeHelper::intToMinutes( $this->from_time );
+        $this->readable_end_time = DateTimeHelper::intToMinutes( $this->to_time );
+
+        $this->weekday_idx = $weekday[ $this->weekday ];
 
         return $this;
     }
@@ -77,6 +84,7 @@ class TeacherSchedule extends BaseModel{
     public function getScheduleByTeacherId( $tid , $options = [] )
     {
         $teacher_id  = Text::recoverInt( $tid );
+
 
         $schedules = static::where( 'teacher_id' , $teacher_id  );
         $this->schedules =  $schedules->get();
