@@ -4,10 +4,35 @@ var tVue = new Vue({
     data:{
         teachers:[],
         teacher:{},
-        records:[]
+        records:[],
+        records_loading: false
     },
     methods:{
         openPerformanceRecord:function( teacher_id ){
+
+            let vm = this;
+
+            $('#performanceModal').modal();
+            this.teacher = $.grep( this.teachers, function( t ){
+               return t.id == teacher_id;
+            })[0];
+
+            vm.loading_records = true;
+            vm.records  =   [];
+
+            $.get( subdir+'/ajax/teacher/gpr' , { teacher_id : teacher_id } )
+            .done(function( data ){
+                if( data.success){
+                    vm.records = data.records
+                }else{
+                    toastr.error( data.message );
+                }
+                vm.loading_records = false;
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+                vm.loading_records = false;
+            });
 
         },
         openSettings:function( id ) {
@@ -17,7 +42,7 @@ var tVue = new Vue({
                 d = n[i];
                 if(d.id == id ){
                     this.teacher = d;
-                    $('#rate').val(d.rate_per_hr );hg
+                    $('#rate').val(d.rate_per_hr );
                     return;
                 }
             }

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Ajax\Finance;
 
 use App\Http\Controllers\Ajax\AjaxBaseController;
 use App\Models\Financials\Payments;
+use App\Models\Salaries\SalaryHistory;
 use Illuminate\Http\Request;
 use Event;
 
@@ -21,4 +22,6 @@ class AjaxFinanceController extends AjaxBaseController{
             'payments' => $payments
         ];
     }
+    
+
 }

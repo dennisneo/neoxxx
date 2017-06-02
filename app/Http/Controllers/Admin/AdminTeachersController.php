@@ -27,6 +27,7 @@ class AdminTeachersController extends AdminBaseController{
         $this->layout->content = view('admin.teachers.teachers_index');
         Html::instance()->addScript( 'public/app/admin/teachers/teachers.js' );
         Html::loadDatepicker();
+
         return $this->layout;
     }
 
@@ -53,7 +54,7 @@ class AdminTeachersController extends AdminBaseController{
 
     public function performanceRecords()
     {
-        $this->layout->content = view('admin.teachers.teacher_performance_records', [ ]);
+        $this->layout->content = view('admin.teachers.teacher_performance_records', []);
         Html::instance()->addScript( 'public/app/admin/teachers/teacher_records.js' );
         Html::loadDatepicker();
         Html::loadAutoComplete();

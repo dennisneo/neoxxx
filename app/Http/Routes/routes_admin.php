@@ -24,11 +24,13 @@ Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,
     Route::get( 'teacher/schedule/{id}', 'Admin\AdminTeachersController@manageTeacherSchedule' );
 
     Route::get( 'records', 'Admin\AdminTeachersController@performanceRecords' );
+    Route::get( 'records/{teacher_id}', 'Admin\AdminTeachersController@performanceRecords' );
 
     /************ Teachers section *****************/
     Route::get( 'students', 'Admin\AdminStudentsController@index' );
 
     Route::get( 'payment_history', 'Admin\AdminFinancialsController@payment_history' );
+    Route::get( 'salaries', 'Admin\AdminFinancialsController@salaries' );
 
 
     Route::get( 'settings', 'Admin\AdminSettingsController@index' );

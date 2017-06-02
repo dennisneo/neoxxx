@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\SalaryDetails;
 use App\Models\Settings\Settings;
+use App\Models\Users\TeacherPivot;
 use Illuminate\Http\Request;
 
 class CronController extends Controller{
@@ -15,10 +16,40 @@ class CronController extends Controller{
 
     }
 
+
+    public function computeSalary()
+    {
+        /**
+         * Payments are done every 15th and 30th of every month
+         * For 15th:
+         *      Day 1 to 14th of the month plus day 30 and 31st of the previous month
+         * For 30th:
+         *      Day 15th to 29th
+         */
+
+        // check if today is the 15th or 30th / 28th for Feb
+        $today = new \DateTime();
+        $day_today = $today->format( 'd' );
+
+        // compute salary only on the 15th and the 30th
+        if( $day_today == 15 || true ){
+            // get teacher whose salary was not computed yet
+            $teachers = ( new TeacherPivot )->getSalaryUnprocessedAsOf( $today->format('Y-m-d') );
+            foreach( $teachers as $teacher ){
+                $teacher->processDailyIncome();
+            }
+        }
+
+        if( $day_today == 30 ){
+
+        }
+
+
+    }
     /**
      * Do the computation on a Monday morning
      */
-    public function computeSalary( Request $r )
+    public function computeSalaryDeprecated( Request $r )
     {
         // salary are computed from Monday to Sunday
 
@@ -40,9 +71,9 @@ class CronController extends Controller{
 
         foreach( $s as $v ){
             // save to salary details table
-            $rate = isset( $rates[ $v->type ] ) ? $rates[ $v->type ] : 0;
+            $rate   = isset( $rates[ $v->type ] ) ? $rates[ $v->type ] : 0;
             $income = ($rate / 60 ) *  $v->total_duration;
-            $data = [ 'week_from' => $last_monday, 'week_to'=>$last_sunday,
+            $data   = [ 'week_from' => $last_monday, 'week_to'=>$last_sunday,
                 'teacher_id'    => $v->teacher_id,
                 'total_minutes' => $v->total_duration,
                 'rate' => $rate,

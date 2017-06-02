@@ -79,7 +79,6 @@ var qVue = new Vue({
     }
 });
 
-
 $('#choice').keydown(
     function( event ){
         if ( event.which == 13 ) {

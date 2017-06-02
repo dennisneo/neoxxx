@@ -87,6 +87,16 @@ class Settings extends Model
         }
     }
 
+    public function getValueAttribute( $value )
+    {
+        return nl2br( $value );
+    }
+
+    public function merge( $message , $merge_array )
+    {
+        return str_replace( array_keys( $merge_array ) , $merge_array ,  $message );
+    }
+
     public function getErrors()
     {
         return $this->errors;

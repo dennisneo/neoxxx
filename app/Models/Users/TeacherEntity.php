@@ -69,6 +69,11 @@ class TeacherEntity extends UserEntity{
 
     }
 
+    public function details()
+    {
+        return $this->hasOne( TeacherPivot::class , 'user_id' , 'id');
+    }
+
     public function vuefyTeacher()
     {
         $this->vuefyUser();

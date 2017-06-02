@@ -2,12 +2,27 @@
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class=row">
-            <div class="pull-right">
-                <div class="input-group">
-                    <input type="text" class="form-control" />
-                    <span class="input-group-btn"><button class="btn btn-default"> <i class="fa fa-search"></i> Search</button></span>
+                <div class="col-lg-6">
                 </div>
-            </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6" style="border: 0;padding:0;margin:0">
+                            <input type="text" class="form-control form-inline" style="display: inline" name="q" id="q" @keydown="qClick" />
+                        </div>
+                        <div class="col-lg-3" style="border: 0;padding:0;margin:0">
+                            <select name="status" id="status" style="display: inline" class="form-control">
+                                <option value="0"> All </option>
+                                <option value="new"> New </option>
+                                <option value="archived"> Archived </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3" style="border: 0;padding:0;margin:0>
+                            <span class="input-group-btn" style="display: inline"><button class="btn btn-default" @click="searchApplicants" id="searchButton"><i class="fa fa-search"></i> Search</button></span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
             <h3> <b>Teaching Applicants</b> </h3>
             </div>
             <div class="row">

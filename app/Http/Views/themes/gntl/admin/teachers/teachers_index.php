@@ -30,7 +30,7 @@
                         </td>
                     </tr>
                     <tbody>
-                    <tr v-for="t in teachers | filterBy q ">
+                    <tr v-for="t in teachers">
                         <td><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
                         <td style="">
                             <b>{{ t.full_name }}</b><br />
@@ -46,7 +46,7 @@
                                     </button>
                                     <ul class="dropdown-menu" style="padding:12px;font-size: 1em">
                                         <li><a href="<?php echo Url('admin/teacher') ?>/{{ t.id }}"> <i class="fa fa-edit"></i> View / Edit</a></li>
-                                        <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
+                                        <li><a href="javascript:" @click="openPerformanceRecord( t.id ) "> <i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
                                         <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ t.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
                                         <li><a href="javascript:" v-on:click="openSettings( t.id )"> <i class="fa fa-gear"></i> Settings </a></li>
                                         <li><a href="javascript:" v-on:click="openNotificationModal( t.id )"> <i class="fa fa-comment"></i> Send Message </a></li>
@@ -132,6 +132,52 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" v-on:click="saveSettings" >Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="performanceModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"> <b>Performance Records </b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4><b> {{ teacher.last_name }}, {{teacher.first_name }} </b></h4>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Date Occurred</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Warnings</th>
+                                    <th>Status</th>
+                                </tr>
+                                <tr v-show=" ! records.length && ! records_loading ">
+                                    <td colspan="5"> No record found</td>
+                                </tr>
+                                <tr v-show=" ! records.length && ! records_loading ">
+                                    <td colspan="5"> </td>
+                                </tr>
+                                <tr v-for="r in records ">
+                                    <td>{{ r.occurred_at }}</td>
+                                    <td>{{ r.type}}</td>
+                                    <td>{{ r.description}}</td>
+                                    <td>{{ r.warnings}}</td>
+                                    <td>{{ r.status}}</td>
+                                </tr>
+                            </table>
+                            <div v-show="records_loading">
+                                <i class="fa fa-spin fa-refresh"></i> Loading...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
                 </div>
             </div>
         </div>

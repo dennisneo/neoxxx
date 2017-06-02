@@ -49,8 +49,9 @@ class AjaxApplicantsController extends AjaxBaseController{
                 $user->user_type = 'teacher';
                 $user->status = 'level 1';
                 $user->save();
-                // send email containing access details to new teacher
 
+                // send email containing access details to new teacher
+                $this->sendApplicantEmail( $user );
 
             break;
             case 'archive':
@@ -59,17 +60,7 @@ class AjaxApplicantsController extends AjaxBaseController{
             break;
 
         }
-        /**
-        Modifications::add(
-            [
-                'attribute' => 'status',
-                'entity'    => 'user',
-                'entity_id' => $r->user_id,
-                'old_value' => $um_user->status,
-                'new_value' => $user->status,
-            ]
-        );
-        **/
+
         Modifications::add(
             [
                 'attribute' => 'user_type',
@@ -92,13 +83,13 @@ class AjaxApplicantsController extends AjaxBaseController{
     private function sendApplicantEmail( UserEntity $user )
     {
 
-        view()->addLocation( __DIR__.'/../Views/emails' );
+        view()->addLocation( app_path().'/Http/Views/emails' );
 
-        \Mail::send( 'confirm_account', ['user' => $user],
+        \Mail::send( 'applicant_promoted_to_teacher', ['user' => $user],
             function ($m) use ($user) {
-                $m->from( env( 'APP_EMAIL_SENDER' ), trans('general.confirm_account') );
+                $m->from( env( 'APP_EMAIL_SENDER' )   );
                 $m->to( $user->email, $user->displayName() )
-                    ->subject( trans( 'general.confirmation_subject' ) );
+                    ->subject( trans( 'general.teacher_promoted_email_subject' ) );
             }
         );
 

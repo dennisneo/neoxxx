@@ -7,6 +7,19 @@ var rVue = new Vue({
         records:[]
     },
     methods:{
+        init(){
+            $.get( subdir+'/ajax/teacher/gpr' )
+            .done(function( data ){
+                if(data.success){
+                    rVue.$data.records  = data.records
+                }else{
+                    toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+
+            });
+        },
         newRecord:function()
         {
             $('#performanceModal').modal();
@@ -31,17 +44,7 @@ var rVue = new Vue({
         }
     },
     ready:function(){
-        $.get( subdir+'/ajax/teacher/gpr' )
-            .done(function( data ){
-                if(data.success){
-                    rVue.$data.records  = data.records
-                }else{
-                    toastr.error( data.message );
-                }
-            })
-            .error(function( data ){
-
-            });
+        this.init();
     }
 });
 

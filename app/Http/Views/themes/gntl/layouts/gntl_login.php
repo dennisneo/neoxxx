@@ -10,7 +10,7 @@
     <!-- Bootstrap -->
     <link href="/en/public/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="/en/public/plugins/fa/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="/en/public/plugins/fa/css/font-awesome.min.css" rel="stylesheet">-->
     <!-- Custom Theme Style -->
     <link href="/en/public/themes/gntl/css/custom.min.css" rel="stylesheet">
 </head>
@@ -19,8 +19,14 @@
 <div>
     <a class="hiddenanchor" id="signup"></a>
     <a class="hiddenanchor" id="signin"></a>
-
+    <div style="background-color: #333333">
+        <div style="padding:16px">
+            <img src="http://localhost/en/public/images/neo-logo-light.png" class="img-responsive" style="height:64px;"/>
+        </div>
+    </div>
     <div class="login_wrapper">
+
+
         <div class="animate form login_form">
             <section class="login_content">
                 <?php if( isset( $error )){ ?>
@@ -31,7 +37,7 @@
                 <form method="post" action="<?php echo Url('login') ?>">
                     <h1>Login</h1>
                     <div>
-                        <input type="text" name="username" class="form-control" placeholder="Username" required />
+                        <input type="text" name="username" class="form-control" placeholder="Email / Username" required />
                     </div>
                     <div>
                         <input type="password" name="pwd" class="form-control" placeholder="Password" required />

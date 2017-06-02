@@ -20,6 +20,28 @@ class ClassSessions extends ClassSessionEntity{
         return $count;
     }
 
+    public static function computeDayIncome( $teacher_id, $date )
+    {
+
+    }
+
+    public function teacherDaySalary( $teacher_id, $date )
+    {
+        \DB::enableQueryLog();
+        $cs =  ClassSessions::where( 'class_status' , 'done' )
+            ->whereDate( 'schedule_start_at', '=' , $date )
+            ->from( 'class_sessions as cs' )
+            ->where( 'teacher_id' , $teacher_id )
+            ->join( 'teachers as t' , 't.user_id' , '=', 'cs.teacher_id' )
+            ->join( 'users as u' , 'u.id' ,  '=', 'cs.teacher_id' );
+
+
+        $result = $cs->get( [ 'cs.*', 'u.first_name' , 'u.last_name', 't.type'  ] );
+
+        //dd(\DB::getQueryLog());
+
+        return $result;
+    }
 
     public function teacherWeekSalary( $start , $end )
     {
@@ -34,11 +56,6 @@ class ClassSessions extends ClassSessionEntity{
 
 
         return $cs;
-    }
-
-    public static function computeIncome( $minutes , $rate )
-    {
-
     }
 
     /**

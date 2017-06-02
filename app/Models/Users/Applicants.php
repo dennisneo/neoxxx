@@ -27,14 +27,25 @@ class Applicants extends UserEntity{
         $order_by  = $r->orderby ? $r->orderby : 'created_at';
         $direction = $r->direction ? $r->direction : 'DESC';
 
-        $applicants = static::where( 'user_type' , 'applicant');
+        $fields = [ 'u.*' ];
+        $applicants = static::where( 'user_type' , 'applicant')
+         ->from( 'users as u' );
+
+        if( $r->q ){
+            $applicants->whereRaw(" MATCH( first_name, last_name ) against (? in boolean mode)", [$r->q] );
+            $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
+        }
+
+        if( $r->status ){
+            $applicants->where( 'u.status' , $r->status );
+        }
 
         $this->total = $applicants->count();
 
         $applicants->orderby( $order_by , $direction );
         $applicants->limit( $limit );
 
-        return $applicants->get();
+        return $applicants->get( $fields );
     }
 
 }

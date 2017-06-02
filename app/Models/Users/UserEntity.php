@@ -22,6 +22,7 @@ class UserEntity extends BaseModel{
 
     private static $instances = [];
     protected $hidden =['password' , 'confirmation_code' , 'remember_token' , 'params' ];
+    protected $appends = ['full_name'];
 
     public static function rules( $exists = false )
     {
@@ -156,6 +157,11 @@ class UserEntity extends BaseModel{
         $html .= '</ul>';
 
         return $html;
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->displayName();
     }
 
     public function displayName( $style = 'default')

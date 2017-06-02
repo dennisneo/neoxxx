@@ -31,7 +31,8 @@ class Teachers extends TeacherEntity{
 
         $t = static::where( 'user_type' , 'teacher' )
          ->from( 'users as u')
-         ->join( 'teachers as t', 't.user_id' , '=', 'u.id' , 'LEFT');
+         ->with( 'details' );
+         //->join( 'teachers as t', 't.user_id' , '=', 'u.id' , 'LEFT');
 
         if( isset( $r->is_active ) ){
             $t->where( 'is_active' , $r->is_active );

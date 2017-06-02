@@ -17,8 +17,12 @@
     <?php echo $layout->renderPageStyles() ?>
     <!--- start of JS ------->
     <?php
+        if( isset( $vue_version )){
+            echo $layout->renderScript( '/public/plugins/vue/vue-'.$vue_version.'.js' );
+        }else{
+            echo $layout->renderScript( '/public/plugins/vue/vue.1.0.28.js' );
+        }
 
-        echo $layout->renderScript( '/public/plugins/vue/vue.1.0.28.js' );
     ?>
     <?php echo $layout->renderScript( '/public/plugins/jquery/jquery.min.js' ); ?>
     <?php echo $layout->renderScript( '/public/plugins/bootstrap/bootstrap.min.js' ); ?>

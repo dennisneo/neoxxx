@@ -78,8 +78,11 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
             'settings' => $settings
         ];
     } );
-    Route::post( 'settings/saverates',  'AjaxSettingsController@saveRates' );
+
+    Route::get ( 'applicants',  'AjaxApplicantsController@getApplicants' );
+
     Route::get ( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
+    Route::post( 'settings/saverates',  'AjaxSettingsController@saveRates' );
     Route::post( 'credits_cost/save',  'AjaxSettingsController@saveCreditsCost' );
     Route::post( 'credits_cost/delete',  'AjaxSettingsController@deleteCreditsCost' );
     Route::get ( 'credits_cost/get',  'AjaxSettingsController@getCreditCost' );
@@ -92,17 +95,17 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     Route::post( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
     Route::get( 'dashboard/latest_applicants',  'AjaxDashboardController@latestApplicants' );
     Route::get( 'dashboard/latest_students',  'AjaxDashboardController@latestStudents' );
-
     Route::post( 'teacher/add_schedule',  'AjaxTeachersController@addSchedule' );
-
     Route::get( 'gph',  'AjaxFinancialsController@paymentHistory' );
+    Route::get( 'salaries',  'AjaxFinancialsController@getSalaries' );
+    // daily salary
+    Route::get( 'ds',  'AjaxFinancialsController@getDailySalary' );
 
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){
         // get teacher feedbacks
         Route::get( 'feedbacks',  'AjaxTeacherController@getTeacherFeedbacks' );
-        //
         Route::post('saveSettings',  'AjaxTeacherController@saveSettings');
         // upcoming classes
         Route::get( 'upcoming',  'AjaxTeacherController@getUpcomingClass' );

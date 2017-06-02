@@ -81,6 +81,7 @@ if( Request::segment(1) == 'utils' ){
 
     Route::get( 'utils/t', 'UtilsController@teacherSched' );
     Route::get( 'utils/to', 'UtilsController@timeoffset' );
+    Route::get( 'utils/ms', 'UtilsController@messageSettings' );
     return;
 }
 

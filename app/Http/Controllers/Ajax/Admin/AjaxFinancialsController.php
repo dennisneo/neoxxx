@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Ajax\Admin;
 
 use App\Http\Controllers\Ajax\AjaxBaseController;
 use App\Models\Financials\Payments;
+use App\Models\Salaries\SalaryDailyDetails;
+use App\Models\Salaries\SalaryHistory;
 use Illuminate\Http\Request;
 
 class AjaxFinancialsController extends AjaxBaseController{
@@ -23,5 +25,26 @@ class AjaxFinancialsController extends AjaxBaseController{
             'total_entries' => $payments->getTotal(),
             'sum' => $payments->getSum()
         ];
+    }
+
+    public function getSalaries( Request $r )
+    {
+        $salaries = SalaryHistory::factory()->getCollection( $r );
+        return [
+            'success' =>true,
+            'salaries' =>$salaries
+        ];
+    }
+    
+    public function getDailySalary( Request $r )
+    {
+
+        $sh = SalaryHistory::find( $r->history_id );
+        $ds =  $sh->getDaily( $r );
+        return [
+            'success' =>true,
+            'ds' => $ds
+        ];
+
     }
 }

@@ -7,6 +7,7 @@ use App\Models\ClassSessions\ClassSessions;
 use App\Models\LearningGoals\LearningGoals;
 use App\Models\Placement\QuestionChoices;
 use App\Models\Placement\Questions;
+use App\Models\Settings\Settings;
 use App\Models\Users\Applicant;
 use App\Models\Users\User;
 use App\Models\Users\UserEntity;
@@ -20,6 +21,22 @@ class UtilsController extends Controller{
     public function __construct()
     {
 
+    }
+
+    public function messageSettings( Request $r )
+    {
+        echo app_path().'/Http/Views/emails';
+        $message =  Settings::getByKey( 'message_applicant_promoted' );
+        $settings = new Settings;
+
+        $user = UserEntity::find( 60 );
+
+        $merge_array =[
+            '{user_first_name}' => $user->first_name,
+            '{user_last_name}' => $user->last_name
+        ];
+
+        return $settings->merge( $message , $merge_array );
     }
 
     public function timeoffset()
