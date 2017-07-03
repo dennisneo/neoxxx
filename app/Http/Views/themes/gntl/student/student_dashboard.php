@@ -6,6 +6,14 @@
         In case you want to resend the confirmation email <a href="javascript:" @click="sendConfirmationEmail" style="color:yellow"> click here </a>
         </b>
     </div>
+    <?php }else{  ?>
+        <?php if( $r->confirmed ){ ?>
+            <div class="alert alert-success" style="margin-top: 64px ">
+                <b>
+                   Account confirmation successful
+                </b>
+            </div>
+        <?php } ?>
     <?php } ?>
 <div class="row">
 </div>

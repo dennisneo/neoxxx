@@ -52,16 +52,20 @@ Route::get( 'teacher', 'FrontController@applicantLandingPage' );
 Route::post( 'landing', 'FrontController@applicantLandingPage' );
 Route::get( 'apply', 'FrontController@apply' );
 
-Route::any( 's/application', 'FrontController@studentLandingPage' );
-Route::any( 'student/application/success', 'FrontController@studentSuccess' );
-Route::any( 's/application/success', 'FrontController@studentSuccess' );
-Route::any( 's/confirm', 'FrontController@studentConfirm' );
+if( in_array( Request::segment(1) , [ 's', 'student' ]  ) ){
+    Route::any( 's/application', 'FrontController@studentLandingPage' );
+    Route::any( 'student/application/success', 'FrontController@studentSuccess' );
+    Route::any( 's/application/success', 'FrontController@studentSuccess' );
+    Route::any( 's/confirm', 'FrontController@studentConfirm' );
+}
 
 
 /***** Alipay specific notifications ********/
-Route::any( 'alipay/notice', 'AlipayFrontendController@notify' );
-Route::any( 'alipay/notify/{cost_id}/{user_id}/{skey}', 'AlipayFrontendController@notify' );
-Route::any( 'alipay/return/{cost_id}', 'AlipayFrontendController@ret' );
+if( Request::segment(1) == 'alipay' ){
+    Route::any( 'alipay/notice', 'AlipayFrontendController@notify' );
+    Route::any( 'alipay/notify/{cost_id}/{user_id}/{skey}', 'AlipayFrontendController@notify' );
+    Route::any( 'alipay/return/{cost_id}', 'AlipayFrontendController@ret' );
+}
 
 if( Request::segment(1) == 'test' ){
     Route::get( 'test/mail', 'TestController@testMail' );

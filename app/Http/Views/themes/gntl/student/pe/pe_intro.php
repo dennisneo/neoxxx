@@ -5,12 +5,7 @@
 
         </div>
         <div class="x_content" style="font-size: 1.2em">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-            </p>
+            <?php echo \App\Models\Settings\Settings::customMessageContent( 'message_start_placement_exam' ) ?>
 
             <div style="text-align: center;margin-top:48px">
                 <button v-on:click="openPEModal()" class="btn btn-primary btn-lg"><b> <?php echo trans('general.start_exam') ?> </b></button>

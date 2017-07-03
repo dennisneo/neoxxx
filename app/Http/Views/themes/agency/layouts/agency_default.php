@@ -40,13 +40,12 @@
 
 <!-- Navigation -->
 <nav id="mainNav" class="navbar navbar-default navbar-custom" style="background-color: #303030;padding:0">
-
+        <div style="float:left;padding:12px">
+            <img src="/en/public/images/neo-logo-light.png" class="img-responsive" />
+        </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="padding:12px">
             <ul class="nav navbar-nav navbar-right">
-                <li class="hidden">
-                    <a href="page-top"></a>
-                </li>
                 <li>
                     <a class="page-scroll" href="http://nativeenglishonline.com/">Home</a>
                 </li>

@@ -74,6 +74,24 @@ class Settings extends Model
         return ucwords( $str );
     }
 
+    public static function customMessageContent( $key , $values  = [] )
+    {
+        $setting  = static::getObjectByKey( $key );
+        return $setting->mergeValue( $values );
+    }
+
+    public function mergeValue( $merge_values )
+    {
+        $message = $this->value;
+
+        foreach( $merge_values as $k => $v ){
+            $message    =   str_replace( "[ $k ]" , $v , $message );
+            $message    =   str_replace( "[$k]" , $v , $message );
+        }
+
+        return $message;
+    }
+
     public function updateCustomMessages( Request $r )
     {
         $inputs = $r->all();

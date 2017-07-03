@@ -40,6 +40,7 @@ class AjaxStudentExamController extends AjaxBaseController{
 
     public function getQuestions( Request $r )
     {
+
         // check is Student already took the exam
         if( ( new ExamSessions)->isDone( $r->student_id ) ){
             return [

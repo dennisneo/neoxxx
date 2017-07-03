@@ -1,6 +1,13 @@
 <div class="x_panel tile"  style="min-height:120px">
     <div class="x_content" style="font-size: 1.2em">
-
+        <?php echo \App\Models\Settings\Settings::customMessageContent(
+            'message_student_registered' ,
+            [
+                'student name'=> \App\Models\Users\UserEntity::me()->fullname(),
+                'company name' => env('SITE_NAME')
+            ]
+        ) ?>
+        <!--
         <p>Hi <?php echo \App\Models\Users\UserEntity::me()->fullname();  ?>, </p>
         <p>Welcome to Company Name,</p>
         <br />
@@ -14,7 +21,7 @@
             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </p>
-
+        -->
     </div>
  </div>
 

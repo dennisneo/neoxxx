@@ -110,7 +110,8 @@ class FrontController extends Controller{
             // autologin the user if successful
             \Auth::loginUsingId( $user->id );
 
-            return redirect( 'student/dashboard' );
+            return redirect( 'student/dashboard?confirmed='.$r->c );
+
         }else{
             $this->layout->content = view( 'front.error' )->with( 'error' , trans( 'general.invalid_confirmation_code') );
             return $this->layout;

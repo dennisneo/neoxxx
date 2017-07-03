@@ -95,6 +95,21 @@ class ExamSessions extends BaseModel
         // get student leaning goals
         $lgs = LearningGoalMap::getLearningGoalsByStudentId( $this->student_id );
 
+        if( ! count( $lgs ) ){
+            // if student did not select a learning goal, check all learning goals
+            $learning_goals = LearningGoals::all();
+            foreach( $learning_goals as $lg ){
+
+                $l = new LearningGoalMap();
+                $l->student_id = $this->student_id;
+                $l->learning_goal_id = $lg->goal_id;
+                $l->save();
+
+            }
+
+            $lgs = LearningGoalMap::getLearningGoalsByStudentId( $this->student_id );
+        }
+
         $lg_arr = [];
         foreach( $lgs as $lg ){
             $lg_arr[] = $lg->learning_goal_id;
