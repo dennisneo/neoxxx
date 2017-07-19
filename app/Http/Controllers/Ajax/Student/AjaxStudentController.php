@@ -15,6 +15,7 @@ use App\Models\Placement\ExamSessions;
 use App\Models\Settings\Settings;
 use App\Models\Users\Applicant;
 use App\Models\Users\StudentEntity;
+use App\Models\Users\Students;
 use App\Models\Users\Students\StudentCredits;
 use App\Models\Users\Students\StudentSettings;
 use App\Models\Users\TeacherEntity;
@@ -473,6 +474,22 @@ class AjaxStudentController extends AjaxBaseController{
 
         return [
             'success' =>true
+        ];
+    }
+
+    public function autocomplete( Request $r )
+    {
+        $r->merge(['q' => $r->term ]);
+        $students  =  ( new Students() )->getStudents( $r );
+        $t_arr = [] ;
+
+        foreach( $students as $t ) {
+            $t_arr[] = [ 'id'=>$t->id , 'value'=>$t->full_name ];
+        }
+
+        return [
+            'success' =>true,
+            'students' => $t_arr
         ];
     }
 

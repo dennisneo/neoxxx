@@ -140,7 +140,7 @@ class ClassSessions extends ClassSessionEntity{
         }
 
         if( $r->q ){
-            $cs->whereRaw(" MATCH( first_name, last_name ) against (? in boolean mode)", [$r->q] );
+            $cs->whereRaw( " MATCH( first_name, last_name ) against (? in boolean mode)" , [$r->q] );
             $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
         }
 

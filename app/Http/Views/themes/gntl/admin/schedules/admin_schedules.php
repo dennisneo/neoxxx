@@ -13,20 +13,39 @@
                 <form id="searchForm" method="POST">
                 <div class="row" style="padding:4px;margin:2px;margin-bottom:12px;background-color: #EFEFEF">
                     <div class="form-group">
-                        <div class="col-lg-3">
-                            Date From: <?php echo \Form::text( 'date_from' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_from' ] ) ?>
+                        <div class="col-lg-2">
+                            <label style="font-weight: normal">Date From:</label> <?php echo \Form::text( 'date_from' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_from' ] ) ?>
                         </div>
-                        <div class="col-lg-3">
-                            Date To: <?php echo \Form::text( 'date_to' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_to' ] ) ?>
+                        <div class="col-lg-2">
+                            <label style="font-weight: normal">Date To:</label> <?php echo \Form::text( 'date_to' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_to' ] ) ?>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="student" style="font-weight: normal"> Teacher</label>
+                                <input type="text" name="teacher" value="" id="teacher" class="form-control" />
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label style="font-weight: normal">Student</label>
+                                <input type="text" name="student" value="" id="student" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
                             &nbsp;<br />
                             <a href="javascript:" class="btn btn-primary" v-on:click="search()"> Search </a>
                         </div>
                     </div>
                 </div>
+                    <input type="hidden" name="tid" id="teacher_id" value="" v-model="search_teacher_id" />
+                    <input type="hidden" name="sid" id="student_id" value="" v-model="search_student_id" />
+                    <!---
                     <input type="hidden" name="tid" id="tid" value="<?php echo isset( $teacher_id ) ? $teacher_id : 0 ?>" />
                     <input type="hidden" name="sid" id="sid" value="" />
+                    -->
                     <input type="hidden" name="page" id="page" value="1" />
                 </form>
                 <div style="min-height:320px">

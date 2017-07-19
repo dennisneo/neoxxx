@@ -416,5 +416,21 @@ class AjaxTeacherController extends AjaxBaseController{
             'message' => 'Audio file not found'
         ];
     }
+    
+    public function autocomplete( Request $r )
+    {
+        $r->merge(['q' => $r->term ]);
+        $teachers = ( new Teachers() )->getTeachers( $r );
+        $t_arr = [] ;
+
+        foreach( $teachers  as $t ) {
+            $t_arr[] = [ 'id'=>$t->id , 'value'=>$t->full_name ];
+        }
+
+        return [
+            'success' =>true,
+            'teachers' => $t_arr
+        ];
+    }
 
 }

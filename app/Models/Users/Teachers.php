@@ -28,6 +28,7 @@ class Teachers extends TeacherEntity{
         $limit  = $r->limit ? $r->limit : 50;
         $page   = $r->page ? $r->page : 1;
         $offset = ( $r->page - 1 ) * $limit;
+        $fields = [ 'u.*' ];
 
         $t = static::where( 'user_type' , 'teacher' )
          ->from( 'users as u')
@@ -39,14 +40,18 @@ class Teachers extends TeacherEntity{
         }
 
         if( $r->q ){
+            $t->whereRaw( " MATCH( first_name, last_name ) against (? in boolean mode)" , [$r->q] );
+            $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
+            /**
             $t->where( function( $q ) use ( $r ) {
                 $q->where( 'first_name' , 'like' , $r->q.'%')
                   ->orWhere( 'last_name' , 'like' , $r->q.'%' );
             });
+             * **/
         }
 
         $this->total = $t->count();
-        $this->collection =  $t->get();
+        $this->collection =  $t->get( $fields );
 
         return $this->collection;
     }

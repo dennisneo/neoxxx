@@ -23,6 +23,11 @@ class Students extends StudentEntity{
 
         $t = static::where( 'user_type' , 'student' );
 
+        if( $r->q ){
+            $t->whereRaw( " MATCH( first_name, last_name ) against (? in boolean mode)" , [$r->q] );
+            $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
+        }
+
         $this->total = $t->count();
 
         $t->limit( $limit );

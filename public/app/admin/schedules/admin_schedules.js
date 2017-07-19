@@ -5,6 +5,10 @@ var tVue = new Vue({
         sessions:[],
         session:{},
         student:{},
+        teachers_autocomplete:[],
+        search_teacher_id : 0,
+        students_autocomplete:[],
+        search_student_id : 0,
         learning_info:[],
         total: 0,
         page_count: [1],
@@ -117,6 +121,25 @@ var tVue = new Vue({
 
         },
         search:function(){
+            let vm  = this;
+            if( this.search_teacher_id != 0 ){
+                var t = $.grep( this.teachers_autocomplete , function( t ){
+                    return t.id == vm.search_teacher_id;
+                })[0];
+                if( t.value != $('#teacher').val() ){
+                    vm.search_teacher_id = 0;
+                }
+            }
+
+            if( this.search_student_id != 0 ){
+                var s = $.grep( this.students_autocomplete , function( t ){
+                    return t.id == vm.search_student_id;
+                })[0];
+                if( t.value != $('#student').val() ){
+                    vm.search_student_id = 0;
+                }
+            }
+
             this.getClasses();
         },
         goToPage:function( e )
@@ -165,6 +188,53 @@ var tVue = new Vue({
 
 $( document ).ready(
     function(){
+        var cache = {};
+        var teachers_name = [];
+        let vm  = tVue;
+        $( "#teacher" ).autocomplete({
+            minLength: 2,
+            source: function( request, response ) {
+                var term = request.term;
+                if ( term in cache ) {
+                    vm.teachers_autocomplete = cache[ term ];
+                    response( vm.teachers_autocomplete );
+                    return;
+                }
+
+                $.getJSON( subdir+'/ajax/teacher/autocomplete', request, function( data, status, xhr ) {
+                    cache[ term ] = data.teachers;
+                    vm.teachers_autocomplete = cache[ term ];
+                    response( vm.teachers_autocomplete  );
+                });
+
+            },
+            select: function( event, ui ) {
+                vm.search_teacher_id = ui.item.id;
+            }
+        });
+
+        $( "#student" ).autocomplete({
+            minLength: 2,
+            source: function( request, response ) {
+                var term = request.term;
+                if ( term in cache ) {
+                    vm.students_autocomplete = cache[ term ];
+                    response( vm.students_autocomplete );
+                    return;
+                }
+
+                $.getJSON( subdir+'/ajax/student/autocomplete', request, function( data, status, xhr ) {
+                    cache[ term ] = data.students;
+                    vm.students_autocomplete = cache[ term ];
+                    response( vm.students_autocomplete  );
+                });
+
+            },
+            select: function( event, ui ) {
+                vm.search_student_id = ui.item.id;
+            }
+        });
+
         $( '#fileupload' ).fileupload({
             dataType: 'json',
             progress: function (e, data) {

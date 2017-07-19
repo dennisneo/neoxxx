@@ -63,6 +63,8 @@ Route::group( ['prefix' => 'ajax/student', 'middleware'=>'auth', 'namespace'=>'A
     // send confirmation email
     Route::get( 'sce',  'AjaxStudentController@sendConfirmationEmail' );
     Route::get( 'gms',  'AjaxStudentController@getMySchedule' );
+
+    Route::get( 'autocomplete',  'AjaxStudentController@autocomplete' );
 });
 
 Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace'=>'Ajax\Admin' ],  function(){
@@ -141,6 +143,8 @@ Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'
         Route::post( 'dv',  'AjaxTeacherController@deleteVoice' );
 
         Route::post( 'save',  'AjaxTeacherController@saveProfile' );
+
+        Route::get( 'autocomplete',  'AjaxTeacherController@autocomplete' );
 
     });
 
