@@ -21,12 +21,10 @@
     <a class="hiddenanchor" id="signin"></a>
     <div style="background-color: #333333">
         <div style="padding:16px">
-            <img src="http://localhost/en/public/images/neo-logo-light.png" class="img-responsive" style="height:64px;"/>
+            <img src="/en/public/images/neo-logo-light.png" class="img-responsive" style="height:64px;"/>
         </div>
     </div>
     <div class="login_wrapper">
-
-
         <div class="animate form login_form">
             <section class="login_content">
                 <?php if( isset( $error )){ ?>
@@ -46,12 +44,8 @@
                         <button class="btn btn-default submit"> Log in</button>
                         <a class="reset_pass" href="#">Lost your password?</a>
                     </div>
-
                     <div class="clearfix"></div>
-
                     <div class="separator">
-
-
                         <div class="clearfix"></div>
                         <br />
 
