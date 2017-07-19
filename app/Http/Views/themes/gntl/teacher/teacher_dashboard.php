@@ -70,7 +70,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="x_panel tile" style="height: 320px">
+                    <div class="x_panel tile" style="">
                         <div class="x_header">
                             <div class="pull-right">
                                 <button class="btn btn-primary" @click="openRequest"> Request Schedule Change</button>
@@ -78,15 +78,20 @@
                             <h4><b>Class Hours</b></h4>
                         </div>
                         <div class="x_content">
+
+                                <div class="alert alert-success" style="background-color:#dfe9fe">
+                                   <span style="color:#333333"> Please note: These are the hours you are required to be available to your students </span>
+                                </div>
+
                             <table class="table table-striped">
                                 <tr v-for="h in wh">
                                     <td>
                                         {{h[0].weekday}}
                                     </td>
                                     <td>
-                                        <div v-for="hh in h">
-                                            {{ hh.readable_start_time }} - {{ hh.readable_end_time }}
-                                        </div>
+                                        <span v-for="hh in h">
+                                            {{ hh.readable_start_time }} - {{ hh.readable_end_time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </span>
                                     </td>
                                 </tr>
                             </table>
