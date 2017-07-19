@@ -16,12 +16,12 @@ class AjaxSettingsController extends AjaxBaseController{
 
     public function saveRates( Request $r )
     {
-        Settings::store( 'rate_local_from', $r->rate_local_from );
-        Settings::store( 'rate_local_to', $r->rate_local_to );
-        Settings::store( 'rate_native_from', $r->rate_native_from );
-        Settings::store( 'rate_native_to', $r->rate_native_to );
-        Settings::store( 'rate_filipino_from', $r->rate_filipino_from );
-        Settings::store( 'rate_filipino_to', $r->rate_filipino_to );
+        Settings::store( 'rate_local_from', floatval($r->rate_local_from) );
+        Settings::store( 'rate_local_to', floatval($r->rate_local_to) );
+        Settings::store( 'rate_native_from', floatval($r->rate_native_from) );
+        Settings::store( 'rate_native_to', floatval($r->rate_native_to) );
+        Settings::store( 'rate_filipino_from', floatval($r->rate_filipino_from) );
+        Settings::store( 'rate_filipino_to', floatval($r->rate_filipino_to) );
 
         return [
             'success' =>true,

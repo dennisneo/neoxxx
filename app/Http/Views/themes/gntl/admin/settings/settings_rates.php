@@ -9,14 +9,14 @@
                 <div class="col-lg-2">
                     <div class="form-group">
                         <label for="">From</label>
-                        <select name="rate_native_from" class="form-control">
+                        <select name="rate_native_from" class="form-control" v-model="rate_native_from">
                             <option value="" v-for="r in rates" :value="r"> {{r}} </option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <label for="">To</label>
-                    <select name="rate_native_from" class="form-control">
+                    <select name="rate_native_to" class="form-control" v-model="rate_native_to">
                         <option value="" v-for="r in rates" :value="r"> {{r}} </option>
                     </select>
                 </div>
@@ -27,14 +27,14 @@
                 <div class="col-lg-2">
                     <div class="form-group">
                         <label for="">From</label>
-                        <select name="rate_local_from" class="form-control">
+                        <select name="rate_local_from" class="form-control" v-model="rate_local_from">
                             <option value="" v-for="r in rates" :value="r"> {{r}} </option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <label for="">To</label>
-                    <select name="rate_local_to" class="form-control">
+                    <select name="rate_local_to" class="form-control" v-model="rate_local_to">
                         <option value="" v-for="r in rates" :value="r"> {{r}} </option>
                     </select>
                 </div>
@@ -44,14 +44,14 @@
                 <div class="col-lg-2">
                     <div class="form-group">
                         <label for="">From</label>
-                        <select name="rate_filipino_from" class="form-control">
+                        <select name="rate_filipino_from" class="form-control" v-model="rate_filipino_from">
                             <option value="" v-for="r in rates" :value="r"> {{r}} </option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <label for="">To</label>
-                    <select name="rate_filipino_to" class="form-control">
+                    <select name="rate_filipino_to" class="form-control" v-model="rate_filipino_to">
                         <option value="" v-for="r in rates" :value="r"> {{r}} </option>
                     </select>
                 </div>

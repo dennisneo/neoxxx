@@ -4,7 +4,13 @@ var sVue = new Vue({
     data:{
         settings:[],
         credits_cost:[],
-        rates:[]
+        rates:[],
+        rate_native_to: 1,
+        rate_native_from: 1,
+        rate_filipino_to: 1,
+        rate_filipino_from: 1,
+        rate_local_to: 1,
+        rate_local_from: 1
     },
     methods:{
         save:function(){
@@ -32,7 +38,14 @@ var sVue = new Vue({
             $('#cost_id').val( 0 );
             $('#ccModal').modal();
         },
-        saveSalaryRate(){
+        saveSalaryRate( e ){
+
+            let btn = $(e.target);
+            let h   = btn.html();
+
+            $('.btn').prop('disabled', true );
+            btn.html( '<i class="fa fa-spin fa-refresh"></i>' );
+
             $.post( subdir+'/ajax/admin/settings/saverates' , $('#ratesForm').serialize() )
             .done(function( data ){
                 if(data.success){
@@ -40,10 +53,15 @@ var sVue = new Vue({
                 }else{
                     toastr.error( data.message );
                 }
-            })
+                    $('.btn').prop('disabled', false );
+                    btn.html( h );
+
+                })
             .error(function( data ){
                 toastr.error('Something went wrong');
-            });
+                    $('.btn').prop('disabled', false );
+                    btn.html( h );
+                });
         },
         saveCreditCost:function() {
             $('.btn').prop('disabled', true );
@@ -152,7 +170,13 @@ var sVue = new Vue({
             $.get(subdir+'/ajax/admin/settings/all')
             .done(function( data ){
                 if( data.success ){
-                    vm.settings = data.settings;
+                    vm.settings         = data.settings;
+                    vm.rate_native_to   = parseFloat( vm.bySkey( 'rate_native_to' ) );
+                    vm.rate_native_from = parseFloat( vm.bySkey( 'rate_native_from' ) );
+                    vm.rate_filipino_to = parseFloat( vm.bySkey( 'rate_filipino_to' ) );
+                    vm.rate_filipino_from = parseFloat( vm.bySkey( 'rate_filipino_from' ) );
+                    vm.rate_local_to    = parseFloat( vm.bySkey( 'rate_local_to' ) );
+                    vm.rate_local_from  = parseFloat( vm.bySkey( 'rate_local_from' ) );
                 }else{
                     toastr.error( data.message );
                 }
