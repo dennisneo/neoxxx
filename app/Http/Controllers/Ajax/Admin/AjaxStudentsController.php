@@ -86,6 +86,12 @@ class AjaxStudentsController extends AjaxBaseController{
 
     }
 
+    /**
+     * get students base on request data
+     *
+     * @param Request $r
+     * @return array
+     */
     public function getStudents( Request $r )
     {
         $students  = new Students();
@@ -95,5 +101,24 @@ class AjaxStudentsController extends AjaxBaseController{
         ];
     }
 
+    public function resetPassword( Request $r )
+    {
+        $password = strtolower( str_random( 6 ) );
+        if( ! $student = StudentEntity::find( $r->sid ) ){
+            return [
+                'success' =>false,
+                'message' => 'Student not found'
+            ];
+        }
+
+        $student->password = \Hash::make( $password );
+        $student->save();
+
+        return [
+            'success' => true,
+            'password' => $password
+        ];
+
+    }
 
 }

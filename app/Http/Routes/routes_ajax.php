@@ -101,6 +101,8 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     // daily salary
     Route::get( 'ds',  'AjaxFinancialsController@getDailySalary' );
 
+    // reset student password
+    Route::post( 'rsp',  'AjaxStudentsController@resetPassword');
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){

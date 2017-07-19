@@ -10,6 +10,12 @@ var sVue = new Vue({
         can_retake_pe:false
     },
     methods:{
+        openResetPasswordModal( student_id ){
+            this.student = $.grep( this.students , function( s){
+                return s.id == student_id;
+            })[0];
+            $('#resetPasswordModal').modal();
+        },
         openPlacementModal:function( sid )
         {
             $.get(subdir+'/ajax/student/per', {sid:sid} )
@@ -66,6 +72,32 @@ var sVue = new Vue({
             }).error(function( data ){
                 toastr.error( 'Something went wrong');
                 $('#note-btn').html( 'Save Note' );
+            });
+        },
+        resetPassword( e ){
+            let vm = this;
+
+            let btn = $(e.target);
+            let h   = btn.html();
+
+            $('.btn').prop('disabled', true );
+            btn.html( '<i class="fa fa-spin fa-refresh"></i>' );
+
+            $.post( subdir+'/ajax/admin/rsp'  , { _token:$('input[name=_token]').val() , sid : this.student.id } )
+            .done(function( data ){
+                if( data.success){
+                    $('#rdiv').html( '<h4> New Password : '+data.password+' </h4>');
+                    toastr.success( 'Password reset successful' );
+                }else{
+                    toastr.error( data.message );
+                }
+                $('.btn').prop('disabled', false );
+                btn.html( h );
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+                $('.btn').prop('disabled', false );
+                btn.html( h );
             });
         }
     },

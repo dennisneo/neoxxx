@@ -37,7 +37,7 @@
                 </td>
             </tr>
             <tr v-for="s in students" class="s" >
-                <td v-on:click="openStudentView(s.id)"><img src="" style="width:64px" v-bind:src="t.profile_photo_url"/></td>
+                <td v-on:click="openStudentView(s.id)"><img src="" style="width:64px" v-bind:src="s.profile_photo_url"/></td>
                 <td style=""><b>{{ s.full_name }}</b>
                     <br />{{s.location}}
                 </td>
@@ -50,9 +50,10 @@
                         <ul class="dropdown-menu" style="padding:12px;font-size: 1em">
                             <li><a href="javascript:" v-on:click="openStudentView(s.id)"> <i class="fa fa-edit"></i> View </a></li>
                             <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
-                            <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ t.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
+                            <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ s.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
                             <li><a href="javascript:" v-on:click="openNotificationModal()"> <i class="fa fa-comment"></i> Send Message </a></li>
                             <li><a href="javascript:" v-on:click="openPlacementModal( s.id )"> <i class="fa fa-book"></i> Placement Exam Results </a></li>
+                            <li><a href="javascript:" v-on:click="openResetPasswordModal( s.id )"> <i class="fa fa-book"></i> Reset Password </a></li>
                         </ul>
                     </div>
                 </td>
@@ -62,7 +63,6 @@
     </div>
          </div>
     </div>
-
     <div id="studentViewModal" class="modal fade">
         <div class="modal-dialog" style="width:90%">
             <div class="modal-content">
@@ -191,7 +191,6 @@
             </div>
         </div>
     </div>
-
     <div id="placementModal" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -234,6 +233,26 @@
 
                     </div>
                     <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="resetPasswordModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="rdiv">
+                        Are you sure you want to reset the password of the student {{ student.full_name }} ?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @click="resetPassword">Reset Password</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

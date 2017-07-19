@@ -220,7 +220,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    Allowed audio files for upload are mp3,  wav, ogg
+                    Allowed audio files for upload are mp3,  wav, ogg with 50MB max file size
                 </div>
             </div>
         </div>
