@@ -32,9 +32,10 @@
                                     <br />
                                     <!--<a href="javascript:" class="btn btn-default" v-on:click="uploadPhoto"> Upload Photo</a>-->
                                     <label class="btn btn-default btn-file">
-                                        Upload Photo
+                                        <i class="fa fa-upload"></i> Upload Photo
                                         <input style="display: none;" id="fileupload" type="file" name="photo" class="file-input" data-url="<?php echo Url('/ajax/teacher/upp') ?>" style="color: transparent;">
                                     </label>
+                                    <i class="fa fa-question fa-border" style="cursor: pointer"  @click="openImageInfo"></i>
                                     <?php echo csrf_field() ?>
                                 </div>
                                 </form>
@@ -80,9 +81,10 @@
                                 <?php echo csrf_field() ?>
                                 <!--<a href="javascript:" class="btn btn-default" v-on:click="uploadPhoto"> Upload Photo</a>-->
                                 <label class="btn btn-default btn-file">
-                                    Upload Voice
+                                    <i class="fa fa-upload"></i>  Upload Voice <br />
                                     <input style="display: none;" id="voiceupload" type="file" name="audio" class="file-input" data-url="<?php echo Url('/ajax/teacher/uv') ?>" style="color: transparent;">
                                 </label>
+                                    <i class="fa fa-question fa-border" style="cursor: pointer"  @click="openAudioInfo"></i>
                                 </form>
                             </div>
                             <h2><b>Voice Recording</b></h2>
@@ -173,9 +175,7 @@
             </div>
         </div>
     </div>
-
-
-
+    
     <div id="photoModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -215,6 +215,27 @@
             </div>
         </div>
     </div>
+
+    <div id="audioInfoModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Allowed audio files for upload are mp3,  wav, ogg
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageInfoModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Allowed images files for upload are png and jpg with max size of 5MB
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

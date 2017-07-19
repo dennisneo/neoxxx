@@ -4,6 +4,18 @@ var tpVue = new Vue({
     
     },
     methods:{
+        openAudioInfo(){
+            $('#audioInfoModal').modal();
+            setTimeout( function(){
+                $('#audioInfoModal').modal( 'toggle' );
+            }, 6000 );
+        },
+        openImageInfo(){
+            $('#imageInfoModal').modal();
+            setTimeout( function(){
+                $('#imageInfoModal').modal( 'toggle' );
+            }, 6000 );
+        },
         openAboutModal:function(){
             $('#aboutModal').modal();
         },
@@ -85,6 +97,9 @@ var tpVue = new Vue({
 });
 
 $(document).ready(function(){
+
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('#date1').combodate({
         minYear: 1950,
         maxYear: 2016,

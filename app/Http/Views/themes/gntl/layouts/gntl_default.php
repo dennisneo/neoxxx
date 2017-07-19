@@ -38,6 +38,9 @@
         },
         [v-cloak]{
             display:none;
+        },
+        .clickable{
+            cursor: pointer;
         }
     </style>
 </head>
