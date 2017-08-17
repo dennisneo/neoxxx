@@ -153,8 +153,11 @@ class AjaxStudentController extends AjaxBaseController{
             ];
         }
 
+        $student = ( new StudentEntity )->getByUserId( $student->id );
+
         return [
-            'success' =>true
+            'success' =>true,
+            'student' => $student
         ];
     }
 

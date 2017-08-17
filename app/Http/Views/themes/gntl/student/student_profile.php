@@ -6,8 +6,6 @@
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class="row">
-
-
                 <h3><b>My Profile</b></h3>
                 <br />
                 <div class="col-lg-6" >

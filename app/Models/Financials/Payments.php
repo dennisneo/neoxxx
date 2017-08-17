@@ -18,7 +18,7 @@ class Payments extends BaseModel{
 
     private $sum;
 
-    public function getAll( Request $r )
+    public function getCollection( Request $r )
     {
         $limit = $r->limit ? $r->limit : 20;
         $page = $r->page ? $r->page : 1;

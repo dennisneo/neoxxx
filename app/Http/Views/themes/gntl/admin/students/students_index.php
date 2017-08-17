@@ -49,6 +49,7 @@
                         </button>
                         <ul class="dropdown-menu" style="padding:12px;font-size: 1em">
                             <li><a href="javascript:" v-on:click="openStudentView(s.id)"> <i class="fa fa-edit"></i> View </a></li>
+                            <li><a href="javascript:" v-on:click="openStudentContactInfo(s.id)"> <i class="fa fa-edit"></i> Edit Contact Info </a></li>
                             <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
                             <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ s.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
                             <li><a href="javascript:" v-on:click="openNotificationModal()"> <i class="fa fa-comment"></i> Send Message </a></li>
@@ -237,7 +238,6 @@
             </div>
         </div>
     </div>
-
     <div id="resetPasswordModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -252,6 +252,96 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" @click="resetPassword">Reset Password</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editContactModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Contact Info</h4>
+                </div>
+                <form id="contactForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" name="first_name" value="" id="first_name" class="form-control" v-model="student.first_name" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" value="" id="email" class="form-control" v-model="student.email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" value="" id="last_name" class="form-control" v-model="student.last_name" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="qq">QQ ID*</label>
+                                <input type="text" name="qq" value="" id="qq" class="form-control" v-model="student.last_name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="middle_name">Middle Name</label>
+                                <input type="text" name="middle_name" value="" id="middle_name" class="form-control" v-model="student.middle_name" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="skype">Skype ID</label>
+                                <input type="text" name="skype" value="" id="skype" class="form-control" v-model="student.skype" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="country">Country</label>
+                            <?php  echo  \App\Http\Models\Locations\Countries::selectList( [ 'model' => 'student.country' ] ) ?>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="mobile">Mobile Number</label>
+                                <input type="text" name="mobile" value="" id="mobile" class="form-control" v-model="student.mobile" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="city"> City </label>
+                                <input type="text" name="city" value="" id="city" class="form-control" v-model="student.city" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="div-date">
+                                <div class="form-group">
+                                    <label for="birthday"> Birthday </label>
+                                    <input type="text" class="form-control" id="date1" data-format="YYYY-MM-DD" data-template="MMM D YYYY" name="birthday" value="" v-model="student.birthday" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <?php echo csrf_field() ?>
+                    <input type="hidden" name="id" id="id" value="" v-model="student.id" />
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="spButton" @click="saveContactForm"> Save </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

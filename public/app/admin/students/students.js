@@ -10,14 +10,19 @@ var sVue = new Vue({
         can_retake_pe:false
     },
     methods:{
+        openStudentContactInfo( student_id ){
+            this.student = $.grep( this.students , function( s){
+                return s.id == student_id;
+            })[0];
+            $('#editContactModal').modal();
+        },
         openResetPasswordModal( student_id ){
             this.student = $.grep( this.students , function( s){
                 return s.id == student_id;
             })[0];
             $('#resetPasswordModal').modal();
         },
-        openPlacementModal:function( sid )
-        {
+        openPlacementModal:function( sid ){
             $.get(subdir+'/ajax/student/per', {sid:sid} )
             .done(function( data ){
                 if(data.success){
@@ -36,8 +41,7 @@ var sVue = new Vue({
             $('#placementModal').modal();
 
         },
-        openStudentView:function( sid )
-        {
+        openStudentView:function( sid ){
             $.get(subdir+'/ajax/student/gs' , { sid:sid })
             .done(function( data ){
                 if(data.success){
@@ -54,8 +58,7 @@ var sVue = new Vue({
             });
             $('#studentViewModal').modal()
         },
-        saveNote:function()
-        {
+        saveNote:function(){
             $('#note-btn').html( '<i class="fa fa-refresh fa-spin"></i>' );
 
             $.post( subdir+'/ajax/admin/sn', $('#nForm').serialize() )
@@ -98,6 +101,36 @@ var sVue = new Vue({
                 toastr.error('Something went wrong');
                 $('.btn').prop('disabled', false );
                 btn.html( h );
+            });
+        },
+        saveContactForm(){
+            let vm  = this;
+            $('.btn').prop('disabled', true );
+            $('#spButton').html('<i class="fa fa-spin fa-refresh"></i>');
+
+            $.post(subdir+'/ajax/student/sp' , $('#contactForm').serialize())
+            .done(function( data ){
+                if(data.success){
+                    toastr.success( 'Profile successfully saved' );
+                    for( i=0; i < vm.students.length; i++ ){
+                        d = vm.students[i];
+                        if( vm.student.id == d.id ){
+                            vm.students.$set( i , data.student );
+                            break;
+                        }
+                    }
+                    $( '#editContactModal' ).modal( 'toggle' );
+
+                }else{
+                    toastr.error( data.message );
+                }
+                $('.btn').prop('disabled', false );
+                $('#spButton').html('Save');
+            })
+            .error(function( data ){
+                toastr.error( 'Something went wrong' );
+                $('.btn').prop('disabled', false );
+                $('#spButton').html('Save');
             });
         }
     },

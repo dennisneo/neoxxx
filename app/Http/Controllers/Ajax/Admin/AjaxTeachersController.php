@@ -34,13 +34,34 @@ class AjaxTeachersController extends AjaxBaseController{
 
         $suggestions    = [];
 
+        // this use
         foreach( $teachers as $t ){
             $suggestions[] = [ 'data'=> $t->id, 'value' => $t->displayName() ];
         }
 
         return [
-            'suggestions' => $suggestions
+            'suggestions' => $suggestions,
         ];
+    }
+
+    public function getTeachersForAutocompleteV2( Request $r )
+    {
+
+        $r->merge( ['q' => $r->term ] ) ;
+
+        $tc         = new Teachers();
+        $teachers   = $tc->getTeachers( $r );
+
+        $suggestions    = [];
+
+        // this use
+        foreach( $teachers as $t ){
+            $suggestions[] = [ 'id'=> $t->id, 'value' => $t->displayName() ];
+
+        }
+
+        //$suggestions = [ 1=>'Maria' ,2=> 'Martin' , 3=> 'Allen' ];
+        return  $suggestions;
     }
 
     public function saveTeacher( Request $r )

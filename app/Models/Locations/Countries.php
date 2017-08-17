@@ -23,6 +23,9 @@ class Countries extends Model{
 
         $default = isset( $options['default'] ) ? $options['default'] : 0;
 
+        if( isset( $options['model'] ) &&  $options['model'] ) {
+            return \Form::select( 'country', $c_arr  , $default , [ 'class' => 'form-control' , 'v-model' => $options['model'] ] );
+        }
         return \Form::select( 'country', $c_arr  , $default , [ 'class' => 'form-control' ] );
     }
 

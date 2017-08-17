@@ -21,7 +21,7 @@ class AjaxFinancialsController extends AjaxBaseController{
 
         return [
             'success' => true,
-            'payments' => $payments->getAll( $r ),
+            'payments' => $payments->getCollection( $r ),
             'total_entries' => $payments->getTotal(),
             'sum' => $payments->getSum()
         ];

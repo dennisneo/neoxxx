@@ -21,11 +21,30 @@ class SalaryHistory extends BaseModel
     public function getCollection( Request $r )
     {
         $this->setLpo( $r );
-        $this->fields = [ 'a.*' ];
+        $this->fields = [ 'a.*' , 't.type' ];
 
         $this->query = static::from( $this->table.' as a' )
-        ->with( 'teacher' );
+            ->join( 'teachers as t' , 't.user_id' , '=' , 'a.teacher_id' )
+            ->with( 'teacher' );
+
         // insert conditions here
+
+        if( $r->teacher_id ){
+            $this->query->where( 'teacher_id' , $r->teacher_id );
+        }
+
+        if( $r->from && $r->to ){
+            $this->query->whereBetween( 'day_to' , [ $r->from , $r->to  ]);
+        }
+
+        if( $r->salary_from && $r->salary_to ){
+            $this->query->whereBetween( 'total_income' , [ $r->salary_from , $r->salary_to  ]);
+        }
+
+        if( $r->teacher_type ){
+            $this->query->where( 't.type' , $r->teacher_type );
+
+        }
 
         $this->total = $this->query->count();
 

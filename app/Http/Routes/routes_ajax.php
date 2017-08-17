@@ -105,6 +105,9 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
 
     // reset student password
     Route::post( 'rsp',  'AjaxStudentsController@resetPassword');
+
+    // filter salary history
+    Route::get( 'fsh',  'AjaxFinancialsController@getSalaries');
 });
 
 Route::group( [ 'prefix' => 'ajax/teacher', 'middleware'=>'auth', 'namespace'=>'Ajax\Teacher' ],  function(){
@@ -154,6 +157,8 @@ Route::group( [ 'prefix' => 'ajax/teachers', 'middleware'=>'auth', 'namespace'=>
     // get teachers for autocomplete
     // will return value and name only
     Route::get('gta',  'AjaxTeachersController@getTeachersForAutocomplete');
+    //version 2
+    Route::get('gtav2',  'AjaxTeachersController@getTeachersForAutocompleteV2');
     //
 
 });

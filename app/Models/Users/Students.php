@@ -28,6 +28,7 @@ class Students extends StudentEntity{
             $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
         }
 
+
         $this->total = $t->count();
 
         $t->limit( $limit );
