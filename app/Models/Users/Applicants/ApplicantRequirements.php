@@ -44,6 +44,7 @@ class ApplicantRequirements extends BaseModel{
         $this->comfortable_home_office = $r->comfortable_home_office ? 1 : 0;
         $this->audio_recording = $r->audio_recording ? 1 : 0;
         $this->appropriate_schedule = $r->appropriate_schedule ? 1 : 0 ;
+        $this->cv = $r->cv ?  $r->cv  : null ;
         $this->save();
 
         return $this;

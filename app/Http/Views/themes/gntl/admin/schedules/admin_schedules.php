@@ -4,14 +4,15 @@
     }
 </style>
 
-<div id="tDiv" style="">
+<div id="tDiv" style="" v-cloak>
     <div class="x_panel tile" style="">
         <div class="x_content">
             <div class="row">
                 <h3><b>Class Schedules</b></h3>
                 <br />
                 <form id="searchForm" method="POST">
-                <div class="row" style="padding:4px;margin:2px;margin-bottom:12px;background-color: #EFEFEF">
+
+                    <div class="row" style="padding:4px;margin:2px;margin-bottom:12px;background-color: #EFEFEF">
                     <div class="form-group">
                         <div class="col-lg-2">
                             <label style="font-weight: normal">Date From:</label> <?php echo \Form::text( 'date_from' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_from' ] ) ?>
@@ -19,13 +20,17 @@
                         <div class="col-lg-2">
                             <label style="font-weight: normal">Date To:</label> <?php echo \Form::text( 'date_to' , '' , [ 'class' => 'form-control inline' , 'id'=>'date_to' ] ) ?>
                         </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label for="student" style="font-weight: normal"> Teacher</label>
-                                <input type="text" name="teacher" value="" id="teacher" class="form-control" />
-
+                        <?php if( ! isset( $teacher_id) ){ ?>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label for="student" style="font-weight: normal"> Teacher</label>
+                                    <input type="text" name="teacher" value="" id="teacher" class="form-control" />
+                                </div>
                             </div>
-                        </div>
+                        <?php }else{ ?>
+                            <input type="hidden" name="teacher" value="" id="teacher" class="form-control" />
+                        <?php } ?>
+
                         <div class="col-lg-2">
                             <div class="form-group">
                                 <label style="font-weight: normal">Student</label>
@@ -36,11 +41,18 @@
 
                         <div class="col-lg-2">
                             &nbsp;<br />
-                            <a href="javascript:" class="btn btn-primary" v-on:click="search()"> Search </a>
+                            <a href="javascript:" class="btn btn-primary" v-on:click="search()" v-html="searching ? loading_icon : 'Search' ">
+
+                            </a>
                         </div>
                     </div>
                 </div>
-                    <input type="hidden" name="tid" id="teacher_id" value="" v-model="search_teacher_id" />
+                    <?php if ( isset( $teacher_id ) ) { ?>
+                        <input type="hidden" name="tid" id="teacher_id" value="<?php echo $teacher_id ?>" />
+                    <?php }else{ ?>
+                        <input type="hidden" name="tid" id="teacher_id" value="" v-model="search_teacher_id" />
+                    <?php } ?>
+
                     <input type="hidden" name="sid" id="student_id" value="" v-model="search_student_id" />
                     <!---
                     <input type="hidden" name="tid" id="tid" value="<?php echo isset( $teacher_id ) ? $teacher_id : 0 ?>" />
@@ -81,6 +93,14 @@
                                     <li><a href="javascript:" v-on:click="openStudentInfoModal( s.student_id )"> <i class="fa fa-user"></i> Student Info </a></li>
                                     <li><a href="javascript:" v-on:click="openClassRecord( s.class_id )"> <i class="fa fa-edit"></i> Class Record </a></li>
                                     <li><a href="javascript:" v-on:click="openNotificationModal( s.ccid )"> <i class="fa fa-comment"></i> Notify </a></li>
+
+                                    <li v-show="s.class_status == 'Active' " class="divider"></li>
+                                    <li v-show="s.class_status == 'Active' "><a href="javascript:" v-on:click="editSchedule( s.class_id )">
+                                         <i class="fa fa-edit"></i> Edit Schedule </a>
+                                    </li>
+                                    <li v-show="s.class_status == 'Active' "><a href="javascript:" v-on:click="cancelSchedule( s.class_id )">
+                                            <i class="fa fa-cut"></i> Cancel Schedule </a>
+                                    </li>
                                 </ul>
                             </div>
                         </td>

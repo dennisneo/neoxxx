@@ -26,6 +26,7 @@ return [
     'learning_goals' => 'Learning Goals',
     'my_class_schedule' => 'My Class Schedule',
     'new_class_assigned' => ' You got new class assignment ',
+    'new_class_assignment' => 'New class assignment',
     'new_class_session' => ' New class session ',
     'notifications' => 'Notifications',
     'no_schedule_found' => 'No schedule found',

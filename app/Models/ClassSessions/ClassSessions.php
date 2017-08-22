@@ -139,6 +139,10 @@ class ClassSessions extends ClassSessionEntity{
             $cs->where('student_id' , $r->sid );
         }
 
+        if( $r->class_id ){
+            $cs->where( 'class_id' , $r->class_id );
+        }
+
         if( $r->q ){
             $cs->whereRaw( " MATCH( first_name, last_name ) against (? in boolean mode)" , [$r->q] );
             $fields[] = \DB::raw(" MATCH( first_name, last_name ) against ( '$r->q' ) as score ");
@@ -213,6 +217,11 @@ class ClassSessions extends ClassSessionEntity{
         $schedules = $cs->get( $fields );
 
         return $this->vuefyCollection( $schedules );
+    }
+    
+    public function url( )
+    {
+        return url();
     }
 
     public static function statusSelect( $default = 0)

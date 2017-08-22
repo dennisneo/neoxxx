@@ -81,7 +81,8 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
         ];
     } );
 
-    Route::get ( 'applicants',  'AjaxApplicantsController@getApplicants' );
+    Route::get( 'applicants',  'AjaxApplicantsController@getApplicants' );
+    Route::post( 'applicant/upload/cv',  'AjaxApplicantsController@uploadCv' );
 
     Route::get ( 'settings/credits_cost',  'AjaxSettingsController@getCreditCostAll' );
     Route::post( 'settings/saverates',  'AjaxSettingsController@saveRates' );
@@ -189,6 +190,7 @@ Route::get( 'ajax/admin/a/get', 'Ajax\Admin\AjaxApplicantsController@getApplican
 
 // get schedules
 Route::get( 'ajax/admin/gsched',  'Ajax\Admin\AjaxSchedulesController@getSchedules' );
+Route::post( 'ajax/admin/cancel_sched', 'Ajax\Admin\AjaxSchedulesController@cancelSched' );
 
 Route::get( 'ajax/admin/sinfo',  'Ajax\Admin\AjaxStudentsController@getStudentInfo' );
 
@@ -202,11 +204,23 @@ Route::post( 'ajax/note/save', 'Ajax\AjaxCommonController@saveNote' );
 Route::get( 'ajax/notes/get', 'Ajax\AjaxCommonController@getNotes' );
 
 Route::get( 'ajax/req/get', 'Ajax\AjaxCommonController@getApplicantRequirements' );
+Route::delete( 'ajax/cv', 'Ajax\AjaxCommonController@deleteApplicantCV' );
 
 Route::get( 'ajax/admin/teacher/get_schedule',  'Ajax\Admin\AjaxTeachersController@getSchedule' );
 
+
+
 //get time select for teacher availability
 Route::get( 'ajax/util/ts', 'Ajax\AjaxUtilsController@timeSelect' );
+Route::get( 'ajax/countries', function(){
+    $r = request();
+    $r->merge( ['limit' => 500 ] );
+    $countries = (new \App\Models\Locations\Countries )->getCollection( $r );
+    return [
+        'success' =>true,
+        'countries' => $countries
+    ];
+});
 
 
 

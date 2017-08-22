@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Models\Users\StudentEntity;
+use App\Models\Users\UserEntity;
 use Helpers\Html;
+use Illuminate\Http\Request;
 
 class AdminController extends AdminBaseController{
 
@@ -21,4 +24,12 @@ class AdminController extends AdminBaseController{
         return $this->layout;
     }
 
+    public function profile( Request $r )
+    {
+        $this->layout->content  =  view('admin.dashboard.admin_profile' , [ 'me' => UserEntity::me() ] );
+        Html::instance()->addScript( 'public/app/admin/admin_profile.js' );
+        Html::loadDateCombo();
+        Html::loadFileupload();
+        return $this->layout;
+    }
 }

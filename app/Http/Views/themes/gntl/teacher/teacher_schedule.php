@@ -15,6 +15,7 @@
                 <h3><b>My Class Schedule</b></h3>
                 <br />
                 <form id="searchForm" method="POST">
+                    <input type="hidden" name="teacher_id" id="teacher_id" value="<?php echo \App\Models\Users\UserEntity::me()->id ?>" />
                 <div class="row" style="padding:4px;margin:2px;margin-bottom:12px;background-color: #EFEFEF">
                     <div class="form-group">
                         <div class="col-lg-3">

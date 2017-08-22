@@ -36,6 +36,7 @@ class AjaxCommonController extends AjaxBaseController{
             'success' =>true,
             'notes' => $notes->vuefyNotesCollection()
         ];
+
     }
 
     public function getApplicantRequirements( Request $r )
@@ -43,10 +44,38 @@ class AjaxCommonController extends AjaxBaseController{
         $req = ApplicantRequirements::where( 'applicant_id' , $r->aid )
             ->first();
 
+        if( ! $req ){
+
+            $r->merge([ 'applicant_id' => $r->aid ]);
+            $req = new ApplicantRequirements( );
+            $req->store( $r );
+        }
+
         return [
             'success' =>true,
             'req' => $req
         ];
+    }
+
+    public function deleteApplicantCV( Request $r )
+    {
+        $req = ApplicantRequirements::record( $r->applicant_id );
+
+        if( ! $req ){
+            // create an applicant requirement entry
+            $req = new ApplicantRequirements();
+            $req->store(  $r );
+
+        }
+
+        $req->cv = null;
+        $req->save();
+
+        return [
+            'success' => true,
+            'req' => $req
+        ];
+
     }
 
 }

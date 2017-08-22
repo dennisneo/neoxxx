@@ -15,6 +15,7 @@ class TeacherDashboardController extends TeacherBaseController{
 
     public function index( Request $r )
     {
+
         $teacher = UserEntity::me();
         $this->layout->content  =  view('teacher.teacher_dashboard',
             ['t' => $teacher ]

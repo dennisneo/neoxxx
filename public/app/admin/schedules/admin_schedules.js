@@ -12,7 +12,10 @@ var tVue = new Vue({
         learning_info:[],
         total: 0,
         page_count: [1],
-        current_page : 1
+        current_page : 1,
+
+        searching:false,
+        loading_icon: '<i class="fa fa-refresh fa-spin"></i>'
     },
     methods:{
         showAudioDiv:function( src )
@@ -122,6 +125,7 @@ var tVue = new Vue({
         },
         search:function(){
             let vm  = this;
+
             if( this.search_teacher_id != 0 ){
                 var t = $.grep( this.teachers_autocomplete , function( t ){
                     return t.id == vm.search_teacher_id;
@@ -135,7 +139,7 @@ var tVue = new Vue({
                 var s = $.grep( this.students_autocomplete , function( t ){
                     return t.id == vm.search_student_id;
                 })[0];
-                if( t.value != $('#student').val() ){
+                if( s.value != $('#student').val() ){
                     vm.search_student_id = 0;
                 }
             }
@@ -162,8 +166,10 @@ var tVue = new Vue({
         },
         getClasses:function()
         {
+            let vm  = this;
             this.sessions =  [];
             $('.loading').html( '<i class="fa fa-refresh fa-spin"></i>' );
+            vm.searching = true;
 
             $.get( subdir+'/ajax/admin/gsched' , $('#searchForm').serialize())
                 .done(function( data ){
@@ -172,12 +178,44 @@ var tVue = new Vue({
                         tVue.$data.total =  data.total;
                         tVue.$data.page_count =  data.page_count;
                         $('.loading').html( 'No record found' );
+                        vm.searching = false;
                     }else{
                         toastr.error( data.message );
+                        vm.searching = false;
                     }
                 }).error(function( data ){
                     toastr.error( ' Something went wrong ! ')
+                    vm.searching = false;
                 });
+        },
+        editSchedule(){
+            $('#editScheduleModal').modal();
+        },
+        cancelSchedule( sched_id ){
+
+            if( ! confirm( 'Are you sure you want to cancel schedule ? ') ){
+                return ;
+            }
+
+            let vm = this;
+            $.post(subdir+'/ajax/admin/cancel_sched' , { _token : $('input[name="_token"]').val() , sched_id :  sched_id })
+            .done(function( data ){
+                if( data.success ){
+                    for( i=0; i < vm.sessions.length; i++ ){
+                        d = vm.sessions[i];
+                        if( d.class_id == data.session.class_id ){
+                            tVue.$data.sessions.$set( i, data.session );
+                            break;
+                        }
+                    }
+                    toastr.success( 'Schedule successfully cancelled' );
+                }else{
+                    toastr.error( data.message );
+                }
+            })
+            .error(function( data ){
+                toastr.error('Something went wrong');
+            });
         }
 
     },

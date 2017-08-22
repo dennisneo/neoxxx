@@ -99,6 +99,10 @@ class BaseModel extends \Eloquent
     {
         $c_arr = [];
 
+        if( ! $this->collection ){
+            $this->collection = $this->query->get( $this->fields );
+        }
+
         foreach( $this->collection as $c ){
             $c_arr[] = $c->vuefy();
         }

@@ -3,11 +3,13 @@ var sVue = new Vue({
     el:'#sDiv',
     data:{
         students:[],
-        student:{},
+        student:{ country: 0 },
         classes: [],
         notes:[],
         exams: [],
-        can_retake_pe:false
+        can_retake_pe:false,
+
+        countries: []
     },
     methods:{
         openStudentContactInfo( student_id ){
@@ -15,6 +17,7 @@ var sVue = new Vue({
                 return s.id == student_id;
             })[0];
             $('#editContactModal').modal();
+
         },
         openResetPasswordModal( student_id ){
             this.student = $.grep( this.students , function( s){
@@ -135,6 +138,7 @@ var sVue = new Vue({
         }
     },
     ready:function(){
+        let vm  = this;
         $.get(  subdir+'/ajax/students/getall')
         .done(function( data ){
             if(data.success){
@@ -142,10 +146,20 @@ var sVue = new Vue({
             }else{
                toastr.error( data.message );
             }
-        })
-        .error(function( data ){
+        }).error(function( data ){
 
         });
+
+        $.get(  subdir+'/ajax/countries')
+            .done(function( data ){
+                if(data.success){
+                    vm.countries = data.countries;
+                }else{
+                    toastr.error( data.message );
+                }
+            }).error(function( data ){
+
+            });
     }
 });
 

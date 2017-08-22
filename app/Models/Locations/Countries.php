@@ -1,19 +1,41 @@
 <?php
 
-namespace App\Http\Models\Locations;
+namespace App\Models\Locations;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Countries extends Model{
+class Countries extends BaseModel{
 
     protected  $table = 'countries';
     protected $primaryKey = 'country_id';
 
+    public function getCollection( Request $r )
+    {
+        $this->setLpo( $r );
+        $this->fields = [ 'a.*' ];
+
+        $this->query = static::from( $this->table.' as a' );
+        // apply filters here
+
+        if( $r->return_total ){
+           $this->total = $this->query->count( );
+        }
+
+        $this->assignLpo();
+
+        if( $r->return_builder ){
+            return $this->query;
+        }
+
+        return $this->query->get( $this->fields );
+    }
+
     public static function selectList( $options = [] )
     {
-        $countries = static::orderby( 'country')
+        $countries = static::orderby( 'country' )
             ->get();
 
         $c_arr[0] ='Select Country';
@@ -29,13 +51,4 @@ class Countries extends Model{
         return \Form::select( 'country', $c_arr  , $default , [ 'class' => 'form-control' ] );
     }
 
-    public static function vueFy( Collection $articles )
-    {
-        $a_arr =  [];
-        foreach( $articles as $a ){
-            $a_arr[] =  $a->vueFormat();
-        }
-
-        return $a_arr;
-    }
 }

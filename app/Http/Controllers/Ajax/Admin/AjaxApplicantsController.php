@@ -7,6 +7,7 @@ use App\Models\Users\Applicants;
 use App\Models\Users\UserEntity;
 use App\Models\Utilities\Modifications;
 
+use Helpers\Text;
 use Illuminate\Http\Request;
 
 class AjaxApplicantsController extends AjaxBaseController{
@@ -14,6 +15,62 @@ class AjaxApplicantsController extends AjaxBaseController{
     public function __construct( Request $r )
     {
         parent::__construct( $r );
+    }
+
+    public function uploadCv( Request $r )
+    {
+
+        $req     = Applicants\ApplicantRequirements::record( $r->applicant_id );
+
+        if( ! $req ){
+            // check if user is an applicant
+            $applicant = UserEntity::find( $r->applicant_id );
+
+            if( $applicant->user_type != 'applicant'){
+                return [
+                    'success' => false,
+                    'message' => 'Invalid applicant id'
+                ];
+            }
+
+            // create an applicant requirement entry
+            $req = new Applicants\ApplicantRequirements();
+            $req->store(  $r );
+
+        }
+
+        if( $r->hasFile('cv') ){
+
+            $ext = $r->file( 'cv' )->getClientOriginalExtension();
+
+            $orig_filename = $r->file( 'cv' )->getClientOriginalName();
+            $new_filename = 'cv.'.$ext;
+
+            $destination = '/public/images/users/'.Text::convertInt( $r->applicant_id ).'/';
+            $url = url( $destination.$new_filename );
+
+            $destination  = public_path().''.$destination;
+
+            if( ! is_dir( $destination )){
+                mkdir( $destination , 755 , true );
+            }
+
+            $r->file( 'cv' )->move( $destination , $new_filename );
+            $file_path = $destination.$new_filename;
+
+            $req->cv = $url;
+            $req->save();
+
+            return [
+                'success' => true,
+                'req' => $req
+            ];
+        }
+
+        return [
+            'success' =>true,
+            'applicant_id' => $r->applicant_id
+        ];
     }
 
     public function saveRequirements( Request $r )

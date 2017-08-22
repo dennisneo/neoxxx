@@ -11,6 +11,7 @@ use App\Models\ClassSessions\ClassSessions;
 use App\Models\Financials\Credits;
 use App\Models\Financials\SalaryDetails;
 use App\Models\LearningGoals\LearningGoals;
+use App\Models\Messaging\NotificationMap;
 use App\Models\Performance\TeacherPerformance;
 use App\Models\Users\Applicants;
 use App\Models\Users\StudentEntity;
@@ -40,8 +41,14 @@ class AjaxTeacherController extends AjaxBaseController{
                 'message'   => 'Teacher record not found'
             ];
         }
-        $teacher->rate_per_hr   =   $r->rate;
-        $teacher->save();
+
+        $teacher->rate_per_hr   =   $r->rate_per_hr;
+        if( ! $teacher->save() ){
+            return [
+                'success' => false,
+                'message' => $teacher->displayErrors()
+            ];
+        }
 
         return [
             'success' =>true,
@@ -236,6 +243,7 @@ class AjaxTeacherController extends AjaxBaseController{
     /**
      * Get all needed data when loading up
      * the teacher dashboard
+     *
      * @param Request $r
      */
     public function getInit( Request $r )
@@ -265,10 +273,14 @@ class AjaxTeacherController extends AjaxBaseController{
         $cs = new ClassSessions;
         $classes = $cs->byTeacherId( $r );
 
+        $r->merge([ 'sent_to' => UserEntity::me()->id , 'order_by' => 'sent_at' , 'order_direction' => 'DESC' , 'limit' => 10 ]);
+        $notifications = ( new NotificationMap )->getCollection( $r );
+
         return [
             'success' =>true,
             'wh' => $w_array,
             'classes' => $classes,
+            'notifications' => $notifications,
             'tid' => $r->tid
         ];
     }

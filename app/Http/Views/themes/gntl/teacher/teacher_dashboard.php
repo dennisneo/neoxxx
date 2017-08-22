@@ -32,17 +32,23 @@
                     <input type="hidden" name="tid" id="tid" value="<?php echo \Helpers\Text::convertInt( $t->id ) ?>" />
                 </div>
                 <div class="col-lg-6">
-                    <div class="x_panel tile" style="height: 320px">
+                    <div class="x_panel tile" style="height: 340px">
                         <div class="x_header">
                             <h4><b><?php echo trans('general.notifications') ?> </b></h4>
                         </div>
-                        <div class="x_content">
-                            <ul class="list-group">
-                                <li class="list-group-item" @class="notifications.length ? 'hide' : '' "> No notification found</li>
-                                <li class="list-group-item" v-for="n in notifications | orderBy 'timestamp' -1 ">
+                        <div class="x_content" style=" overflow-y: auto; height:260px">
+                            <table class="table">
+                                <tr v-for="n in notifications" style="cursor: pointer" class="striped">
+                                    <td>
+                                        {{ n.notification_text }}
+                                        <br /><i>{{ n.sent_at }}</i>
+                                    </td>
 
-                                </li>
-                            </ul>
+                                </tr>
+                                <tr v-show="!notifications.length">
+                                    <td> No notification found </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <!--

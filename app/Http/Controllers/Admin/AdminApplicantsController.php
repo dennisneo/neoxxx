@@ -37,6 +37,7 @@ class AdminApplicantsController extends AdminBaseController{
 
         Html::instance()->addScript( 'public/app/admin/appl/applicant.js' );
         Html::loadToastr();
+        Html::loadFileupload( );
 
         return $this->layout;
     }

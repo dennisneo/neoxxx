@@ -11,7 +11,6 @@
 <div class="x_panel tile" style="">
     <div class="x_content">
         <div class=row" style="padding:24px 18px 18px 18px;">
-        <br /><br />
         <div class="pull-right">
             <button class="btn btn-success" v-on:click="updateStatus()"> Update Status </button>
         </div>
@@ -115,6 +114,30 @@
                         <div>
                             <button class="btn btn-primary" v-on:click="saveRequirements" id="rqBtn"> Save Requirements </button>
                         </div>
+                    </div>
+
+                    <div>
+                        <h4>Resume / CV </h4>
+                        <hr />
+                        <form id="cvForm">
+                        <?php echo csrf_field() ?>
+                        <input type="hidden" name="applicant_id" id="applicant_id" value="<?php echo $a->id ?>" />
+                        <div class="" id="" v-show="req.cv">
+                            <a href="<?php echo Url( 'download/cv/'.\Helpers\Text::convertInt( $a->id ) ) ?>" class="btn btn-primary">
+                                Download CV
+                            </a>
+                            <a href="javascript:" class="btn btn-danger" @click="deleteCV( req.applicant_id )" v-html="loading ? spinner : 'Delete' ">  </a>
+                        </div>
+                        <div v-show=" ! req.cv ">
+                            
+                            <input id="cv" type="file" name="cv" class="file-input" data-url="<?php echo Url('/ajax/admin/applicant/upload/cv') ?>" style="color: transparent;">
+                            <div id="progress" style="padding:4px 0 4px 0">
+                                <div class="bar" style="width:0%;background-color:green;display:block;height:12px;">&nbsp;</div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div>
                     </div>
                 </div >
 

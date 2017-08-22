@@ -90,6 +90,7 @@ if( Request::segment(1) == 'utils' ){
 }
 
 Route::get( 'pwd', 'UtilsController@pwd' );
+Route::get( 'download/cv/{application_id}' , 'Common\CommonController@downloadCv' )->middleware(['auth']);
 
 
 

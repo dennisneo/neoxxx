@@ -20,6 +20,7 @@
                         <th style="width: 48px"></th>
                         <th> Name </th>
                         <th> Type </th>
+                        <th> Rate / Hr </th>
                         <th> Since </th>
                         <th></th>
                     </tr>
@@ -36,7 +37,8 @@
                             <b>{{ t.full_name }}</b><br />
                             {{ t.location }}
                         </td>
-                        <td> {{ t.type }} </td>
+                        <td> {{ t.details.type }} </td>
+                        <td> $ {{ t.details.rate_per_hr }} </td>
                         <td> {{ t.created_at }} </td>
                         <td>
                             <div class="btn-group">
@@ -56,7 +58,6 @@
                             </div>
                         </td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -122,12 +123,12 @@
                 </div>
                 <div class="modal-body">
                     <form id="settingsForm">
-                    <div class="form-group">
-                        <label for="rate">Rate per Hour in $</label>
-                        <?php echo \Form::text( 'rate' , '{{teacher.rate_per_hr}}' , [ 'class' => 'form-control' , 'id'=>'rate' ] ) ?>
-                    </div>
-                    <?php echo csrf_field() ?>
-                    <input type="hidden" name="teacher_id" id="teacher_id" value="{{teacher.id}}" />
+                        <div class="form-group col-lg-4">
+                            <label for="rate">Rate per Hour in $</label>
+                            <input type="text" name="rate_per_hr" value="" id="" class="form-control" v-model="teacher.details.rate_per_hr"/>
+                        </div>
+                        <?php echo csrf_field() ?>
+                        <input type="hidden" name="teacher_id" id="teacher_id" value="{{ teacher.id }}" />
                     </form>
                 </div>
                 <div class="modal-footer">

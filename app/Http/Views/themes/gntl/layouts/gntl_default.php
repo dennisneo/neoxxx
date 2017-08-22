@@ -60,7 +60,7 @@
                 <!-- menu profile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
-                        <img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" alt="..." class="img-circle profile_img">
+                        <a href="<?php echo Url('profile') ?>"><img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" alt="..." class="img-circle profile_img"></a>
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
@@ -81,8 +81,8 @@
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
+
                     <a href="<?php echo Url('logout') ?>"><i class="fa fa-power-off"></i> Logout</a>
-                    
                 </div>
                 <!-- /menu footer buttons -->
             </div>
@@ -102,10 +102,9 @@
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <?php $user_type = \App\Models\Users\UserEntity::me()->user_type; ?>
-                        <?php if( $user_type != 'admin' ){ ?>
-                            <li><a href="<?php echo url( $user_type.'/profile') ?>"> Profile</a></li>
-                        <?php } ?>
+
                         <!--<li><a href="<?php echo url('faq') ?>"> <i class="fa fa-question-circle-o"></i> Help</a></li>-->
+                        <li><a href="<?php echo url( $user_type.'/profile') ?>"> <i class="fa fa-user"></i> Profile</a></li>
                         <li><a href="<?php echo url('logout') ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>
                 </li>

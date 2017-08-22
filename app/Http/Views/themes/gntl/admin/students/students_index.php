@@ -310,8 +310,12 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for="country">Country</label>
-                            <?php  echo  \App\Http\Models\Locations\Countries::selectList( [ 'model' => 'student.country' ] ) ?>
+                            <div class="form-group">
+                                <label for="country_id">Country {{ student.country }} </label>
+                                <select name="country" class="form-control" id="country" v-model="student.country">
+                                    <option value="" v-for="c in countries" :value="c.code"> {{c.country}} </option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">

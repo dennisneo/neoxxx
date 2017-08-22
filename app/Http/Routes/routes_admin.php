@@ -34,6 +34,8 @@ Route::group( [ 'prefix' => 'admin' , 'as'=> 'admin' , 'middleware' =>'auth' ] ,
 
 
     Route::get( 'settings', 'Admin\AdminSettingsController@index' );
+
+    Route::get( 'profile', 'Admin\AdminController@profile' );
 });
 
 

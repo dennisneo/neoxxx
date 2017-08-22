@@ -18,6 +18,7 @@
                     <?php if( \App\Models\Users\UserEntity::me()->isAdmin() || $a->id == \App\Models\Users\UserEntity::me()->id  ){ ?>
                             <a href="<?php echo Url('admin/teacher/edit/profile/'.$a->id) ?>" class="btn btn-default">Edit</a>
                     <?php } ?>
+                    <a href="<?php echo Url( 'admin/teachers' ) ?>" class="btn btn-default"> <i class="fa fa-angle-left"></i> Back </a>
                 </div>
                 <h3>Personal Details</h3>
                 <table class='table striped'>
@@ -62,9 +63,6 @@
                         <td> <?php echo \Helpers\Html::displayTimeZone( $a->timezone ) ?></td>
                     </tr>
                 </table>
-                
-
-
             </div>
         </div>
         </div>

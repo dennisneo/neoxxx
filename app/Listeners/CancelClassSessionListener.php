@@ -4,7 +4,9 @@ namespace App\Listeners;
 
 use App\Events\CancelClassSessionEvent;
 use App\Models\Financials\Credits;
-use App\Models\Financials\Notifications;
+
+use App\Models\Messaging\Notifications;
+use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -36,13 +38,33 @@ class CancelClassSessionListener
         $credits->credits  =  $credits->credits + $cs->credits;
         $credits->save();
 
+        $sched = date( 'M d, Y H:s a', strtotime(  $cs->schedule_start_at ) );
+
+        $email_message = ' Hi, <br /><br /> Your class scheduled at '.$sched.' has been canceled. For further questions, please contact admin ';
+        $email_message .= ' <br /><br />Thank you <br /> '.env('COMPANY_NAME');
+
+        $n_message = 'Your class scheduled for '.$sched.' has been canceled. For further questions, please contact admin';
+
         // send notifications to admin, teacher and student
+
         if( $cs->teacher_id ){
+
             $n = new Notifications();
             $n->send( 'class assignment cancelled', [
-                'notification' => trans( 'general.class_assignment_cancelled' ),
-                'send_to' => $cs->teacher_id
+                'notification' => $n_message,
+                'sent_to' => $cs->teacher_id
             ]);
+
+        }
+
+        if( $cs->student_id ){
+
+            $n = new Notifications();
+            $n->send( 'class assignment cancelled', [
+                'notification' => $n_message,
+                'sent_to' => $cs->student_id
+            ]);
+
         }
 
     }

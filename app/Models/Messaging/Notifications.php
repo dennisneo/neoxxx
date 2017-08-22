@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 7/28/2016
- * Time: 10:31 AM
- */
 
 namespace App\Models\Messaging;
 
@@ -38,10 +32,13 @@ class Notifications extends Model{
         $data['notification_id'] = $n->notification_id;
 
         // add to notification map
+
         $n = ( new NotificationMap )->store( $data );
 
-
+        return $n;
     }
+
+
 
     public function store( $data = [] )
     {

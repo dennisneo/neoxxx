@@ -3,7 +3,10 @@ var aVue = new Vue({
     el:'#aDiv',
     data:{
         applicant:[],
-        notes: []
+        req:{},
+        notes: [],
+        spinner : '<i class="fa fa-spin fa-refresh"></i>',
+        loading: false
     },
     methods:{
         updateStatus:function(){
@@ -63,9 +66,26 @@ var aVue = new Vue({
                 toastr.error('Something went wrong');
                 $('.btn').prop('disabled', false );
             });
+        },
+        deleteCV( applicant_id ){
+
+            let vm = this;
+            vm.loading = true;
+            $.ajax({ url: subdir+'/ajax/cv', type: 'DELETE',dataType:'json',
+                data:{ applicant_id : applicant_id , _token: $('input[name="_token"]').val() },
+                success: function( data ){
+                    vm.req  =   data.req;
+                    toastr.success( 'CV successfully deleted' );
+                    vm.loading = false;
+                }
+            }).fail(function() {
+                toastr.error( 'Something went wrong' );
+                vm.loading = false;
+            })
         }
     },
     ready:function(){
+        let vm  = this;
         $('#note').val('');
         $.get( subdir+'/ajax/notes/get' , {aid:$('#note_to').val()} )
         .done(function( data ){
@@ -82,13 +102,16 @@ var aVue = new Vue({
         $.get( subdir+'/ajax/req/get' , { aid: $('#applicant_id').val() })
         .done(function( data ){
             if( data.success ){
+
+                vm.req = data.req;
                 $( '#valid_credentials').prop( 'checked' , parseInt( data.req.valid_credentials ) );
                 $( '#fast_internet').prop( 'checked' , parseInt( data.req.fast_internet ) );
                 $( '#comfortable_home_office').prop( 'checked' , parseInt( data.req.comfortable_home_office ) );
                 $( '#audio_recording').prop( 'checked' , parseInt( data.req.audio_recording ) );
                 $( '#appropriate_schedule').prop( 'checked' , parseInt( data.req.appropriate_schedule ) );
+
             }else{
-               toastr.error( data.message );
+                toastr.error( data.message );
             }
         })
         .error(function( data ){
@@ -98,13 +121,23 @@ var aVue = new Vue({
 });
 
 $(document).ready(function(){
-    /**
-    $('.req').bootstrapToggle({
-        on: ' <i class="fa fa-check"></i>',
-        off: ' X ',
-        size: 'mini'
+
+    $( '#cv' ).fileupload({
+        dataType: 'json',
+        progress: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('.bar').css('width', progress + '%');
+        },
+        done: function (e, data) {
+            $('.bar').css('width', '0%');
+            if( data.result.success){
+                toastr.success( 'Resume successfully uploaded' );
+                aVue.req = data.result.req;
+            }else{
+                toastr.error( data.result.message )
+            }
+        }
     });
-     ***/
 });
 
 $('.tab').click(function(){

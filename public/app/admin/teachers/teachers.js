@@ -3,7 +3,7 @@ var tVue = new Vue({
     el:'#tDiv',
     data:{
         teachers:[],
-        teacher:{},
+        teacher:{ details : {} },
         records:[],
         records_loading: false
     },
