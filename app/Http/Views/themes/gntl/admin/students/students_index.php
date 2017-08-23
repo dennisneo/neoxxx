@@ -50,11 +50,11 @@
                         <ul class="dropdown-menu" style="padding:12px;font-size: 1em">
                             <li><a href="javascript:" v-on:click="openStudentView(s.id)"> <i class="fa fa-edit"></i> View </a></li>
                             <li><a href="javascript:" v-on:click="openStudentContactInfo(s.id)"> <i class="fa fa-edit"></i> Edit Contact Info </a></li>
-                            <li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>
-                            <li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ s.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>
                             <li><a href="javascript:" v-on:click="openNotificationModal()"> <i class="fa fa-comment"></i> Send Message </a></li>
                             <li><a href="javascript:" v-on:click="openPlacementModal( s.id )"> <i class="fa fa-book"></i> Placement Exam Results </a></li>
                             <li><a href="javascript:" v-on:click="openResetPasswordModal( s.id )"> <i class="fa fa-book"></i> Reset Password </a></li>
+                            <!--<li><a href="<?php echo Url('admin/records') ?>"><i class="fa fa-bar-chart-o"></i> Performance Record </a></li>-->
+                            <!--<li><a href="<?php echo Url('admin/teacher/schedule') ?>/{{ s.id }}"> <i class="fa fa-calendar"></i> Set Schedule </a></li>-->
                         </ul>
                     </div>
                 </td>
