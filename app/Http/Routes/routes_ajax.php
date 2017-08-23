@@ -72,6 +72,12 @@ Route::group( [ 'prefix' => 'ajax/admin', 'middleware'=>'auth.admin', 'namespace
     // student chart data
     Route::get( 'dashboard/scd',  'AjaxDashboardController@chartData' );
 
+    Route::get( 'profile',  'AjaxDashboardController@profile' );
+    Route::post( 'profile',  'AjaxDashboardController@saveProfile' );
+    Route::post( 'profile/changepass',  'AjaxDashboardController@changePassword' );
+    Route::post( 'upp',  'AjaxDashboardController@uploadProfilePhoto' );
+
+    //Route::post( 'upp',  'AjaxTeacherController@uploadProfilePhoto' );
     // get credits cost in settings
     Route::get( 'settings/all',  function(){
         $settings  = App\Models\Settings\Settings::all();

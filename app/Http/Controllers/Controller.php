@@ -25,7 +25,7 @@ class Controller extends BaseController
     }
 
     /**
-     * allows controllers to change layouts
+     * Allows controllers to change layouts
      * @param null $theme
      */
     public function setLayout( $theme = null )

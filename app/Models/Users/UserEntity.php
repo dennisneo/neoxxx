@@ -22,7 +22,7 @@ class UserEntity extends BaseModel{
 
     private static $instances = [];
     protected $hidden =['password' , 'confirmation_code' , 'remember_token' , 'params' ];
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name' ];
 
     public static function rules( $exists = false )
     {
@@ -162,6 +162,11 @@ class UserEntity extends BaseModel{
     public function getFullNameAttribute()
     {
         return $this->displayName();
+    }
+
+    public function getProfilePhotoUrlAttribute( $value )
+    {
+        return $value ? $value : '/en/public/images/blank_face.png';
     }
 
     public function displayName( $style = 'default')

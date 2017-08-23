@@ -16,13 +16,18 @@ class AdminBaseController extends Controller{
 
     public function __construct()
     {
+
         parent::__construct();
+
         $this->layout->background_color = '#DD4444';
         $this->checkUser();
         Html::loadToastr();
+
     }
 
-
+    /**
+     * @return bool
+     */
     private function checkUser()
     {
         if( \Auth::check() ){

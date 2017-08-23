@@ -55,6 +55,114 @@ class AjaxDashboardController extends AjaxBaseController{
 
     }
 
+    /**
+     * @param Request $r
+     * @return array
+     */
+    public function profile( Request $r )
+    {
+        $me = UserEntity::me();
+
+        return [
+            'success' =>true,
+            'me' => $me
+        ];
+    }
+
+    /**
+     * @param Request $r
+     */
+    public function saveProfile( Request $r )
+    {
+        $me = UserEntity::me();
+        if ( ! $me->store( $r ) ){
+            return [
+                'success' =>false,
+                'message' => $me->displayErrors()
+            ];
+        }
+
+        return [
+            'success' => true ,
+            'me' => $me
+        ];
+    }
+
+    public function changePassword( Request $r )
+    {
+        $me = UserEntity::me();
+
+        if( ! $r->new_pass ){
+            return [
+                'success' => false,
+                'message' => 'New password must not be empty'
+            ];
+        }
+
+        if( $r->new_pass != $r->confirm_pass ){
+            return [
+                'success' => false,
+                'message' => 'Password mismatch'
+            ];
+        }
+
+        $cp = \Hash::make( $r->current_pass );
+        if( ! \Hash::check( $r->current_pass  , $me->password  ) ){
+            return [
+                'success' => false,
+                'message' => 'Invalid current password',
+            ];
+        }
+
+        $me->password = \Hash::make( $r->new_pass );
+        $me->save();
+
+        return [
+            'success' => true ,
+            'me' => $me
+        ];
+
+    }
+
+    public function uploadProfilePhoto( Request $r )
+    {
+        if( $r->hasFile('photo') ){
+            /**
+             * checks if file was uploaded successfully
+             */
+            if (! $r->file('photo')->isValid()) {
+                return [
+                    'success' =>   false,
+                    'message' =>   'File not valid'
+                ];
+            }
+
+            $user = UserEntity::me();
+
+            if( ! $user->uploadProfilePhoto( $r ) ){
+                return [
+                    'success' => false,
+                    'message' => $user->displayErrors()
+                ];
+            }
+
+            return [
+                'success' =>true,
+                'profile' => $user->vuefy()
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Uploaded file not found'
+        ];
+
+    }
+
+    /**
+     * @param Request $r
+     * @return array
+     */
     public function chartData(  Request $r )
     {
         $twelve_days_ago = date( 'Y-m-d H:i:s' , mktime( 0,0,0, date('m') , date('d')-12 , date('Y') ) );

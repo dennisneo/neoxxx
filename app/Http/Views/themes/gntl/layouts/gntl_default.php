@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php $user_type = \App\Models\Users\UserEntity::me()->user_type; ?>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -60,7 +61,9 @@
                 <!-- menu profile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
-                        <a href="<?php echo Url('profile') ?>"><img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" alt="..." class="img-circle profile_img"></a>
+                        <a href="<?php echo Url($user_type.'/profile') ?>">
+                            <img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" alt="..." class="img-circle profile_img">
+                        </a>
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
@@ -68,8 +71,9 @@
                     </div>
                 </div>
                 <!-- /menu profile quick info -->
-
-                <br />
+                <div class="hidden-xs">
+                <br /><br /><br /><br />
+                </div>
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="">
@@ -97,12 +101,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" alt=""> <?php echo \App\Models\Users\UserEntity::me()->displayName( 'short' ) ?>
+                        <img src="<?php echo \App\Models\Users\UserEntity::me()->profilePhotoUrl() ?>" class="profile_img" alt="">
+                        <?php echo \App\Models\Users\UserEntity::me()->displayName( 'short' ) ?>
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <?php $user_type = \App\Models\Users\UserEntity::me()->user_type; ?>
-
                         <!--<li><a href="<?php echo url('faq') ?>"> <i class="fa fa-question-circle-o"></i> Help</a></li>-->
                         <li><a href="<?php echo url( $user_type.'/profile') ?>"> <i class="fa fa-user"></i> Profile</a></li>
                         <li><a href="<?php echo url('logout') ?>"><i class="fa fa-sign-out"></i> Log Out</a></li>

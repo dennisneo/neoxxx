@@ -119,9 +119,11 @@ class Layout extends HtmlFacade{
 		static::instance()->addScript( '/public/plugins/datecombo/combodate.js' );
 	}
 
-	public static function loadVue( $version = '' )
+	public static function loadVue( $version = null )
 	{
-
+		if( ! $version ){
+			//static::instance()->addScript( '/public/plugins/toastr/toastr.min.js' );
+		}
 	}
 
 	public static function loadToastr()
