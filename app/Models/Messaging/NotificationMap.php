@@ -22,7 +22,7 @@ class NotificationMap extends BaseModel{
     protected $primaryKey   = 'map_id';
     public $timestamps = false;
 
-    public $fillable    = [];
+    public $fillable    = [ 'url' ];
 
     public function getCollection( Request $r )
     {
@@ -57,7 +57,7 @@ class NotificationMap extends BaseModel{
         $this->entity           = '';
         $this->sent_at = date( 'Y-m-d H:i:s' );
 
-        $url = $data->url;
+        $url = isset( $data->url ) ? $data->url : '' ;
 
         $this->save();
 

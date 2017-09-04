@@ -230,7 +230,6 @@ class AjaxStudentController extends AjaxBaseController{
      */
     public function setupClassSession( Request $r )
     {
-
         $s = new ClassSessions();
 
         $r->request->add(['class_status'=>'for confirmation']);
@@ -279,6 +278,7 @@ class AjaxStudentController extends AjaxBaseController{
         $available_credit = Credits::getCreditsByStudentId( $s->student_id );
 
         \DB::beginTransaction();
+
         if( $available_credit < $s->credits ){
             return [
                 'success' => false,
