@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dennis
- * Date: 8/1/2016
- * Time: 8:29 PM
- */
+
 
 namespace App\Models\Settings;
 
@@ -28,10 +23,15 @@ class Settings extends Model
         return $this->total;
     }
 
+    /**
+     * @param $key
+     * @return static
+     */
     public static function getObjectByKey( $key )
     {
         $setting =  static::where( 'skey' , $key )
             ->first();
+
         if( ! $setting ){
             return false;
         }
@@ -74,9 +74,17 @@ class Settings extends Model
         return ucwords( $str );
     }
 
+    /**
+     * @param $key
+     * @param array $values
+     * @return mixed|null
+     */
+    
     public static function customMessageContent( $key , $values  = [] )
     {
-        $setting  = static::getObjectByKey( $key );
+        if( ! $setting  = static::getObjectByKey( $key ) ){
+            return null;
+        }
         return $setting->mergeValue( $values );
     }
 
