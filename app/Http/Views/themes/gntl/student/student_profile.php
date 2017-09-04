@@ -112,7 +112,7 @@
 
                         <div class="form-group">
                             <h5>Country * </h5>
-                            <?php  echo  \App\Http\Models\Locations\Countries::selectList( ['default' => $s->country ] ) ?>
+                            <?php  echo  \App\Models\Locations\Countries::selectList( ['default' => $s->country ] ) ?>
                         </div>
 
                         <div class="form-group">
