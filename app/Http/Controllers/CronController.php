@@ -16,7 +16,26 @@ class CronController extends Controller{
 
     }
 
+    /**
+     * Process this daily
+     */
+    public function processDayIncome()
+    {
+        $r = new Request();
+        $yesterday = date('Y-m-d' , strtotime('yesterday') );
+        $r->merge( [ 'day' => $yesterday ] );
+        ( new TeacherPivot )->processDayIncome($r);
+    }
 
+
+    public function processRangeIncome( Request $r )
+    {
+        return ( new TeacherPivot )->processRangeIncome( $r );
+    }
+
+    /**
+     * This will compute salary for the 15th and 30th
+     */
     public function computeSalary()
     {
         /**
@@ -30,20 +49,22 @@ class CronController extends Controller{
         // check if today is the 15th or 30th / 28th for Feb
         $today = new \DateTime();
         $day_today = $today->format( 'd' );
+        $is_leap_year = intval( date('Y') ) % 4 == 0;
 
         // compute salary only on the 15th and the 30th
-        if( $day_today == 15 || true ){
+        if( $day_today == 15 ){
             // get teacher whose salary was not computed yet
             $teachers = ( new TeacherPivot )->getSalaryUnprocessedAsOf( $today->format('Y-m-d') );
             foreach( $teachers as $teacher ){
                 $teacher->processDailyIncome();
             }
+        }elseif( $day_today == 30 ){
+
+        }elseif( $day_today == 28 && date('m') == 2 && !$is_leap_year  ){
+
+        }elseif( $day_today == 29 && date('m') == 2 && $is_leap_year  ){
+
         }
-
-        if( $day_today == 30 ){
-
-        }
-
 
     }
     /**

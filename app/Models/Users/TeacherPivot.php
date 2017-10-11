@@ -81,15 +81,34 @@ class TeacherPivot extends BaseModel{
     }
 
     /**
-     * @param $date
-     * @return Array
-     */
+ * Get all active teachers that are due for range salary
+ *
+ * @param $date
+ * @return Array
+ */
     public function getSalaryUnprocessedAsOf( $date )
     {
         return $this->where( 'last_salary_computation' , '<' , $date )
             ->from( 'teachers as t')
             ->where( 'u.is_active' , '!=' , '0' )
             ->join( 'users as u' , 'u.id' , '=' , 't.user_id' )
+            ->limit( 200 )
+            ->get( [ 't.*', 'u.first_name' , 'u.last_name' , 'u.id' ] );
+    }
+
+    /**
+     * Get all active teachers that are due for day salary computation
+     *
+     * @param $date
+     * @return Array
+     */
+    public function getDaySalaryUnprocessedAsOf( $date )
+    {
+        return $this->where( 'last_day_salary_computation' , '<' , $date )
+            ->from( 'teachers as t')
+            ->where( 'u.is_active' , '!=' , '0' )
+            ->join( 'users as u' , 'u.id' , '=' , 't.user_id' )
+            ->limit( 200 )
             ->get( [ 't.*', 'u.first_name' , 'u.last_name' , 'u.id' ] );
     }
 
@@ -106,18 +125,130 @@ class TeacherPivot extends BaseModel{
 
     }
 
+    /**
+     * Process the day income of all teachers
+     *
+     * @param Request $r
+     */
+    public function processDayIncome( Request $r )
+    {
+        if( ! $day = $r->day ){
+            $day = date('Y-m-d' , strtotime('yesterday') );
+        }
+
+        $teachers   =   $this->getDaySalaryUnprocessedAsOf( $day );
+
+        foreach( $teachers as $teacher ){
+
+            $classes = ClassSessions::factory()->teacherDaySalary( $teacher->user_id, $day );
+            $total_duration = 0;
+
+            foreach( $classes as $class ){
+                $total_duration +=   $class->duration;
+            }
+
+            $day_income =  ( $teacher->rate_per_hr / 60 ) *  $total_duration;
+
+            // save the teacher income for yesterday
+            $data = [
+                'salary_date'   => $day,
+                'teacher_id'    => $teacher->user_id,
+                'total_minutes' => $total_duration,
+                'rate' => $teacher->rate_per_hr,
+                'day_income' => $day_income
+            ];
+
+            SalaryDailyDetails::factory()->store( $data );
+            $teacher->last_day_salary_computation = $day;
+            $teacher->save();
+        }
+
+    }
+
+    /**
+     * @param Request $r
+     */
+    public function processRangeIncome( Request $r )
+    {
+        /**
+        if( strtotime( $r->end_date.' 23:59:59' ) > time() ){
+            $this->errors[] = 'End time must be more than the current date';
+            return false;
+        }
+        **/
+
+        $last_month_date  =  new \DateTime();
+        $last_month_date->modify( "last day of previous month" );
+
+        if(  date( 'd' )  == 16 ){
+            $start_date  = date('Y-m-01');
+            $end_date    = date('Y-m-15');
+        //}elseif( date( 'd' ) == $last_month_date->format( 'd') ){
+        }elseif( date( 'd' ) == 11 ){
+            $start_date      =   $last_month_date->format("Y-m-16");
+            $end_date        =   $last_month_date->format("Y-m-d");
+        }else{
+            return 'No salary computations for today';
+        }
+
+        $begin  = new \DateTime( $start_date );
+        $end    = new \DateTime( $end_date );
+
+        $interval = \DateInterval::createFromDateString( '1 day' );
+        $period = new \DatePeriod( $begin, $interval, $end);
+
+        $teachers = $this->getSalaryUnprocessedAsOf( $end_date );
+        
+        foreach( $teachers as $t ){
+            $total_income = 0;
+            $total_duration = 0;
+
+            foreach ( $period as $dt ){
+                $classes = ClassSessions::factory()->teacherDaySalary( $t->user_id, $dt->format('Y-m-d') );
+                $day_duration = 0 ;
+                foreach( $classes as $class ){
+                    $day_duration +=   $class->duration;
+                }
+                $day_income     =  ( $t->rate_per_hr / 60 ) *  $total_duration;
+                $total_income   += $day_income;
+                $total_duration += $day_duration;
+            }
+
+            $sal_data = [
+                'day_from'      => $r->start_date,
+                'day_to'        => $r->end_date,
+                'teacher_id'    => $t->teacher_id,
+                'total_minutes' => $total_duration,
+                'ave_rate'      => 0,
+                'total_income'  => $total_income,
+                'deductions'    => 0,
+                'prepared_at'   => date('Y-m-d H:i:s'),
+                'status'        => 'on process',
+                'notes'         => ' '
+            ];
+
+            SalaryHistory::factory()->store( $sal_data );
+
+            $t->last_salary_computation = date( 'Y-m-d H:i:s');
+            $t->save();
+        }
+
+        return null;
+
+    }
+
     public function processDailyIncome()
     {
-
         $rate = $this->rate_per_hr;
-        $d = 30;
         $teacher_id = $this->id;
 
-        //switch( date( 'd' ) ){
-        switch( $d ){
+        //$d = 30;
+
+        switch( date( 'd' ) ){
+        //switch( $d ){
             case 15:
                 // get the last day of the previous month
-                $last_month_date    =  new \DateTime();
+                $last_month_date  =  new \DateTime();
                 $last_month_date->modify( "last day of previous month" );
                 $last_day_last_month = $last_month_date->format("d");
 
@@ -147,7 +278,6 @@ class TeacherPivot extends BaseModel{
 
                 break;
             case 30:
-
                 $start_date   =  date( 'Y-m-15' );
                 $end_date     =  date( 'Y-m-30' );
 

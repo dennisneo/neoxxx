@@ -39,6 +39,13 @@ class Settings extends Model
         return $setting;
     }
 
+    /**
+     * Get value by key
+     * @param $key
+     * @param int $default
+     * @return int
+     */
+
     public static function getByKey( $key , $default = 0 )
     {
          $value =  static::where( 'skey' , $key )
@@ -67,6 +74,10 @@ class Settings extends Model
         return $s;
     }
 
+    /**
+     * return custom message text
+     * @return string
+     */
     public function customMessageText()
     {
         $str = str_replace( 'message_', '',$this->skey );
@@ -79,7 +90,6 @@ class Settings extends Model
      * @param array $values
      * @return mixed|null
      */
-    
     public static function customMessageContent( $key , $values  = [] )
     {
         if( ! $setting  = static::getObjectByKey( $key ) ){

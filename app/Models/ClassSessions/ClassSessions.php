@@ -27,7 +27,7 @@ class ClassSessions extends ClassSessionEntity{
 
     public function teacherDaySalary( $teacher_id, $date )
     {
-        \DB::enableQueryLog();
+        //\DB::enableQueryLog();
         $cs =  ClassSessions::where( 'class_status' , 'done' )
             ->whereDate( 'schedule_start_at', '=' , $date )
             ->from( 'class_sessions as cs' )

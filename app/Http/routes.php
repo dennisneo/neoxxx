@@ -73,7 +73,9 @@ if( Request::segment(1) == 'test' ){
 }
 
 if( Request::segment(1) == 'cron' ){
-    Route::get( 'cron/compute_salary', 'CronController@computeSalary' );
+    //Route::get( 'cron/compute_salary', 'CronController@computeSalary' );
+    Route::get( 'cron/process_day_salary', 'CronController@processDayIncome' );
+    Route::get( 'cron/process_range_salary', 'CronController@processRangeIncome' );
 }
 
 if( Request::segment(1) == 'utils' ){
